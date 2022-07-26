@@ -1,0 +1,25 @@
+.widgets{
+    display: flex;
+    flex-direction: column;
+    background-color: #faf7f7;
+
+    .top{
+        display: flex;
+        width: 100%;
+        height: 100px;
+        flex: 1;
+        justify-content: space-between;
+    }
+
+    .center{
+        display: flex;
+        width: 100%;
+        height: 280px;
+    }
+
+    .bottom{
+        display: flex;
+        width: 100%;
+        height: 180px;
+    }
+}

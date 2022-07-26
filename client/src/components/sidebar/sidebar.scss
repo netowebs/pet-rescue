@@ -1,0 +1,158 @@
+.sidebar{
+    flex: 1;
+    border-right: 0.2px solid rgb(203, 238, 203);
+    min-height: 100vh;
+    background-color: white;
+
+    .top{
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .logo{
+            font-size: 20px;
+            font-weight: bold;
+            color: #18ba43;
+        }
+    }
+
+    hr{
+        height: 0;
+        border: 0.2px solid rgb(203, 238, 203);
+    }
+
+    .userLogged{
+        display: flex;
+        padding: 10px;
+        margin-bottom: 10px;
+
+        .userPhoto{
+            width: 60px;
+            height: 60px;
+            background-color: white;
+            border: 5px solid #18ba43;
+            border-radius: 50%;
+
+            .avatar{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+
+        .userInfo{
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .userName{
+                font-family: Arial, Helvetica, sans-serif;
+                color: #18ba43;
+                font-weight: 700;
+                font-size: 15px;
+            }   
+
+            .userLevel{
+                font-family: Arial, Helvetica, sans-serif;
+                color: #18ba43;
+                font-size: 12px;
+            }
+        }
+    }
+
+
+
+    .center{
+
+        .menu-name{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            .icon-arrow{
+                background-color: #333;
+                border-radius: 50%;
+                color: #18ba43;
+                font-size: 18px;
+                margin-left: 5px;
+            }
+            
+            &:hover{
+                .icon-arrow{
+                    background-color: #18ba43;
+                    color: white;
+                }
+            }
+        }
+
+        ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li{
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                margin-bottom: 5px;
+                cursor: pointer;
+
+                &:hover{
+                    border-radius: 0px 30px 30px 0px;
+                    background-color: #55ad6c;
+                    color: white;
+                    border-left: 5px solid #4a925d;
+                }
+            }
+
+            .icon{
+                font-size: 18px;
+                margin-right: 10px;
+            }
+
+            span{
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                font-size: 13px;
+            }
+
+            .title{
+                font-family: Arial, Helvetica, sans-serif;
+                text-align: center;
+                background-color: #4a925d;
+                color: white;
+            }
+        }
+    }
+
+    .bottom{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+
+        .colorOption{
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            border: 1px solid black;
+            cursor: pointer;
+            margin: 5px;
+
+            &:nth-child(1){
+                background-color: whitesmoke;
+            }
+
+            &:nth-child(2){
+                background-color: #333;
+            }
+
+            &:nth-child(3){
+                background-color: darkblue;
+            }
+        }
+    }
+}
