@@ -1,8 +1,8 @@
 .box-logo{
     display: flex;
     width: 100%;
-    background-color: white;
     margin-top: 10px;
+    height: 180px;
 
     .img-logo{
         display: flex;
@@ -12,7 +12,7 @@
 
         img{
             margin-bottom: 30px;
-            width: 300px;
+            width: 180px;
         }
     }
 
@@ -23,20 +23,19 @@
 
             .txtPet{
                 display: flex;
-                height: 100%;
+                height: 90%;
                 justify-content: start;
                 align-items: center;
-                width: 100%;
 
                 .pet{
-                    font-size: 95px;
+                    font-size: 80px;
                     font-family: Arial, Helvetica, sans-serif;
                     color: #e08907;
                     font-weight: 550;
                 }
 
                 .rescue{
-                    font-size: 95px;
+                    font-size: 80px;
                     font-weight: lighter;
                     font-family: Arial, Helvetica, sans-serif;
                     color: #16a685;

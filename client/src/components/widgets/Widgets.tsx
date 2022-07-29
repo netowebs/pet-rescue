@@ -1,12 +1,14 @@
-import { BoxLogo } from '../DashBoard/boxLogo/BoxLogo'
-import { BoxWidgets } from '../DashBoard/boxTop/BoxWidgets'
+import { BoxWidgets } from './boxTop/BoxWidgets'
+import { MedicalRecords } from './boxFooter/medicalRecords/MedicalRecords';
+import { Calendar } from './boxFooter/calendar/Calendar';
 import './widgets.scss'
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { color } from '@mui/system';
+import { BoxLogo } from './boxLogo/BoxLogo';
+
 
 export const Widgets = () => {
     return(
@@ -76,30 +78,16 @@ export const Widgets = () => {
                         txtLink: 'Relatório'
                     }}
                 />
-                {/* <BoxWidgets 
-                    style={{
-                        bgColor:'#e88f41',
-                        bgBottom:'#c96d1c'
-                    }}
-                    top={{
-                        numInfo:895.60,
-                        txtInfo: `Pet's disponíveis`,
-                        imgInfo:''
-                    }}
-                    bottom={{
-                        txtLink: 'Relatório'
-                    }}
-                /> */}
             </div>
             <div className="center">
-                <BoxLogo />
+                    <BoxLogo />
             </div>
             <div className="bottom">
                 <div className="calendar">
-                    calendar
+                    <Calendar />
                 </div>
                 <div className="medicalRecords">
-                    medicalRecords
+                    <MedicalRecords />
                 </div>
             </div>
         </div>

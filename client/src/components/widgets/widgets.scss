@@ -1,25 +1,22 @@
 .widgets{
     display: flex;
     flex-direction: column;
-    background-color: #faf7f7;
+    background-color: #f0f2f1;
 
     .top{
         display: flex;
-        width: 100%;
-        height: 100px;
-        flex: 1;
         justify-content: space-between;
     }
 
     .center{
-        display: flex;
-        width: 100%;
-        height: 280px;
+        margin-top: 10px;
     }
 
     .bottom{
+        background-color: white;
         display: flex;
         width: 100%;
         height: 180px;
+        justify-content: space-around;
     }
 }
