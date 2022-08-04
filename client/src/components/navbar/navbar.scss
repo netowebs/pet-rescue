@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 .navbar{
-    height: 51.5px;
+    height: 30px;
     border-bottom: 0.5px solid rgb(203, 238, 203);
     display: flex;
     align-items: center;
@@ -17,16 +17,27 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: fixed;
+        //background-color: white;
+        background-color: #3c3e3b;
+        margin-top: 18px;
+        margin-bottom: 0px;
+        overflow-x: 0px;
+        overflow-y: 0px;
 
         .search{
             display: flex;
             align-items: center;
             border: 0.5px solid lightgrey;
             padding: 3px;
+            margin-left: 200px;
+            width: 300px;
+            background-color: white;
 
             input{
                 border: none;
                 outline: none;
+                width: 300px;
                 background-color: transparent;
 
                 &::placeholder{
@@ -47,6 +58,7 @@
 
                 .icon{
                     font-size: 20px;
+                    color: white;
                 }
 
                 .counter{

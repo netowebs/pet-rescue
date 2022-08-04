@@ -7,7 +7,12 @@
     flex: 1;
     border-right: 0.2px solid rgb(203, 238, 203);
     min-height: 100vh;
-    background-color: white;
+    background-color: #3c3e3b;
+    position: fixed;
+    z-index: 1;
+    padding: 8px 0;
+    overflow-x: hidden;
+    color: white;
 
     .top{
         height: 50px;
@@ -35,9 +40,10 @@
         .userPhoto{
             width: 60px;
             height: 60px;
-            background-color: white;
+            background-color: #18ba43;
             border: 5px solid #18ba43;
             border-radius: 50%;
+            object-fit: cover;
 
             .avatar{
                 width: 100%;
@@ -54,14 +60,13 @@
 
             .userName{
                 font-family: Arial, Helvetica, sans-serif;
-                color: #18ba43;
-                font-weight: 700;
+                //color: #18ba43;
                 font-size: 15px;
             }   
 
             .userLevel{
                 font-family: Arial, Helvetica, sans-serif;
-                color: #18ba43;
+                //color: #18ba43;
                 font-size: 12px;
             }
         }
@@ -96,8 +101,8 @@
 
         ul{
             list-style: none;
-            margin: 0;
-            padding: 0;
+            margin: 0px;
+            padding: 0px;
 
             li{
                 display: flex;
@@ -121,12 +126,13 @@
             .icon{
                 font-size: 18px;
                 margin-right: 10px;
-                color: #55ad6c;
+                //color: #55ad6c;
+                color: #869684;
             }
 
             span{
                 font-family: Arial, Helvetica, sans-serif;
-                font-weight: bold;
+               //font-weight: bold;
                 font-size: 13px;
             }
 

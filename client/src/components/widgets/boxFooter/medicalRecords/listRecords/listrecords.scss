@@ -1,0 +1,49 @@
+.container{
+    background-color: white;
+
+    .list-fichas{
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        border-bottom: 1px solid lightgrey;
+
+        &:hover{
+            background-color: #f0f2f1;
+            cursor: pointer;
+        }
+
+
+        .item-id{
+            flex: 0.3;
+            margin-left: 15px;
+        }
+
+        .item-status{
+            flex: 0.8;
+            text-align: center;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+        }
+
+        .item-vet{
+            flex: 1.5;
+            text-align: center;
+        }
+
+        .item-pet{
+            display: flex;
+            flex: 1.3;
+            margin-left: 3%;
+
+            .pet-id{
+                margin-right: 15px;
+            }
+        }
+
+        .item-dtAtualizacao{
+            flex: 1;
+            text-align: center;
+        }
+    }
+}
