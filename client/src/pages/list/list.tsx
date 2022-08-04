@@ -4,28 +4,15 @@ import { SideBar } from '../../components/sidebar/SideBar'
 import './list.scss'
 
 import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
-import React, { useState } from 'react';
-import { Pet } from '../../bdfake/petsDb';
+import { useState } from 'react';
+
 export const List = () => {  
 
-    const [loadingList, setLoadingList] = useState<Pet[]>([])
-    const [nameSearch, setNameSearch] = useState(String)
+    const [search, setSearch] = useState('')
 
-    const filter = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const keyword = event.target.value;
-
-        if(keyword !== ''){
-            const results = loadingList.filter((item) => {
-                return item.name.toLocaleLowerCase().startsWith(keyword.toLowerCase());
-            });
-            setLoadingList(results)
-        }else{
-            setLoadingList(loadingList)
-        }
-
-        setNameSearch(keyword);
+    const filterSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(event.target.value)
     }
-
 
     return(
         <div className='list'>
@@ -41,9 +28,8 @@ export const List = () => {
                         <span>Listagem de Pet's</span>
                         <div className="searchArea">
                             <input 
-                                type="text" 
-                                value={nameSearch}
-                                onChange={filter}
+                                type="text"
+                                onChange={filterSearch}
                                 placeholder='Buscar...'/>
                             <LocationSearchingIcon />
                         </div>
@@ -57,7 +43,7 @@ export const List = () => {
                         <div className="apartmentPet-title">Apartamento</div>
                     </div>
                     <div className="cadList">
-                        <Datatable />
+                        <Datatable search={search}/>
                     </div>
                 </div>
             </div>

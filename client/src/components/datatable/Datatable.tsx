@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Pet, petsDb } from "../../bdfake/petsDb"
 import './datatable.scss'
 
@@ -7,13 +7,23 @@ import EditIcon from '@mui/icons-material/Edit';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { PaginatedList } from "react-paginated-list";
 
-export const Datatable = () => {
+type Prop = {
+    search: string;
+}
+
+export const Datatable = ({search}:Prop) => {
 
     const [loadList, setLoadList] = useState<Pet[]>([])
 
     useEffect(()=>{
-        setLoadList(petsDb)
-    },[])
+        if(search !== ''){
+            const newList = petsDb.filter(item => item.name.includes(search))
+            setLoadList(newList)
+        }else{
+            setLoadList(petsDb)
+        }
+    },[search])
+
 
     return(
         <PaginatedList

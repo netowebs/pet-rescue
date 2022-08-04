@@ -93,7 +93,7 @@ export const petsDb: Pet[] = [
     {
         id: 1132,
         species: 'Cachorro',
-        name: 'Luck',
+        name: 'Lucking',
         age: 1,
         dtCad: '01/01/2022',
         lodging:{
@@ -106,7 +106,7 @@ export const petsDb: Pet[] = [
     {
         id: 1132,
         species: 'Cachorro',
-        name: 'Luck',
+        name: 'Luckcheck',
         age: 1,
         dtCad: '01/01/2022',
         lodging:{
@@ -119,7 +119,7 @@ export const petsDb: Pet[] = [
     {
         id: 1132,
         species: 'Cachorro',
-        name: 'Luck',
+        name: 'Luckchecka',
         age: 1,
         dtCad: '01/01/2022',
         lodging:{
