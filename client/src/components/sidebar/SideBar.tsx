@@ -13,6 +13,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export const SideBar = () => {
 
@@ -47,22 +48,30 @@ export const SideBar = () => {
             <div className="center">
                 <div className="center-top">
                     <ul>
-                        <li>
-                            <HomeIcon className='icon' />
-                            <span>Dashboard</span>
-                        </li>
-                        <li>
-                            <FavoriteIcon className='icon' />
-                            <span>Adoção</span>
-                        </li>
-                        <li>
-                            <PetsIcon className='icon' />
-                            <span>Cadastro Pet</span>
-                        </li>
-                        <li>
-                            <MonitorHeartIcon className='icon' />
-                            <span>Ficha Médica</span>
-                        </li>
+                        <Link className='link' to={'/'}>
+                            <li>
+                                <HomeIcon className='icon' />
+                                <span>Dashboard</span>
+                            </li>
+                        </Link>
+                        <Link className='link' to={'/adoptions'}>
+                            <li>
+                                <FavoriteIcon className='icon' />
+                                <span>Adoção</span>
+                            </li>
+                        </Link>
+                        <Link className='link' to={'/pets'}>
+                            <li>
+                                <PetsIcon className='icon' />
+                                <span>Cadastro Pet</span>
+                            </li>
+                        </Link>
+                        <Link className='link' to={'/medical-records'}>
+                            <li>
+                                <MonitorHeartIcon className='icon' />
+                                <span>Ficha Médica</span>
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 <div onClick={toggleElement} className="menu-name">
@@ -73,26 +82,36 @@ export const SideBar = () => {
                 {showElement ?
                 <div className="center-bottom">
                     <ul>
-                        <li>
-                            <FamilyRestroomIcon className='icon' />
-                            <span>Cadastro de Tutores</span>
-                        </li>
+                        <Link className='link' to={'/tutors'}>
+                            <li>
+                                <FamilyRestroomIcon className='icon' />
+                                <span>Cadastro de Tutores</span>
+                            </li>
+                        </Link>
+                        <Link className='link' to={'/financial'}>
                         <li>
                             <CurrencyExchangeIcon className='icon' />
                             <span>Financeiro</span>
                         </li>
-                        <li>
-                            <HailIcon className='icon' />
-                            <span>Colaboradores</span>
-                        </li>
-                        <li>
-                            <PasswordIcon className='icon' />
-                            <span>Cadasatro de Usuários</span>
-                        </li>
-                        <li>
-                            <ProductionQuantityLimitsIcon className='icon' />
-                            <span>Estoque</span>
-                        </li>
+                        </Link>
+                        <Link className='link' to={'/collaborators'}>
+                            <li>
+                                <HailIcon className='icon' />
+                                <span>Colaboradores</span>
+                            </li>
+                        </Link>
+                        <Link className='link' to={'/users'}>
+                            <li>
+                                <PasswordIcon className='icon' />
+                                <span>Cadasatro de Usuários</span>
+                            </li>
+                        </Link>
+                        <Link className='link' to={'/products'}>
+                            <li>
+                                <ProductionQuantityLimitsIcon className='icon' />
+                                <span>Estoque</span>
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 : null}

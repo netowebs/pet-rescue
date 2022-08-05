@@ -1,14 +1,17 @@
-import { Datatable } from '../../components/datatable/Datatable'
+import { DatatablePets } from '../../components/datatablePet/DatatablePets'
 import { NavBar } from '../../components/navbar/NavBar'
 import { SideBar } from '../../components/sidebar/SideBar'
 import './list.scss'
 
 import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { DatatableTutors } from '../../components/datatableTutors/DatatableTutors';
 
 export const List = () => {  
 
     const [search, setSearch] = useState('')
+    const params = useParams();
 
     const filterSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value)
@@ -25,7 +28,18 @@ export const List = () => {
                         <input className='button' type="submit" value="Inativos" />
                     </div>
                     <div className="searchBar">
-                        <span>Listagem de Pet's</span>
+                        <span>Listagem de 
+                            {
+                                <span>
+                                    {
+                                        params.slug === 'pets' &&
+                                        "Pet's" ||
+                                            params.slug === 'tutors' &&
+                                                "Tutores"
+                                    }
+                                </span>
+                            }
+                        </span>
                         <div className="searchArea">
                             <input 
                                 type="text"
@@ -34,16 +48,15 @@ export const List = () => {
                             <LocationSearchingIcon />
                         </div>
                     </div>
-                    <div className="titleBar">
-                        <div className="idPet-title">ID</div>
-                        <div className="namePet-title">Nome</div>
-                        <div className="dtCad-title">Data Cadastro</div>
-                        <div className="zonePet-title">Zona</div>
-                        <div className="sectionPet-title">Seção</div>
-                        <div className="apartmentPet-title">Apartamento</div>
-                    </div>
+
                     <div className="cadList">
-                        <Datatable search={search}/>
+                        {
+                            params.slug === 'pets' &&
+                                <DatatablePets search={search}/> ||
+                                params.slug === 'tutors' &&
+                                <DatatableTutors search={search}/>
+                        }   
+                        
                     </div>
                 </div>
             </div>

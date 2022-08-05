@@ -104,6 +104,11 @@
             margin: 0px;
             padding: 0px;
 
+            .link{
+                text-decoration: none;
+                color: white;
+            }
+
             li{
                 display: flex;
                 align-items: center;
@@ -121,6 +126,7 @@
                         color: white;
                     }
                 }
+
             }
 
             .icon{
