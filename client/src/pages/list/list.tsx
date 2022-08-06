@@ -7,6 +7,7 @@ import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { DatatableTutors } from '../../components/datatableTutors/DatatableTutors';
+import { DatatableMedicalRecords } from '../../components/datatableMedicalRecords/DatatableMedicalRecords';
 
 export const List = () => {  
 
@@ -35,7 +36,9 @@ export const List = () => {
                                         params.slug === 'pets' &&
                                         "Pet's" ||
                                             params.slug === 'tutors' &&
-                                                "Tutores"
+                                                "Tutores" ||
+                                                params.slug === 'medical-records' &&
+                                                    "Fichas Médicas"
                                     }
                                 </span>
                             }
@@ -54,9 +57,10 @@ export const List = () => {
                             params.slug === 'pets' &&
                                 <DatatablePets search={search}/> ||
                                 params.slug === 'tutors' &&
-                                <DatatableTutors search={search}/>
-                        }   
-                        
+                                    <DatatableTutors search={search}/>||
+                                    params.slug === 'medical-records' &&
+                                        <DatatableMedicalRecords search={search}/>
+                        }    
                     </div>
                 </div>
             </div>

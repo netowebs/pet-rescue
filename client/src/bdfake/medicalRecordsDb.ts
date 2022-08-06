@@ -1,11 +1,13 @@
+import { petsDb } from "./petsDb";
+
 export type medicalRecord = {
     id: number;
     status: string;
     vet: string;
-    pet:{
+    pet: {
         id: number;
         name: string;
-    };
+    }
     dtAtualizacao: string;
 }
 
@@ -15,8 +17,8 @@ export const medicalRecordsDb: medicalRecord[]= [
         status: 'saudável',
         vet: 'Dr. João da Silva',
         pet:{
-            id: 1311,
-            name: 'Sultão'
+            id: petsDb[0].id,
+            name: petsDb[0].name
         },
         dtAtualizacao: '01/01/2002'
     },
@@ -26,8 +28,8 @@ export const medicalRecordsDb: medicalRecord[]= [
         status: 'crítico',
         vet: 'Dr. João da Silva',
         pet:{
-            id: 1132,
-            name: 'Nala'
+            id: petsDb[1].id,
+            name: petsDb[1].name
         },
         dtAtualizacao:'01/01/2002'
     },
@@ -37,8 +39,8 @@ export const medicalRecordsDb: medicalRecord[]= [
         status: 'saudável',
         vet: 'Dr. João da Silva',
         pet:{
-            id: 1112,
-            name: 'Apolo'
+            id: petsDb[2].id,
+            name: petsDb[2].name
         },
         dtAtualizacao:'01/01/2002'
     },
@@ -48,8 +50,8 @@ export const medicalRecordsDb: medicalRecord[]= [
         status: 'observação',
         vet: 'Dr. João da Silva',
         pet:{
-            id: 4345,
-            name: 'Frederico'
+            id: petsDb[3].id,
+            name: petsDb[3].name
         },
         dtAtualizacao:'01/01/2002'
     },
@@ -59,8 +61,8 @@ export const medicalRecordsDb: medicalRecord[]= [
         status: 'saudável',
         vet: 'Dr. João da Silva',
         pet:{
-            id: 8932,
-            name: 'Chico'
+            id: petsDb[4].id,
+            name: petsDb[4].name
         },
         dtAtualizacao:'01/01/2002'
     }
