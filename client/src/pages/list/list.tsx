@@ -4,7 +4,7 @@ import { SideBar } from '../../components/sidebar/SideBar'
 import './list.scss'
 
 import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { DatatableTutors } from '../../components/datatableTutors/DatatableTutors';
 import { DatatableMedicalRecords } from '../../components/datatableMedicalRecords/DatatableMedicalRecords';
@@ -38,7 +38,9 @@ export const List = () => {
                                             params.slug === 'tutors' &&
                                                 "Tutores" ||
                                                 params.slug === 'medical-records' &&
-                                                    "Fichas Médicas"
+                                                    "Fichas Médicas" ||
+                                                    params.slug === `financial` &&
+                                                        `Lançamentos Financeiros`
                                     }
                                 </span>
                             }

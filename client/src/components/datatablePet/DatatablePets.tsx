@@ -6,8 +6,7 @@ import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import EditIcon from '@mui/icons-material/Edit';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { PaginatedList } from "react-paginated-list";
-import { Link, useParams } from "react-router-dom";
-import { Tutor, tutorsDb } from "../../bdfake/tutorsDb";
+import { Link } from "react-router-dom";
 
 type Prop = {
     search: string;
@@ -19,8 +18,7 @@ export const DatatablePets = ({search}:Prop) => {
 
     useEffect(()=>{
         if(search !== ''){
-            const newList = loadList.filter(item => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
-            setLoadList(newList)
+            setLoadList(petsDb.filter(item => item.name.includes(search)))
         }else{
             setLoadList(petsDb)
         }

@@ -19,8 +19,7 @@ export const DatatableTutors = ({search}:Prop) => {
 
     useEffect(()=>{
         if(search !== ''){
-            const newList = loadList.filter(item => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
-            setLoadList(newList)
+            setLoadList(tutorsDb.filter(item => item.name.includes(search)))
         }else{
             setLoadList(tutorsDb)
         }

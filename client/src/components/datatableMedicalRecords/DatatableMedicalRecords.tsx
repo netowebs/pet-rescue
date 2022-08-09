@@ -18,8 +18,7 @@ export const DatatableMedicalRecords = ({search}:Prop) => {
 
     useEffect(()=>{
         if(search !== ''){
-            const newList = loadList.filter(item => item.id === parseInt(search))
-            setLoadList(newList)
+            setLoadList(medicalRecordsDb.filter(item => item.pet.name.includes(search)))
         }else{
             setLoadList(medicalRecordsDb)
         }
