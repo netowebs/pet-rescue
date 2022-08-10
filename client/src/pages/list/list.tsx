@@ -4,7 +4,7 @@ import { SideBar } from '../../components/sidebar/SideBar'
 import './list.scss'
 
 import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { DatatableTutors } from '../../components/datatableTutors/DatatableTutors';
 import { DatatableMedicalRecords } from '../../components/datatableMedicalRecords/DatatableMedicalRecords';
@@ -49,6 +49,7 @@ export const List = () => {
                             <input 
                                 type="text"
                                 onChange={filterSearch}
+                                value={search}
                                 placeholder='Buscar...'/>
                             <LocationSearchingIcon />
                         </div>
@@ -57,11 +58,11 @@ export const List = () => {
                     <div className="cadList">
                         {
                             params.slug === 'pets' &&
-                                <DatatablePets search={search}/> ||
+                                <DatatablePets search={search} setSearch={setSearch}/> ||
                                 params.slug === 'tutors' &&
-                                    <DatatableTutors search={search}/>||
+                                    <DatatableTutors search={search} setSearch={setSearch}/>||
                                     params.slug === 'medical-records' &&
-                                        <DatatableMedicalRecords search={search}/>
+                                        <DatatableMedicalRecords search={search} setSearch={setSearch}/>
                         }    
                     </div>
                 </div>

@@ -10,20 +10,24 @@ import { medicalRecord, medicalRecordsDb } from "../../bdfake/medicalRecordsDb";
 
 type Prop = {
     search: string;
+    setSearch: React.Dispatch<React.SetStateAction<string>>
 }
 
 
-export const DatatableMedicalRecords = ({search}:Prop) => {
+export const DatatableMedicalRecords = ({search, setSearch}:Prop) => {
     const [loadList, setLoadList] = useState<medicalRecord[]>([]);
 
     useEffect(()=>{
         if(search !== ''){
-            setLoadList(medicalRecordsDb.filter(item => item.pet.name.includes(search)))
+            setLoadList(medicalRecordsDb.filter(item => item.pet.name.includes(search) || item.status.includes(search) || item.vet.includes(search) || item.pet.id.toString().includes(search)))
         }else{
             setLoadList(medicalRecordsDb)
         }
     },[search])
 
+    useEffect(()=>{
+        setSearch('')
+    },[])
 
     return(
         <PaginatedList

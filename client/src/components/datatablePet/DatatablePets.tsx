@@ -10,19 +10,23 @@ import { Link } from "react-router-dom";
 
 type Prop = {
     search: string;
+    setSearch: React.Dispatch<React.SetStateAction<string>>
 }
 
-
-export const DatatablePets = ({search}:Prop) => {
+export const DatatablePets = ({search, setSearch}:Prop) => {
     const [loadList, setLoadList] = useState<Pet[]>([]);
 
     useEffect(()=>{
         if(search !== ''){
-            setLoadList(petsDb.filter(item => item.name.includes(search)))
+            setLoadList(petsDb.filter(item => item.name.includes(search) || item.lodging.zone.includes(search) || item.lodging.section.includes(search) || item.lodging.apartment.toString().includes(search) || item.id.toString().includes(search)))
         }else{
             setLoadList(petsDb)
         }
     },[search])
+
+    useEffect(()=>{
+        setSearch('')
+    },[])
 
 
     return(

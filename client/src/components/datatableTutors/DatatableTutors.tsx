@@ -10,21 +10,25 @@ import { Tutor, tutorsDb } from "../../bdfake/tutorsDb";
 
 type Prop = {
     search: string;
+    setSearch: React.Dispatch<React.SetStateAction<string>>
 }
 
 
-export const DatatableTutors = ({search}:Prop) => {
+export const DatatableTutors = ({search, setSearch}:Prop) => {
 
     const [loadList, setLoadList] = useState<Tutor[]>([]);
 
     useEffect(()=>{
         if(search !== ''){
-            setLoadList(tutorsDb.filter(item => item.name.includes(search)))
+            setLoadList(tutorsDb.filter(item => item.name.includes(search) || item.tel.includes(search) || item.cpf.includes(search)))
         }else{
             setLoadList(tutorsDb)
         }
     },[search])
 
+    useEffect(()=>{
+        setSearch('')
+    },[])
 
     return(
         <PaginatedList
