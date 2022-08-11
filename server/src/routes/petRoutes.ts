@@ -1,14 +1,10 @@
-import {Router, Request, Response} from 'express'
+import {Router} from 'express'
+import * as PetController from '../controllers/petController'
 
-const router = Router();
+const routerPet = Router();
 
-router.get('/pets', (req: Request, res: Response)=>{
-    res.send('Listagem de Pets')
-})
-
-router.get('/pets/:idPet', (req: Request, res: Response)=>{
-    res.send('Detalhe do pet slug')
-})
+routerPet.get('/pets', PetController.petList)
+//routerPet.get('/pets/:idPet', PetController.petInfo)
 
 
-export default router;
+export default routerPet;

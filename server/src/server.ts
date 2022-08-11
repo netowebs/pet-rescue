@@ -1,12 +1,15 @@
-import express, {Request, Response} from 'express'
-import mainRoutes from './routes/index'
+import express from 'express'
+import routerPet from '../src/routes/petRoutes'
 import path from 'path'
 import dotenv from 'dotenv'
+import cors from 'cors'
 
 dotenv.config();
 const server = express();
+server.use(cors())
 
-server.use(mainRoutes);
+
+server.use(routerPet);
 
 
 server.listen(process.env.PORT)
