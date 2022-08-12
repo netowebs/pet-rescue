@@ -1,0 +1,45 @@
+.single{
+    display: flex;
+
+    .singleContainer{
+        flex: 6;
+        flex-direction: column;
+
+        .internalContainer{
+            display: flex;
+            flex-direction: column;
+            padding-left: 15px;
+            padding-top: 10px;
+            padding-right: 15px;
+            margin-left: 205px;
+            margin-top: 75px;
+            width: 85%;
+
+
+            .buttonBar{
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+                height: 50px;
+                padding-bottom: 10px;
+                background-color: aqua;
+
+                .inputs{
+                    justify-content: center;
+                    align-items: center;
+                    display: flex;
+                    
+                    .idCad{
+                        
+                    }
+
+                    .dtCad{
+                        margin-left: 10px;
+                        margin-right: 10px;
+                    }
+                }
+
+            }
+        }
+    }
+}

@@ -10,17 +10,19 @@
         font-weight: 700;
         border-bottom: 2px solid #095543;
 
-        .idPet-title, 
+        .idPet-title,
         .namePet-title, 
-        .dtCad-title, 
-        .zonePet-title,
-        .sectionPet-title,
-        .apartmentPet-title{
+        .dtCadRescue-title, 
+        .speciePet-title,
+        .agePet-title,
+        .temperamentPet-title,
+        .statusPet-title,
+        .sexPet-title{
             flex: 1;
             text-align: center;
         }
 
-        .apartmentPet-title{
+        .sexPet-title{
             margin-right: 130px;
         }
 
@@ -42,10 +44,11 @@
 
     .idPet,
     .namePet,
-    .dtCadPet,
-    .zonaPet,
-    .sectionPet,
-    .apartmentPet{
+    .dtRescuePet,
+    .speciesPet,
+    .agePet,
+    .statusPet,
+    .sexPet{
         flex: 1;
         text-align: center;
     }

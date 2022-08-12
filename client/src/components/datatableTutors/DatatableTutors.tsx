@@ -6,7 +6,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { PaginatedList } from "react-paginated-list";
 import { Link } from "react-router-dom";
-import { Tutor, tutorsDb } from "../../bdfake/tutorsDb";
 
 type Prop = {
     search: string;

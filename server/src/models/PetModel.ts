@@ -1,16 +1,17 @@
-import moment from 'moment'
 import {Model, DataTypes} from 'sequelize'
 import {sequelize} from '../instances/mysql'
 
 export interface PetInstance extends Model {
     id: number,
     adoptions_id: number,
+    apartment_id: number,
     name: string,
     species: string,
     date_rescue: Date,
     status: string,
     sex: string,
-    age_approx: number
+    age_approx: number,
+    temperament: string,
 }
 
 export const PetModel = sequelize.define<PetInstance>("PetModel", {
@@ -19,6 +20,9 @@ export const PetModel = sequelize.define<PetInstance>("PetModel", {
         type: DataTypes.INTEGER
     },
     adoptions_id:{
+        type: DataTypes.INTEGER
+    },
+    apartment_id:{
         type: DataTypes.INTEGER
     },
     name:{
@@ -38,6 +42,9 @@ export const PetModel = sequelize.define<PetInstance>("PetModel", {
     },
     age_approx:{
         type: DataTypes.INTEGER
+    },
+    temperament:{
+        type: DataTypes.STRING
     }
 },{
     tableName: 'animals',
