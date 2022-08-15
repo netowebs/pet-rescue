@@ -32,7 +32,7 @@ export const PetModel = sequelize.define<PetInstance>("PetModel", {
         type: DataTypes.STRING
     },
     date_rescue:{
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
     },
     status:{
         type: DataTypes.STRING

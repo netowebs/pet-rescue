@@ -4,7 +4,7 @@ import * as PetController from '../controllers/petController'
 const routerPet = Router();
 
 routerPet.get('/pets', PetController.petList)
-//routerPet.get('/pets/:idPet', PetController.petInfo)
+routerPet.get('/pets/:idPet', PetController.petDetail)
 
 
 export default routerPet;

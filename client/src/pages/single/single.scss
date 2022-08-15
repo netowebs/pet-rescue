@@ -1,11 +1,7 @@
 .single{
     display: flex;
-
-    .singleContainer{
-        flex: 6;
-        flex-direction: column;
-
-        .internalContainer{
+    
+        .conteudo{
             display: flex;
             flex-direction: column;
             padding-left: 15px;
@@ -14,119 +10,5 @@
             margin-left: 205px;
             margin-top: 75px;
             width: 85%;
-
-
-            .buttonBar{
-                width: 100%;
-                display: flex;
-                height: 70px;
-                padding-bottom: 10px;
-                border: 1px solid #b3b1ad;
-
-                .inputs, button{
-                    align-items: center;
-                    display: flex;
-                    flex: 1;
-                    justify-content: center;
-                    
-                    .idCad span,
-                    .dtCad span,
-                    .dtAlter span{
-                        color: #16a685;
-                        font-family: Arial, Helvetica, sans-serif;
-                        font-weight: bold;
-                        font-size: 13.5px;
-                    }
-
-                    .idCad input,
-                    .dtCad input,
-                    .dtAlter input{
-                        width: 180px;
-                        height: 30px;
-                        border: none;
-                        border: 1px solid #b3b1ad;
-                        outline: none;
-                        background-color: #edf0e9;
-                        justify-content: center;
-                        align-items: center;
-                        text-align: right;
-                        font-family: Arial, Helvetica, sans-serif;
-                        font-weight: bold;
-                        font-size: 25px;
-                        padding: 10px;
-                    }
-
-                    .dtCad{
-                        margin-left: 10px;
-                        margin-right: 10px;
-                    }
-                }
-
-                .buttons{
-                    display: flex;
-                    flex: 1;
-                    justify-content: center;
-                    align-items: center;
-
-                    .printButton input,
-                    .cancelButtom input,
-                    .saveButton input,
-                    .deleteButton input{
-                        width: 120px;
-                        margin-right: 10px;
-                        margin-top: 15px;
-                        padding: 5px;
-                        font-size: 17px;
-                        font-weight: bold;
-                        cursor: pointer;
-                    }
-
-                    .printButton input{
-                        width: 80px;
-                    }
-                    
-                    .saveButton input{
-                        background-color: #16a685;
-                        color: white;
-                        border: 1px solid #0ecfa3;
-
-                        &:hover{
-                            background-color: #0ecfa3;
-                            color: white;
-                            border: 1px solid #16a685;
-                        }
-                    }
-
-                    .cancelButtom input{
-                        background-color: #b89b2a;
-                        color: white;
-                        border: 1px solid #f0d569;
-
-                        &:hover{
-                            background-color: #f0d569;
-                            color: white;
-                            border: 1px solid #b89b2a;
-                        }
-                    }
-
-                    .deleteButton input{
-                        background-color: #ad2a2a;
-                        color: white;
-                        border: 1px solid #ed5f5f;
-
-                        &:hover{
-                            background-color: #ed5f5f;
-                            color: white;
-                            border: 1px solid #ad2a2a;
-                        }
-                    }
-
-                    .printButton input{
-                        background-color: #1a79bd;
-                        border: 1px solid #41a8f2;
-                    }
-                }   
-            }
         }
-    }
 }

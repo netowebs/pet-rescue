@@ -1,37 +1,30 @@
 import { useEffect, useState } from "react"
 import './datatablePet.scss'
-import {pet} from '../../api/api'
+import {pet} from '../../../api/api'
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import EditIcon from '@mui/icons-material/Edit';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { PaginatedList } from "react-paginated-list";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import { Pet } from "../typePet";
 
 type Prop = {
     search: string;
     setSearch: React.Dispatch<React.SetStateAction<string>>
 }
 
-type Pet  = {
-    id: number,
-    adoptions_id: number,
-    apartment_id: number,
-    name: string,
-    date_rescue: any,
-    status: string,
-    sex: string,
-    age_approx: number
-    species: string,
-    temperament: string,
-}
-
 export const DatatablePets = ({search, setSearch}:Prop) => {
     const [loadList, setLoadList] = useState<Pet[]>([]);
 
     const loadPets = async () => {
-        let json = await pet.getAllPets();
-        setLoadList(json);
+        try{
+            let json = await pet.getAllPets();
+            setLoadList(json);
+        }catch(e){
+            console.log(`Não foi possível carregar ${e}`);
+        }
+        
     }
 
     useEffect(()=>{
@@ -85,7 +78,7 @@ export const DatatablePets = ({search, setSearch}:Prop) => {
                                 <div className="sexPet">{item.sex}</div>
                                 <div className="btnPet">
                                     <PictureAsPdfIcon className="icon pdf"/>
-                                    <Link className="link" to={'/pets/test'}>
+                                    <Link className="link" to={`/pets/${item.id}`}>
                                         <EditIcon className="icon edit"/>
                                     </Link>
                                     <LocalPrintshopIcon className="icon print"/>

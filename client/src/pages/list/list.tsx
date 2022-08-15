@@ -1,4 +1,3 @@
-import { DatatablePets } from '../../components/datatablePet/DatatablePets'
 import { NavBar } from '../../components/navbar/NavBar'
 import { SideBar } from '../../components/sidebar/SideBar'
 import './list.scss'
@@ -8,6 +7,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { DatatableTutors } from '../../components/datatableTutors/DatatableTutors';
 import { DatatableMedicalRecords } from '../../components/datatableMedicalRecords/DatatableMedicalRecords';
+import { DatatablePets } from '../../components/datatablePet/list/DatatablePets';
 
 export const List = () => {  
 
