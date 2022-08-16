@@ -45,6 +45,12 @@ export const PetModel = sequelize.define<PetInstance>("PetModel", {
     },
     temperament:{
         type: DataTypes.STRING
+    },
+    size:{
+        type: DataTypes.STRING
+    },
+    note: {
+        type: DataTypes.STRING
     }
 },{
     tableName: 'animals',

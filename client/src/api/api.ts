@@ -6,12 +6,22 @@ const instance = axios.create({
 
 export const pet = {
     getAllPets: async () => {
-        let response = await instance.get(`/pets`);
-        return response.data
+        try {
+            let response = await instance.get(`/pets`);
+            return response.data
+        } catch (error) {
+            console.log(error)
+        }
+        
     },
 
     getPet: async (id: string) => {
-        let response = await instance.get(`/pets/${id}`)
-        return response.data
+        try {
+            let response = await instance.get(`/pets/${id}`)
+            return response.data
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 }

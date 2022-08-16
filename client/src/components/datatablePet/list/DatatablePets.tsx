@@ -21,8 +21,8 @@ export const DatatablePets = ({search, setSearch}:Prop) => {
         try{
             let json = await pet.getAllPets();
             setLoadList(json);
-        }catch(e){
-            console.log(`Não foi possível carregar ${e}`);
+        }catch(error){
+            console.log(error);
         }
         
     }
@@ -32,17 +32,8 @@ export const DatatablePets = ({search, setSearch}:Prop) => {
     },[])
 
     useEffect(()=>{
-        if(search !== ''){
-            setLoadList(loadList.filter(item => item.name.includes(search) || item.species.includes(search) || item.date_rescue.toString().includes(search) || item.status.includes(search) || item.id.toString().includes(search)))
-        }else{
-            setLoadList(loadList)
-        }
-    },[search])
-
-    useEffect(()=>{
         setSearch('')
     },[])
-
 
     return(
         <PaginatedList
@@ -62,29 +53,41 @@ export const DatatablePets = ({search, setSearch}:Prop) => {
                         
                     </div>
                     <div className="container">
-                        {list.map((item, index)=>(
-                            <div key={index} className='listPet'>
-                                <div className="idPet">{item.id}</div>
-                                <div className="namePet">{item.name}</div>
-                                <div className="dtRescuePet">
-                                    {
-                                        moment(item.date_rescue).format('DD/MM/YYYY')
-                                    }
-                                </div>
-                                <div className="speciesPet">{item.species}</div>
-                                <div className="statusPet">{item.status}</div>
-                                <div className="temperamentPet">{item.temperament}</div>
-                                <div className="agePet">{item.age_approx}</div>
-                                <div className="sexPet">{item.sex}</div>
-                                <div className="btnPet">
-                                    <PictureAsPdfIcon className="icon pdf"/>
-                                    <Link className="link" to={`/pets/${item.id}`}>
-                                        <EditIcon className="icon edit"/>
-                                    </Link>
-                                    <LocalPrintshopIcon className="icon print"/>
-                                </div>
-                        </div>
-                        ))}
+                        {
+                            list.filter((val) => {
+                                if(search == ''){
+                                    return val
+                                }else if(
+                                        (val.name.toLocaleLowerCase().includes(search.toLowerCase())) || 
+                                        (val.id.toString().includes(search)) ||
+                                        (val.species.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                                    ){
+                                    return val;
+                                }
+                            }).map((item, index)=>(
+                                <div key={index} className='listPet'>
+                                    <div className="idPet">{("000000"+item.id).slice(-6)}</div>
+                                    <div className="namePet">{item.name}</div>
+                                    <div className="dtRescuePet">
+                                        {
+                                            moment(item.date_rescue).format('DD/MM/YYYY')
+                                        }
+                                    </div>
+                                    <div className="speciesPet">{item.species}</div>
+                                    <div className="statusPet">{item.status}</div>
+                                    <div className="temperamentPet">{item.temperament}</div>
+                                    <div className="agePet">{item.age_approx}</div>
+                                    <div className="sexPet">{item.sex}</div>
+                                    <div className="btnPet">
+                                        <PictureAsPdfIcon className="icon pdf"/>
+                                        <Link className="link" to={`/pets/${item.id}`}>
+                                            <EditIcon className="icon edit"/>
+                                        </Link>
+                                        <LocalPrintshopIcon className="icon print"/>
+                                    </div>
+                            </div>
+                            ))
+                        }
                     </div>
                 </>
             )}

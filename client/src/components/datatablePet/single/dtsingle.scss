@@ -1,98 +1,32 @@
 .container-single{
     display: flex;
-    flex-direction: column;
+    width: 100%;
 
-    .topBar-single{
+    .formDetail{
+        width: 100%;
         display: flex;
-        width: 100%;
-        height: 80px;
-        margin-bottom: 10px;
-        border: 1px solid #d1cfcf;
+        flex-direction: column;
 
-        .inputs{
+        .topBar{
+            width: 100%;
+            height: 60px;
+            padding: 8px;
             display: flex;
-            justify-content: flex-start;
-            align-items: top;
-            flex: 1;
+            background-color: aquamarine;
 
-            .ipt-id{
-                margin-right: 50px;
-                margin-left: 10px;
-            }
-
-            .ipt-id label,
-            .ipt-dt label{
-                font-size: 15px;
-                font-weight: bold;
-                color: #16a685;
-            }
-
-            .ipt-id input,
-            .ipt-dt input{
-                border: 1px solid #d1cfcf;
-                background-color: #ebebeb;
-                height: 45px;
-                outline: none;
-                padding: 10px;
-                font-size: 18px;
-                font-weight: bold;
+            .ipt{
+                margin-right: 20px;
             }
         }
 
-        .printBtn{
-            flex: 0.2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .middleBar{
+            width: 100%;
+            background-color: bisque;
         }
 
-        .btnCommands{
-            flex: 1;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-
-            .btn{
-                width: 140px;
-                padding: 10px;
-                font-size: 20px;
-                font-weight: bold;
-                color: white;
-                cursor: pointer;
-                border: none;
-            }
-
-            .save{
-                background-color: #16a685;
-
-                &:hover{
-                    background-color: #3ae0ba;
-                }
-            }
-
-            .cancel{
-                background-color: #d9be55 ;
-
-                &:hover{
-                    background-color: #f0d569;        
-                }
-            }
-
-            .del{
-                background-color: #ad2a2a;
-
-                &:hover{
-                    background-color: #ed5f5f;
-                }
-            }
-            
+        .bottonBar{
+            width: 100%;
+            background-color: cadetblue;
         }
     }
-
-    .middleBar-single{
-        width: 100%;
-        height: 530px;
-        background-color: antiquewhite;
-    }
-
 }
