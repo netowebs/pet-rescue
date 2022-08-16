@@ -4,11 +4,11 @@ export type Pet  = {
     apartment_id: number,
     name: string,
     date_rescue: Date,
-    status: string,
-    sex: string,
+    status: 'DISPONIVEL' | 'INDISPONIVEL',
+    sex: 'MACHO' | 'FEMEA',
     age_approx: number
     species: string,
     temperament: string,
-    size: string,
+    size: 'PEQUENO' | 'MEDIO' | 'GRANDE',
     note: string
 }
