@@ -10,18 +10,140 @@
         .topBar{
             width: 100%;
             height: 60px;
-            padding: 8px;
             display: flex;
-            background-color: aquamarine;
+            border: 1px solid #e3e6e4;
+            margin-bottom: 15px;
 
-            .ipt{
-                margin-right: 20px;
-            }
+           .topBar-interno{
+                display: flex;
+                padding: 10px;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                justify-content: space-around;
+
+                .topBar-inputs{
+                    display: flex;
+                    width: 100%;
+                    justify-content: flex-start;
+
+                    input{
+                        height: 30px;
+                        font-size: 20px;
+                        font-weight: bold;
+                        width: 200px;
+                        text-align: right;
+                        background-color: #edf0ee;
+                        outline: none;
+                        border: none;
+                        padding: 10px;
+
+                        &:disabled{
+                            color: #ad2a2a;
+                        }
+                    }
+
+                    label{
+                        font-size: 15px;
+                        color: #16a685;
+                        font-weight: bold;
+                    }
+
+                    .boxId, .boxDtCad{
+                        margin-right: 20px;
+                    }
+
+                }
+
+                .topBar-Btn{
+                    display: flex;
+
+                    .btnSalvar,
+                    .btnCancelar,
+                    .btnExcluir{
+                        width: 100px;
+                        padding: 5px;
+                        margin: 10px;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-weight: bold;
+                        color: white;
+                        border-radius: 3px;
+                        height: 35px;
+                        font-size: 17px;
+                    }
+
+                    .btnSalvar{
+                        background-color: #16a685;
+                        border: 1px solid #3ae0ba;
+
+                        &:hover{
+                            background-color: #3ae0ba;
+                        }
+                    }
+
+                    .btnCancelar{
+                        background-color: #b89b2a;
+                        border: 1px solid #f0d569;
+
+                        &:hover{
+                            background-color: #f0d569;
+                            
+                        }
+                    }
+
+                    .btnExcluir{
+                        background-color: #ad2a2a;
+                        border: 1px solid #ed5f5f;
+
+                        &:hover{
+                            background-color: #ed5f5f;
+                        }
+                    }
+                }
+
+           }
         }
 
         .middleBar{
             width: 100%;
-            background-color: bisque;
+            height: 400px;
+            display: flex;
+
+            .middleBar-interno{
+                display: flex;
+                width: 100%;
+
+                input{
+                    height: 30px;
+                    font-size: 15px;
+                    font-weight: bold;
+                    width: 200px;
+                    text-align: right;
+                    outline: none;
+                    border: 1px solid #b9bdba;
+                    padding: 10px;
+                }
+
+                .ipt-name, .ipt-species, .ipt-size{
+                    margin-right: 20px;
+                }
+    
+                label{
+                    font-size: 15px;
+                    color: #16a685;
+                    font-weight: bold;
+                }
+
+                select{
+                    height: 30px;
+                    font-size: 15px;
+                    font-weight: bold;
+                    width: 200px;
+                    text-align: right;
+                    outline: none;
+                    border: 1px solid #b9bdba;
+                }
+            }
         }
 
         .bottonBar{
