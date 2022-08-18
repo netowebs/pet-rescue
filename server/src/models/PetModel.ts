@@ -51,6 +51,12 @@ export const PetModel = sequelize.define<PetInstance>("PetModel", {
     },
     note: {
         type: DataTypes.STRING
+    },
+    qtd_food:{
+        type: DataTypes.STRING
+    },
+    color:{
+        type: DataTypes.STRING
     }
 },{
     tableName: 'animals',

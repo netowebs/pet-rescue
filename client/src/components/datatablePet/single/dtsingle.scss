@@ -127,12 +127,12 @@
                     padding: 10px;
                 }
 
-                .boxName, .boxSpecies, .boxSize, .boxAge, .boxTemperament,.boxStatuAdoptions{
+                .boxName, .boxSpecies, .boxSize, .boxAge, .boxTemperament,.boxStatuAdoptions, .ipt-food{
                     margin-right: 20px;
                 }
 
                 .ipt-age{
-                    width: 110px;
+                    width: 98.5px;
                 }
     
                 label{
@@ -141,16 +141,33 @@
                     font-weight: bold;
                 }
 
-                select{
+                .ipt-size, .ipt-status{
                     height: 30px;
                     font-size: 15px;
                     font-weight: bold;
                     width: 200px;
                     text-align: right;
-                    outline: none;
+                    outline: 0;
                     border: 1px solid #b9bdba;
                 }
+
+                .boxInfo{
+                    width: 100%;
+                    height: 190px;
+
+                    .ipt-info{
+                        padding: 10px;
+                        width: 100%;
+                        height: 100%;
+                        resize: none;
+                        outline: 0;
+                        border: 1px solid #b9bdba;
+                        text-transform: uppercase;
+                    }
+
+                }
             }
+            
         }
 
         .bottonBar{

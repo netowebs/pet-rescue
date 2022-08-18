@@ -9,7 +9,6 @@ import './dtsingle.scss'
 export const DtSingle = () => {
 
     const params = useParams()
-    const sizeValues = ['PEQUENO','MEDIO','GRANDE']
 
     const [idCad, setIdCad] = useState(String)
     const [name, setName] = useState(String);
@@ -18,6 +17,10 @@ export const DtSingle = () => {
     const [size, setSize] = useState(String)
     const [age, setAge] = useState(String)
     const [temperament, setTemperament] = useState(String)
+    const [status, setStatus] = useState(String)
+    const [food, setFood] = useState(String)
+    const [obs, setObs] = useState(String)
+    const [color, setColor] = useState(String)
 
     const loadPetDetail = async (id: string) => {
         const res = await pet.getPet(id);
@@ -30,6 +33,10 @@ export const DtSingle = () => {
             setAge(data.age_approx)
             setSize(data.size)
             setTemperament(data.temperament)
+            setStatus(data.status)
+            setFood(data.food)
+            setObs(data.note)
+            setColor(data.color)
         }
     }
 
@@ -88,13 +95,13 @@ export const DtSingle = () => {
                             <label htmlFor="ipt-size">Porte</label><br />
                             <Select
                                 className='ipt-size'
-                                name='teste'
+                                name='size'
                                 value={size}
                                 onChange={(e)=>setSize(e.target.value)}
                             >
-                                <MenuItem value={'PEQUENO'}>PEQUENO</MenuItem>
-                                <MenuItem value={'MEDIO'}>MÉDIO</MenuItem>
-                                <MenuItem value={'GRANDE'}>GRANDE</MenuItem>
+                                <MenuItem className='ipt-menu' value={'PEQUENO'}>PEQUENO</MenuItem>
+                                <MenuItem className='ipt-menu' value={'MEDIO'}>MÉDIO</MenuItem>
+                                <MenuItem className='ipt-menu' value={'GRANDE'}>GRANDE</MenuItem>
                             </Select>
                         </div>
                         <div className="boxAge">
@@ -111,10 +118,32 @@ export const DtSingle = () => {
                         </div>
                         <div className="boxStatuAdoptions">
                             <label htmlFor="ipt-status">Adoção</label><br />
-                            <select name="ipt-status" id="ipt-status">
-                                <option value="INDISPONIVEL">INDISPONÍVEL</option>
-                                <option value="DISPONIVEL">DISPONÍVEL</option>
-                            </select>
+                            <Select 
+                                className='ipt-status'
+                                name='status'
+                                value={status} 
+                                onChange={(e)=> setStatus(e.target.value)}
+                            >
+                                <MenuItem value={'INDISPONIVEL'}>INDISPONÍVEL</MenuItem>
+                                <MenuItem value={'DISPONIVEL'}>DISPONÍVEL</MenuItem>
+                            </Select>
+                        </div>
+                        <div className="boxFood">
+                            <label htmlFor="ipt-food">Qtd Ração/Dia g</label><br />
+                            <input className='ipt-food' type="text" value={food}/>
+                        </div>
+                        <div className="boxColor">
+                            <label htmlFor="ipt-color">Coloração</label><br />
+                            <input className='ipt-color' type="text" value={color}/>
+                        </div>
+                        <div className="boxInfo">
+                            <label htmlFor="ipt-info">Observações</label><br />
+                            <textarea className='ipt-info'
+                                name="ipt-info" id="ipt-info" 
+                                value={obs}
+                                onChange={(e)=> setObs(e.target.value)}
+                                >
+                                </textarea>
                         </div>
                     </div>
                 </div>
