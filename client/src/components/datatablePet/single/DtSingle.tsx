@@ -1,6 +1,7 @@
 import PrintIcon from '@mui/icons-material/Print';
+import { MenuItem, Select } from '@mui/material';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { pet } from '../../../api/api';
 import './dtsingle.scss'
@@ -8,12 +9,15 @@ import './dtsingle.scss'
 export const DtSingle = () => {
 
     const params = useParams()
+    const sizeValues = ['PEQUENO','MEDIO','GRANDE']
 
     const [idCad, setIdCad] = useState(String)
     const [name, setName] = useState(String);
     const [dtRescue, setDtRescue] = useState(String);
     const [species, setSpecies] = useState(String);
     const [size, setSize] = useState(String)
+    const [age, setAge] = useState(String)
+    const [temperament, setTemperament] = useState(String)
 
     const loadPetDetail = async (id: string) => {
         const res = await pet.getPet(id);
@@ -23,8 +27,9 @@ export const DtSingle = () => {
             setDtRescue(moment(data.date_rescue).format("DD/MM/YYYY"))
             setName(data.name)
             setSpecies(data.species)
+            setAge(data.age_approx)
             setSize(data.size)
-            console.log(size)
+            setTemperament(data.temperament)
         }
     }
 
@@ -62,31 +67,55 @@ export const DtSingle = () => {
                 </div>
                 <div className="middleBar">
                     <div className="middleBar-interno">
-                            <div className="boxName">
-                                <label htmlFor="ipt-name">Nome</label><br />
-                                <input className='ipt-name' type="text"
-                                    name='nome'
-                                    onChange={(e) => setName(e.target.value)}
-                                    value={name}
-                                />
-                            </div>
-                            <div className="boxSpecies">
-                                <label htmlFor="ipt-species">Espécie</label><br />
-                                <input className='ipt-species' type="text"
-                                    name='species'
-                                    onChange={(e) => setSpecies(e.target.value)}
-                                    value={species}
-                                />
-                            </div>
-                            <div className="boxSize">
-                                <label htmlFor="ipt-size">Porte</label><br />
-                                <select name="ipt-size" id="ipt-size" value={size}>
-                                    <option disabled>Selecione</option>
-                                    <option value="PEQUENO">Pequeno</option>
-                                    <option value="MEDIO">Médio</option>
-                                    <option value="GRANDE">Grande</option>
-                                </select>
-                            </div>
+                        <div className="boxName">
+                            <label htmlFor="ipt-name">Nome</label><br />
+                            <input className='ipt-name' type="text"
+                                name='nome'
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
+                        <div className="boxSpecies">
+                            <label htmlFor="ipt-species">Espécie</label><br />
+                            <input className='ipt-species' type="text"
+                                name='species'
+                                value={species}
+                                onChange={(e) => setSpecies(e.target.value)}
+                                
+                            />
+                        </div>
+                        <div className="boxSize">
+                            <label htmlFor="ipt-size">Porte</label><br />
+                            <Select
+                                className='ipt-size'
+                                name='teste'
+                                value={size}
+                                onChange={(e)=>setSize(e.target.value)}
+                            >
+                                <MenuItem value={'PEQUENO'}>PEQUENO</MenuItem>
+                                <MenuItem value={'MEDIO'}>MÉDIO</MenuItem>
+                                <MenuItem value={'GRANDE'}>GRANDE</MenuItem>
+                            </Select>
+                        </div>
+                        <div className="boxAge">
+                            <label htmlFor="ipt-age">Idade Aprox.</label><br />
+                            <input className='ipt-age' type="text" 
+                                value={age} 
+                                onChange={(e) => setAge(e.target.value)}
+                            />
+                        </div>
+                        <div className="boxTemperament">
+                            <label htmlFor="ipt-temperament">Temperamento</label><br />
+                            <input className='ipt-temperament' type="text" 
+                            value={temperament}/>
+                        </div>
+                        <div className="boxStatuAdoptions">
+                            <label htmlFor="ipt-status">Adoção</label><br />
+                            <select name="ipt-status" id="ipt-status">
+                                <option value="INDISPONIVEL">INDISPONÍVEL</option>
+                                <option value="DISPONIVEL">DISPONÍVEL</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div className="bottonBar">
