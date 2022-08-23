@@ -1,10 +1,9 @@
 import {Model, DataTypes} from 'sequelize'
 import {sequelize} from '../instances/mysql'
+import { ApartmentModel } from './ApartmentModel'
 
 export interface PetInstance extends Model {
     id: number,
-    adoptions_id: number,
-    apartment_id: number,
     name: string,
     species: string,
     date_rescue: Date,
@@ -12,17 +11,16 @@ export interface PetInstance extends Model {
     sex: string,
     age_approx: number,
     temperament: string,
+    size: string,
+    note: string,
+    qtd_food: number,
+    color: string,
+    coat_size: string
 }
 
-export const PetModel = sequelize.define<PetInstance>("PetModel", {
+export const AnimalModel = sequelize.define<PetInstance>("AnimalModel", {
     id: {
         primaryKey: true,
-        type: DataTypes.INTEGER
-    },
-    adoptions_id:{
-        type: DataTypes.INTEGER
-    },
-    apartment_id:{
         type: DataTypes.INTEGER
     },
     name:{
@@ -53,9 +51,12 @@ export const PetModel = sequelize.define<PetInstance>("PetModel", {
         type: DataTypes.STRING
     },
     qtd_food:{
-        type: DataTypes.STRING
+        type: DataTypes.NUMBER
     },
     color:{
+        type: DataTypes.STRING
+    },
+    coat_size:{
         type: DataTypes.STRING
     }
 },{
@@ -63,3 +64,8 @@ export const PetModel = sequelize.define<PetInstance>("PetModel", {
     timestamps: false
 }
 )
+
+AnimalModel.belongsTo(ApartmentModel,{
+    constraints: true,
+    foreignKey: 'apartment_id'
+})

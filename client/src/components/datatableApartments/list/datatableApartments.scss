@@ -1,0 +1,78 @@
+.titleBar{
+        align-items: center;
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        height: 50px;
+        background-color: #3ae0ba;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 700;
+        border-bottom: 2px solid #095543;
+
+        .idPet-title,
+        .namePet-title, 
+        .dtCadRescue-title, 
+        .speciePet-title,
+        .agePet-title,
+        .temperamentPet-title,
+        .statusPet-title,
+        .sexPet-title{
+            flex: 1;
+            text-align: center;
+        }
+
+        .sexPet-title{
+            margin-right: 130px;
+        }
+
+        .idPet-title{
+            margin-left: 10px;
+        }
+    }
+
+.listPet{
+    display: flex;
+    justify-content: space-around;   
+    align-items: center;
+    border-bottom: 1px solid rgb(181, 179, 179);
+    padding: 10px;
+
+    &:hover{
+        background-color: #f0f2f1;
+    }
+
+    .idPet,
+    .namePet,
+    .dtRescuePet,
+    .speciesPet,
+    .agePet,
+    .statusPet,
+    .sexPet{
+        flex: 1;
+        text-align: center;
+    }
+
+    .icon{
+        width: 32px;
+    }
+
+    .pdf{
+        color: red;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .print{
+        color: purple;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .edit{
+        color: green;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+}

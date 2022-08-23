@@ -12,7 +12,7 @@
             height: 60px;
             display: flex;
             border: 1px solid #e3e6e4;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
 
            .topBar-interno{
                 display: flex;
@@ -37,6 +37,7 @@
                         outline: none;
                         border: none;
                         padding: 10px;
+                        text-transform: uppercase;
 
                         &:disabled{
                             color: #ad2a2a;
@@ -70,6 +71,7 @@
                         border-radius: 3px;
                         height: 35px;
                         font-size: 17px;
+                        cursor: pointer;
                     }
 
                     .btnSalvar{
@@ -103,12 +105,26 @@
 
            }
         }
+        fieldSet{
+            border: 1px solid #e3e6e4;
+            margin-bottom: 10px;
+
+            legend{
+                margin-left: 30px;
+                font-family: Arial, Helvetica, sans-serif;
+                margin-bottom: 10px;
+                font-size: 13px;
+                padding: 0px 10px 0px 10px;
+                text-decoration: underline;
+                color: #16a685;
+            }
+        }
 
         .middleBar{
             width: 100%;
             height: 400px;
             display: flex;
-            border: 1px solid #e3e6e4;
+            //border: 1px solid #e3e6e4;
 
             .middleBar-interno{
                 display: flex;
@@ -125,9 +141,10 @@
                     outline: none;
                     border: 1px solid #b9bdba;
                     padding: 10px;
+                    text-transform: uppercase;
                 }
 
-                .boxName, .boxSpecies, .boxSize, .boxAge, .boxTemperament,.boxStatuAdoptions, .ipt-food{
+                .boxName, .boxSpecies, .boxSize, .boxAge, .boxTemperament,.boxStatuAdoptions, .ipt-food, .ipt-color{
                     margin-right: 20px;
                 }
 
@@ -141,7 +158,7 @@
                     font-weight: bold;
                 }
 
-                .ipt-size, .ipt-status{
+                .ipt-size, .ipt-status, .ipt-coat{
                     height: 30px;
                     font-size: 15px;
                     font-weight: bold;
@@ -169,10 +186,43 @@
             }
             
         }
+        .field-botton{
+            
 
-        .bottonBar{
-            width: 100%;
-            background-color: cadetblue;
+            .bottonBar{
+                width: 100%;
+                display: flex;
+                background-color: transparent;     
+    
+                .bottonBar-interno{
+                    display: flex;
+                    max-width: 100%;
+                    padding: 10px;
+                    flex-wrap: wrap;
+    
+                    label{
+                        font-size: 15px;
+                        color: #16a685;
+                        font-weight: bold;
+                    }
+    
+                    select{
+                        height: 30px;
+                        font-size: 15px;
+                        font-weight: bold;
+                        width: 200px;
+                        text-align: right;
+                        outline: none;
+                        border: 1px solid #b9bdba;
+                        text-transform: uppercase;
+                    }
+    
+                    .boxSection{
+                        margin-right: 20px;
+                    }
+                }
+            }
         }
+        
     }
 }

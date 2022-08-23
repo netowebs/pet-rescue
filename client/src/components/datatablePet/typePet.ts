@@ -1,14 +1,25 @@
-export type Pet  = {
+import { Apartment } from "./typeApartment"
+
+export type Pet ={
     id: number,
-    adoptions_id: number,
-    apartment_id: number,
+    dtCad: string,
+    date_rescue: string,
     name: string,
-    date_rescue: Date,
-    status: 'DISPONIVEL' | 'INDISPONIVEL',
-    sex: 'MACHO' | 'FEMEA',
-    age_approx: number
     species: string,
+    size: string,
+    age_approx: number,
     temperament: string,
-    size: 'PEQUENO' | 'MEDIO' | 'GRANDE',
-    note: string
+    adoptionStatus: string,
+    food: number,
+    color: string,
+    coat: string,
+    note: string,
+    ApartmentModel: {
+        id: number,
+        name:string,
+        SectionModel:{
+            id:number,
+            name:string,
+        }
+    }
 }
