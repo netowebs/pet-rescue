@@ -1,4 +1,4 @@
-import { Section } from "../datatableApartments/typeApartment"
+import { Section } from "./typeSection"
 
 export type Apartment = {
     id: number,

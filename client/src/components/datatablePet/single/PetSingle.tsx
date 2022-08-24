@@ -5,12 +5,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apartment, pet, sections as secctt } from '../../../api/api';
 import { useApartments } from '../../hooks/useApartment';
-import { usePets } from '../../hooks/usePets';
 import { useSection } from '../../hooks/useSection';
-import { Apartment } from '../typeApartment';
-import { Pet } from '../typePet';
-import { Section } from '../typeSection';
+import { Modal } from '../../modal/Modal';
+import { Pet } from '../../../types/typePet';
 import './petsingle.scss'
+import { DatatableHospedagem } from '../../datatableHospedagem/DatatableHospedagem';
 
 let initValue: Pet
 
@@ -32,6 +31,8 @@ export const PetSingle = () => {
     const [selectedApartment, setSelectedApartment] = useState(String(aptModel?.name))
     const { apts } = useApartments({ sectId: selectedSection })
 
+    const [showModal, setShowModal] = useState(false)
+
     useEffect(() => {
         if (params.Id) {
             const loadPetDetail = async (id: string) => {
@@ -45,8 +46,6 @@ export const PetSingle = () => {
             }
             loadPetDetail(params.Id)
         }
-        console.log(selectedSection)
-        console.log(selectedApartment)
     }, [])
 
     const handleSectionUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -58,7 +57,7 @@ export const PetSingle = () => {
     }
 
     return (
-        <div className='container-single'>
+        <div className='container--pet-single'>
             <form action="" method="post" className='formDetail'>
                 <div className="topBar">
                     <div className="topBar-interno">
@@ -283,7 +282,7 @@ export const PetSingle = () => {
                                     ))}
                                 </select>
                             </div>
-                            <div className="boxTeste">
+                            <div className="boxApartment">
                                 <label htmlFor="ipt-apartment">Apartment</label><br />
                                 <select
                                     value={selectedApartment}
@@ -298,6 +297,24 @@ export const PetSingle = () => {
                                     ))}
                                 </select>
                             </div>
+                            <fieldset className='fieldBoxButtons'>
+                                <legend>Botões Cadastro de Apartamentos e Seções</legend>
+                                <input 
+                                    className='btnNew' 
+                                    type="button" 
+                                    value="Novo" 
+                                    onClick={() => setShowModal(true)}
+                                />
+                                {
+                                    showModal === true ? <Modal closeModal={setShowModal}>
+                                        <div className='listModal'>
+                                            <DatatableHospedagem />
+                                        </div>
+                                    </Modal > : null
+                                }
+                                <input className='btnList' type="button" value="Listar"/>
+                                <input className='btnDel' type="button" value="Excluir"/>
+                            </fieldset>
                         </div>
                     </div>
                 </fieldset>
