@@ -1,0 +1,64 @@
+.container--section{
+
+    .inputs--section{
+        width: 100%;
+        height: 50px;
+        display: flex;
+        justify-content: space-around;
+        align-items: top;
+
+        .inputApartment{
+            margin-top: 1px;
+        }
+
+        .inputCadSection{
+            margin-top: 17.5px;
+
+            .btnNewSection{
+                height: 25px;
+            }
+        }
+
+        
+    }
+
+    .paginatedDiv{
+        margin-top: 10px;
+        border-top: 2px solid #d2d1d1;
+
+        .itemDiv{
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 1px solid #d2d1d1;
+            padding: 5px;
+    
+            .itemListId--section{
+                flex: 0.5;
+                margin-left: 50px;
+                align-self: center;
+                justify-content: center;
+            }
+    
+            .itemListName--section{
+                flex: 0.5;
+                align-self: center;
+                text-align: center;
+            }
+    
+            .itemListSection--section{
+                flex: 1;
+                align-self: center;
+                text-align: center;
+            }
+    
+            .itemBtnDel--section{
+                margin-right: 10px;
+    
+                input[type=button]{
+                    width: 10px;
+                    border: none;
+                }
+            }
+        }
+    }
+}

@@ -9,7 +9,7 @@ import { useSection } from '../../hooks/useSection';
 import { Modal } from '../../modal/Modal';
 import { Pet } from '../../../types/typePet';
 import './petsingle.scss'
-import { DatatableHospedagem } from '../../datatableHospedagem/DatatableHospedagem';
+import { DatatableApartment } from '../../datatableApartment/DatatableApartment';
 
 let initValue: Pet
 
@@ -308,7 +308,7 @@ export const PetSingle = () => {
                                 {
                                     showModal === true ? <Modal closeModal={setShowModal}>
                                         <div className='listModal'>
-                                            <DatatableHospedagem />
+                                            <DatatableApartment />
                                         </div>
                                     </Modal > : null
                                 }

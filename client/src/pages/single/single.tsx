@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom'
-import { ApartmentSingle } from '../../components/datatableApartments/single/ApartmentSingle'
 import { PetSingle } from '../../components/datatablePet/single/PetSingle'
 import { NavBar } from '../../components/navbar/NavBar'
 import { SideBar } from '../../components/sidebar/SideBar'
@@ -35,9 +34,7 @@ export const Single = () => {
                         params.slug === 'tutors' &&
                         {} ||
                         params.slug === 'medical-records' &&
-                        {} ||
-                        params.slug === 'apartments' &&
-                        <ApartmentSingle />
+                        {}
                     }
                 </>
             </div>

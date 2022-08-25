@@ -8,7 +8,6 @@ import { useParams } from 'react-router-dom';
 import { DatatableTutors } from '../../components/datatableTutors/DatatableTutors';
 import { DatatableMedicalRecords } from '../../components/datatableMedicalRecords/DatatableMedicalRecords';
 import { DatatablePets } from '../../components/datatablePet/list/DatatablePets';
-import { DatatableApartments } from '../../components/datatableApartments/list/DatatableApartments';
 
 export const List = () => {  
 
@@ -63,9 +62,7 @@ export const List = () => {
                                 params.slug === 'tutors' &&
                                     <DatatableTutors search={search} setSearch={setSearch}/>||
                                     params.slug === 'medical-records' &&
-                                        <DatatableMedicalRecords search={search} setSearch={setSearch}/> ||
-                                        params.slug === 'apartments' &&
-                                        <DatatableApartments search={search} setSearch={setSearch}/>
+                                        <DatatableMedicalRecords search={search} setSearch={setSearch}/>
                         }    
                     </div>
                 </div>
