@@ -35,7 +35,7 @@ export const DatatableApartment = () => {
             <div className="inputs--section">
                 <div className="inputSection">
                     <label htmlFor="iptSection--Modal">
-                        Seção
+                        Apartamento
                     </label><br />
                     <input
                         className="iptApartment--Modal"
@@ -90,9 +90,7 @@ export const DatatableApartment = () => {
                     {
                         showModalSection === true ? <Modal 
                             closeModal={setShowModalSection} 
-                            style={
-                                {bgColor:'rgba(0, 0, 0, 0.8)'}
-                            }
+                            bgColor={'none'}
                         >
                             <div className='listModal'>
                                 <DatatableSection />

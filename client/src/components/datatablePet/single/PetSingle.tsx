@@ -90,7 +90,7 @@ export const PetSingle = () => {
                             </div>
                         </div>
                         <div className="topBar-Btn">
-                            <input type="button" value="Salvar" className='btnSalvar' />
+                            <input type="button" value="Salvar" className='btnSalvar'/>
                             <input type="button" value="Cancelar" className='btnCancelar' />
                             <input type="button" value="Excluir" className='btnExcluir' />
                         </div>
@@ -136,7 +136,7 @@ export const PetSingle = () => {
                                     className='ipt-size'
                                     name="size"
                                     id="size"
-                                    value={details?.size}
+                                    defaultValue={details?.size}
                                     onChange={
                                         (e) => setDetails({
                                             ...details,
@@ -184,7 +184,7 @@ export const PetSingle = () => {
                                     className='ipt-status'
                                     name="status"
                                     id="status"
-                                    value={details?.adoptionStatus}
+                                    defaultValue={details?.adoptionStatus}
                                     onChange={
                                         (e) => setDetails({
                                             ...details,
@@ -232,7 +232,7 @@ export const PetSingle = () => {
                                     className='ipt-coat'
                                     name="coat"
                                     id="coat"
-                                    value={details?.coat}
+                                    defaultValue={details?.coat}
                                     onChange={
                                         (e) => setDetails({
                                             ...details,
@@ -269,7 +269,7 @@ export const PetSingle = () => {
                             <div className="boxSection">
                                 <label htmlFor="ipt-section">Seção</label><br />
                                 <select 
-                                    value={selectedSection}
+                                    defaultValue={selectedSection}
                                     onChange={handleSectionUpdate}
                                 >
                                     {sections.map((item, index)=>(
@@ -285,7 +285,7 @@ export const PetSingle = () => {
                             <div className="boxApartment">
                                 <label htmlFor="ipt-apartment">Apartment</label><br />
                                 <select
-                                    value={selectedApartment}
+                                    defaultValue={selectedApartment}
                                     onChange={handleApartmentUpdate}
                                 >
                                     {apts.map((item, index)=>(
@@ -306,7 +306,10 @@ export const PetSingle = () => {
                                     onClick={() => setShowModal(true)}
                                 />
                                 {
-                                    showModal === true ? <Modal closeModal={setShowModal}>
+                                    showModal === true ? <Modal 
+                                        closeModal={setShowModal}
+                                        bgColor={'rgba(0, 0, 0, 0.8)'}
+                                        >
                                         <div className='listModal'>
                                             <DatatableApartment />
                                         </div>

@@ -1,10 +1,10 @@
-import {Request, Response} from 'express'
+import { Request, response, Response } from 'express'
 import { ApartmentModel } from '../models/ApartmentModel';
-import {AnimalModel} from '../models/PetModel'
+import { AnimalModel } from '../models/PetModel'
 
 export const petList = async (req: Request, res: Response) => {
     try {
-        let list = await AnimalModel.findAll({include: ApartmentModel});
+        let list = await AnimalModel.findAll({ include: ApartmentModel });
         res.send(list)
     } catch (error) {
         console.log(error)
@@ -13,13 +13,12 @@ export const petList = async (req: Request, res: Response) => {
 
 export const petDetail = async (req: Request, res: Response) => {
     try {
-        let detail = await AnimalModel.findOne({where:{id:req.params.idPet}, include: ApartmentModel})
+        let detail = await AnimalModel.findOne({ where: { id: req.params.idPet }, include: ApartmentModel })
         res.send(detail)
     } catch (error) {
         console.log(error)
-    }    
+    }
 }
-
 // export const petDetail = async (req: Request, res: Response) => {
 //     try {
 //         let detail = await AnimalModel.findOne({where:{id:req.params.idPet}, include: ApartmentModel})
@@ -34,5 +33,5 @@ export const petDetail = async (req: Request, res: Response) => {
 //         res.json(detail)
 //     } catch (error) {
 //         console.log(error)
-//     }    
+//     }
 // }

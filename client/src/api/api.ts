@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Pet } from "../types/typePet";
 
 const instance = axios.create({
     baseURL: 'http://192.168.0.107:3001'

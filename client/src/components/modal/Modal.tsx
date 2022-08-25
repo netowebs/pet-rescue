@@ -2,18 +2,16 @@ import './modal.scss'
 import {ModalBg} from './StyledModal'
 
 type Props = {
-    children: JSX.Element
-    closeModal: React.Dispatch<React.SetStateAction<boolean>>
-    style:{
-        bgColor: string
-    }
+    children: JSX.Element;
+    closeModal: React.Dispatch<React.SetStateAction<boolean>>;
+    bgColor: string
 }
 
-export const Modal = ({ children, closeModal, style }: Props) => {
+export const Modal = ({ children, closeModal, bgColor }: Props) => {
 
     return (
         <ModalBg 
-            bgColor={style.bgColor} 
+            bgColorModal={bgColor} 
             className='container--modal'
         >
             <div className="containt--modal">

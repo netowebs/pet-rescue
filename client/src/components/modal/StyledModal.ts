@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 type TypeModalBg ={
-    bgColor: string
+    bgColorModal: string
 }
 
 export const ModalBg = styled.div<TypeModalBg>`
-    background-color:${props => props.bgColor};
+    background-color: ${props => props.bgColorModal};
 `
