@@ -1,0 +1,23 @@
+.fieldBoxButtons {
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    .btnNew{
+        height: 30px;
+        width: 30px;
+        background-color: #16a685;
+        border: 1px solid #3ae0ba;
+        cursor: pointer;
+        color: white;
+
+        &:hover {
+            background-color: #3ae0ba;
+        }
+    }
+
+    .listModal {
+        width: 100%;
+        height: 100%;
+    }
+}

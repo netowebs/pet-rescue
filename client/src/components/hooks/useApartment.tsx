@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { apartment } from "../../api/api"
-import { Section } from "../datatableApartments/typeApartment"
+import { Section } from "../../types/typeSection"
 
 export interface Apartment  {
     id: number
@@ -24,7 +24,6 @@ export const useApartments = ({sectId}:Prop) => {
         }else{
             return;
         }
-        
     },[sectId])
 
     return{

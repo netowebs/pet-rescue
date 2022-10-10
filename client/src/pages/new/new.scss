@@ -1,0 +1,14 @@
+.new{
+    display: flex;
+    
+        .conteudo{
+            display: flex;
+            flex-direction: column;
+            padding-left: 15px;
+            padding-top: 10px;
+            padding-right: 15px;
+            margin-left: 205px;
+            margin-top: 75px;
+            width: 85%;
+        }
+}

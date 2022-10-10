@@ -1,64 +1,93 @@
-.container--section{
+.inputs--apartment{
+    display: flex;
+    padding: 0px 10px 10px 10px;
+    justify-content: space-around;
 
-    .inputs--section{
-        width: 100%;
-        height: 50px;
+    .inputs{
         display: flex;
-        justify-content: space-around;
-        align-items: top;
 
-        .inputApartment{
-            margin-top: 1px;
+        .boxApartment{
+            color: #16a685;
+            margin-right: 10px;
+            flex: 1;
         }
 
-        .inputCadSection{
-            margin-top: 17.5px;
-
-            .btnNewSection{
-                height: 25px;
-            }
+        .boxSection{
+            color: #16a685;
+            margin-right: 10px;
+            flex: 1;
         }
-
-        
     }
 
-    .paginatedDiv{
+    .boxBtnSection--Apartment{
+        display: flex;
+        flex: 1;
+        margin-top: 17px;
+        align-items: center;
+        .btnNewSection--Apartment{
+            width: 100%;
+            height: 26px;
+            background-color: #16a685;
+            border: 1px solid #3ae0ba;
+            
+            &:hover {
+                background-color: #3ae0ba;
+            }
+        }
+    }
+}
+
+.btnInsertApartment{
+    
+    .btnSaveApartment{
+        background-color: #00b3da;
+        border: 1px solid #61dcf7;
+
+        &:hover{
+            background-color: #61dcf7;
+        }
+    }
+}
+
+    .paginatedDiv--apartment {
         margin-top: 10px;
         border-top: 2px solid #d2d1d1;
 
-        .itemDiv{
+        .itemDiv--apartment {
             display: flex;
             justify-content: space-around;
             border-bottom: 1px solid #d2d1d1;
-            padding: 5px;
-    
-            .itemListId--section{
+            height: 40px;
+
+            .itemListId--apartment {
                 flex: 0.5;
                 margin-left: 50px;
                 align-self: center;
                 justify-content: center;
             }
-    
-            .itemListName--section{
+
+            .itemListName--apartment {
                 flex: 0.5;
                 align-self: center;
                 text-align: center;
             }
-    
-            .itemListSection--section{
+
+            .itemListSection--apartment {
                 flex: 1;
                 align-self: center;
                 text-align: center;
             }
-    
-            .itemBtnDel--section{
+
+            .itemBtnDel--apartment {
                 margin-right: 10px;
-    
-                input[type=button]{
+                cursor: pointer;
+                align-self: center;
+                color: #c27ba0;
+
+                input[type=button] {
                     width: 10px;
                     border: none;
                 }
             }
         }
     }
-}

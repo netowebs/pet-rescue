@@ -1,4 +1,4 @@
-.titleBarTutors{
+.titleBar--ListLctos{
         align-items: center;
         display: flex;
         justify-content: space-around;
@@ -10,24 +10,38 @@
         font-weight: 700;
         border-bottom: 2px solid #095543;
 
-        .idTutor-title, 
-        .nameTutor-title, 
-        .telTutor-title, 
-        .cpfTutor-title{
-            flex: 1;
+        .idPLcto--list-title,
+        .userLcto--list-title{
+            flex: 0.6;
             text-align: center;
         }
 
-        .cpfTutor-title{
-            margin-right: 130px;
+        .dateLcto--list-title{
+            margin-left: 30px;
         }
 
-        .idTutor-title{
-            margin-left: 10px;
+        .itensLcto--list-title{
+            margin-left: 70px;
+        }
+
+        .qtdTotalLcto--list-title{
+            flex: 1;
+            margin-left: 180px;
+            margin-right: 80px;
+        }
+
+        .downArrow{
+            font-size: 15px;
+            color: #efff00;
+        }
+    
+        .upArrow{
+            font-size: 15px;
+            color: #efff00;
         }
     }
 
-.listPet{
+.listProduct{
     display: flex;
     justify-content: space-around;   
     align-items: center;
@@ -38,13 +52,22 @@
         background-color: #f0f2f1;
     }
 
-    .idTutor,
-    .nameTutor,
-    .telTutor,
-    .cpfTutor{
-        flex: 1;
+    .idProduct,
+    .skuProduct,
+    .descriptionProduct{
+        flex: 2;
         text-align: center;
     }
+
+    .validityProduct{
+        flex: 1;
+    }
+
+    .qtdProduct{
+        flex: 2;
+        margin-right: 130px;
+    }
+
 
     .icon{
         width: 32px;

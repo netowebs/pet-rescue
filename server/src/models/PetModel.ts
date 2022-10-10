@@ -21,7 +21,11 @@ export interface PetInstance extends Model {
 export const AnimalModel = sequelize.define<PetInstance>("AnimalModel", {
     id: {
         primaryKey: true,
+        autoIncrement: true,
         type: DataTypes.INTEGER
+    },
+    date_cad: {
+        type: DataTypes.DATE
     },
     name:{
         type: DataTypes.STRING
@@ -30,7 +34,7 @@ export const AnimalModel = sequelize.define<PetInstance>("AnimalModel", {
         type: DataTypes.STRING
     },
     date_rescue:{
-        type: DataTypes.STRING
+        type: DataTypes.DATE
     },
     status:{
         type: DataTypes.STRING

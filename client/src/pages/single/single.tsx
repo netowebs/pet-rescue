@@ -1,5 +1,8 @@
 import { useParams } from 'react-router-dom'
 import { PetSingle } from '../../components/datatablePet/single/PetSingle'
+import { StockSingle } from '../../components/datatableStock/single/StockSingle'
+import { TutorSingle } from '../../components/datatableTutors/single/TutorSingle'
+import { VetSingle } from '../../components/datatableVet/single/VetSingle'
 import { NavBar } from '../../components/navbar/NavBar'
 import { SideBar } from '../../components/sidebar/SideBar'
 import './single.scss'
@@ -17,10 +20,6 @@ export const Single = () => {
                     {
                         <span>
                             {
-                                // params.slug === 'pets' &&
-                                // "Pet's" ||
-                                params.slug === 'tutors' &&
-                                "Tutores" ||
                                 params.slug === 'medical-records' &&
                                 "Fichas Médicas" ||
                                 params.slug === `financial` &&
@@ -31,10 +30,14 @@ export const Single = () => {
                     {
                         params.slug === 'pets' &&
                         <PetSingle /> ||
-                        params.slug === 'tutors' &&
-                        {} ||
+                        params.slug === 'tutor' &&
+                        <TutorSingle /> ||
                         params.slug === 'medical-records' &&
-                        {}
+                        {} ||
+                        params.slug === 'vet' &&
+                        <VetSingle /> ||
+                        params.slug === 'stock' &&
+                        <StockSingle />
                     }
                 </>
             </div>

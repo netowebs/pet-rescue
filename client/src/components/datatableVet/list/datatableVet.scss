@@ -1,0 +1,104 @@
+.titleBar--ListVet {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    font-weight: 700;
+    border-bottom: 2px solid #095543;
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    background-color: #3ae0ba;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+
+    .idVet--list-title,
+    .crmvVet--list-title{
+        flex: 0.5;
+        text-align: center;
+        span{
+            cursor: pointer;
+        }
+    }
+
+    .nameVet--list-title,
+    .crmvVet--list-title,
+    .phoneVet--list-title,
+    .addressVet--list-title,
+    .specialityVet--list-title{
+        flex: 1.1;
+        text-align: center;
+
+        span{
+            cursor: pointer;
+        }
+    }
+
+    .phoneVet--list-title{
+        margin-right: 135px;
+    }
+    
+    .downArrow{
+        font-size: 15px;
+        color: #efff00;
+    }
+
+    .upArrow{
+        font-size: 15px;
+        color: #efff00;
+    }
+
+}
+
+.listVet {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid rgb(181, 179, 179);
+    padding: 10px;
+
+    &:hover {
+        background-color: #f0f2f1;
+    }
+
+    .idVet{
+        flex: 0.5;
+        text-align: center;
+    }
+
+    .nameVet,
+    .crmvVet,
+    .specialityVet,
+    .addressVet,
+    .phoneVet{
+        flex: 1;
+        text-align: center;
+    }
+
+    .phoneVet{
+        margin-right: 5px;
+    }
+
+ 
+    .icon {
+        width: 32px;
+    }
+
+    .pdf {
+        color: red;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .print {
+        color: purple;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .edit {
+        color: green;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+}

@@ -10,6 +10,7 @@ export interface ApartmentInstance extends Model {
 
 export const ApartmentModel = sequelize.define<ApartmentInstance>("ApartmentModel", {
     id: {
+        autoIncrement: true,
         primaryKey: true,
         type: DataTypes.NUMBER
     },

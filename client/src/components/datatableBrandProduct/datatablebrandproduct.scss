@@ -1,0 +1,69 @@
+.inputs--brand{
+    display: flex;
+    padding: 0px 10px 10px 10px;
+    justify-content: space-around;
+
+    .inputs{
+        display: flex;
+
+        .boxBrand{
+            color: #16a685;
+            margin-right: 10px;
+            flex: 1;
+        }
+    }
+}
+
+.btnInsertBrand{
+    
+    .btnSaveBrand{
+        background-color: #00b3da;
+        border: 1px solid #61dcf7;
+        width: 100%;
+        height: 25px;
+        color: white;
+        cursor: pointer;
+
+        &:hover{
+            background-color: #61dcf7;
+        }
+    }
+}
+
+    .paginatedDiv--brand {
+        margin-top: 10px;
+        border-top: 2px solid #d2d1d1;
+
+        .itemDiv--brand {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 1px solid #d2d1d1;
+            height: 40px;
+            
+
+            .itemListId--brand {
+                flex: 0.5;
+                margin-left: 50px;
+                align-self: center;
+                justify-content: center;
+            }
+
+            .itemListName--brand {
+                flex: 1;
+                align-self: center;
+                text-align: left;
+            }
+
+            .itemBtnDel--brand {
+                margin-right: 10px;
+                cursor: pointer;
+                align-self: center;
+                color: #c27ba0;
+
+                input[type=button] {
+                    width: 10px;
+                    border: none;
+                }
+            }
+        }
+    }

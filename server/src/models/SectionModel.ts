@@ -9,6 +9,7 @@ export interface SectionInstance extends Model {
 export const SectionModel = sequelize.define<SectionInstance>("SectionModel",{
     id:{
         primaryKey: true,
+        autoIncrement: true,
         type: DataTypes.NUMBER
     },
     

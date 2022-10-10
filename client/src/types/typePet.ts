@@ -9,11 +9,12 @@ export type Pet ={
     size: string,
     age_approx: number,
     temperament: string,
-    adoptionStatus: string,
+    status: string,
     food: number,
     color: string,
     coat: string,
     note: string,
+    sex: string,
     ApartmentModel: {
         id: number,
         name:string,

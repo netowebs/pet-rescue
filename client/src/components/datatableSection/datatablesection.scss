@@ -6,31 +6,30 @@
         display: flex;
         justify-content: space-around;
         align-items: top;
+    }
 
-        .inputApartment{
-            margin-top: 1px;
-        }
-
-        .inputCadSection{
-            margin-top: 17.5px;
-
-            .btnNewSection{
-                height: 25px;
+    .btnInsertSection{
+    
+        .btnSaveSection{
+            background-color: #00b3da;
+            border: 1px solid #61dcf7;
+    
+            &:hover{
+                background-color: #61dcf7;
             }
         }
-
-        
     }
 
     .paginatedDiv{
         margin-top: 10px;
         border-top: 2px solid #d2d1d1;
 
-        .itemDiv{
+        .itemDiv--section{
             display: flex;
             justify-content: space-around;
             border-bottom: 1px solid #d2d1d1;
             padding: 5px;
+            height: 40px;
     
             .itemListId--section{
                 flex: 0.5;
@@ -50,11 +49,14 @@
                 align-self: center;
                 text-align: center;
             }
-    
-            .itemBtnDel--section{
+
+            .itemBtnDel--section {
                 margin-right: 10px;
-    
-                input[type=button]{
+                cursor: pointer;
+                align-self: center;
+                color: #c27ba0;
+
+                input[type=button] {
                     width: 10px;
                     border: none;
                 }
@@ -62,3 +64,4 @@
         }
     }
 }
+

@@ -3,12 +3,11 @@ import {ModalBg} from './StyledModal'
 
 type Props = {
     children: JSX.Element;
-    closeModal: React.Dispatch<React.SetStateAction<boolean>>;
+    showModal: React.Dispatch<React.SetStateAction<boolean>>;
     bgColor: string
 }
 
-export const Modal = ({ children, closeModal, bgColor }: Props) => {
-
+export const Modal = ({ children, showModal, bgColor }: Props) => {
     return (
         <ModalBg 
             bgColorModal={bgColor} 
@@ -20,7 +19,7 @@ export const Modal = ({ children, closeModal, bgColor }: Props) => {
                         className='btnClose' 
                         type="button" 
                         value="X" 
-                        onClick={() => closeModal(false)} 
+                        onClick={() => showModal(false)}
                         style={
                             {
                                 width: '20px',
@@ -34,7 +33,7 @@ export const Modal = ({ children, closeModal, bgColor }: Props) => {
                     />
                 </div>
                 {children}
-            </div> 
+            </div>
         </ModalBg>
     )
 }

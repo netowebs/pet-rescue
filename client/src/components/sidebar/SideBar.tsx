@@ -82,10 +82,10 @@ export const SideBar = () => {
                 {showElement ?
                 <div className="center-bottom">
                     <ul>
-                        <Link className='link' to={'/tutors'}>
+                        <Link className='link' to={'/cadAdmin'}>
                             <li>
                                 <FamilyRestroomIcon className='icon' />
-                                <span>Cadastro de Tutores</span>
+                                <span>Cadastros Administrativos</span>
                             </li>
                         </Link>
                         <Link className='link' to={'/financial'}>

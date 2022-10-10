@@ -1,0 +1,17 @@
+.admin{
+    display: flex;
+
+    .adminContainer{
+        flex: 6;
+
+        .adminButtons{
+            display: flex;
+            padding-left: 15px;
+            padding-top: 10px;
+            padding-right: 15px;
+            gap: 20px;
+            margin-left: 195px;
+            margin-top: 25px;
+        }
+    }
+}

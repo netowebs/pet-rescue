@@ -54,7 +54,6 @@
                     .boxDtCad {
                         margin-right: 20px;
                     }
-
                 }
 
                 .topBar-Btn {
@@ -152,8 +151,9 @@
                 .boxAge,
                 .boxTemperament,
                 .boxStatuAdoptions,
-                .ipt-food,
-                .ipt-color {
+                .boxFood,
+                .boxColor,
+                .boxCoat {
                     margin-right: 20px;
                 }
 
@@ -194,7 +194,19 @@
                     }
 
                 }
+                select {
+                    height: 30px;
+                    font-size: 15px;
+                    font-weight: bold;
+                    width: 200px;
+                    text-align: right;
+                    outline: none;
+                    border: 1px solid #b9bdba;
+                    text-transform: uppercase;
+                }
             }
+
+            
 
         }
 
@@ -210,6 +222,7 @@
                     display: flex;
                     width: 100%;
                     flex-wrap: wrap;
+                    flex: 1;
 
                     label {
                         font-size: 15px;
@@ -232,56 +245,14 @@
                     .boxApartment {
                         margin-right: 20px;
                         padding: 10px;
+                        
                     }
-
-                    .fieldBoxButtons {
-                        display: flex;
-                        width: 60%;
-                        justify-content: center;
-                        align-items: center;
-
-                        input[type=button] {
-                            padding: 5px;
-                            width: 90px;
-                            margin-right: 10px;
-                            cursor: pointer;
-                            color: white;
-                        }
-
-                        .btnNew {
-                            background-color: #16a685;
-                            border: 1px solid #3ae0ba;
-
-                            &:hover {
-                                background-color: #3ae0ba;
-                            }
-                        }
-
-                        .btnList {
-                            background-color: #d57404;
-                            border: 1px solid #ff9318;
-
-                            &:hover {
-                                background-color: #ff9318;
-                            }
-                        }
-
-                        .btnDel {
-                            background-color: #ad2a2a;
-                            border: 1px solid #ed5f5f;
-
-                            &:hover {
-                                background-color: #ed5f5f;
-                            }
-                        }
-
-                        .listModal{
-                            width: 100%;
-                            height: 100%;
-                        }
-                    }
-
+                    .modalBox{
+                        padding-right: 10px;
+                        flex: 1.5;
+                    }              
                 }
+                
             }
         }
 

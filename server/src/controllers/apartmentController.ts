@@ -20,22 +20,41 @@ export const apartmentDetail = async (req: Request, res: Response) => {
     }    
 }
 
-// export const apartmentDetail = async (req: Request, res: Response) => {
-//     try {
-//         let detail = await ApartmentModel.findOne({where:{id:req.params.idApartments}, include: SectionModel})
-//         .then(function(data){
-//             const res = { success: true, data: data }
-//             return res
-//         })
-//         .catch(error=>{
-//             const res = { success: false, message: error}
-//             return res;
-//         })
-//         res.json(detail)
-//     } catch (error) {
-//         console.log(error)
-//     }    
-// }
+export const apartmentCreate = async (req: Request, res: Response) => {
+    try {
+        const {name, sectionId} = req.body
+        let create = await ApartmentModel.create({
+            name: name,
+            section_id: sectionId
+        })
+        .then(()=>{
+            return { success: true, message: 'Apartamento Cadastrado' }
+        })
+        .catch(error =>{
+            return { success: false, message: error.message }
+        })
+        res.json(create)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const apartmentDelete = async (req: Request, res: Response) => {
+    try {
+        const delSect = await ApartmentModel.destroy({
+            where: {id: req.params.idDel}
+        })
+        .then(()=>{
+            return { success: true, message: 'Apartamento Excluido' }
+        })
+        .catch(error =>{
+            return { success: false, message: 'Existem animais vinculados a esse apartamento, para conseguir excluir deve primeiro alterar o cadastro desses animais' }
+        })
+        res.send(delSect)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export const apartmentSect = async (req: Request, res: Response) => {
     try {
@@ -45,20 +64,3 @@ export const apartmentSect = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
-
-// export const apartmentSect = async (req: Request, res: Response) => {
-//     try {
-//         let aptSect = await ApartmentModel.findAll({where:{section_id: req.params.sectId}, include: SectionModel})
-//         .then(function(data){
-//             const res = {sucess: true, data: data}
-//             return res
-//         })
-//         .catch(error=>{
-//             const res = {sucess: false, message: error}
-//             return res
-//         })
-//         res.json(aptSect)
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }

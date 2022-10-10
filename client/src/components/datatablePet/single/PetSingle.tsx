@@ -1,20 +1,17 @@
 //import PrintIcon from '@mui/icons-material/Print';
-import { MenuItem } from '@mui/material';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { apartment, pet, sections as secctt } from '../../../api/api';
 import { useApartments } from '../../hooks/useApartment';
 import { useSection } from '../../hooks/useSection';
-import { Modal } from '../../modal/Modal';
-import { Pet } from '../../../types/typePet';
 import './petsingle.scss'
+import swal from 'sweetalert'
+import { ModalSectionApartment } from '../../buttons/modalSectionApartment/ModalSectionApartment';
 import { DatatableApartment } from '../../datatableApartment/DatatableApartment';
 
-let initValue: Pet
-
 type AptModel = {
-    id:number,
+    id: number,
     name: string
 }
 
@@ -23,42 +20,115 @@ let inititi: AptModel
 export const PetSingle = () => {
 
     const params = useParams()
-    const [details, setDetails] = useState<Pet>(initValue)
+
+    //UseState Iputs
+    const [idCad, setIdCad] = useState(String)
+    const [name, setName] = useState(String)
+    const [dtRescue, setDtRescue] = useState(String)
+    const [dtCad, setDtCad] = useState(String)
+    const [species, setSpecies] = useState(String)
+    const [size, setSize] = useState(String)
+    const [age, setAge] = useState(String)
+    const [sex, setSex] = useState(String)
+    const [temperament, setTemperament] = useState(String)
+    const [adptionStatus, setAdoptionStatus] = useState(String)
+    const [food, setFood] = useState(String)
+    const [color, setColor] = useState(String)
+    const [coat, setCoat] = useState(String)
+    const [note, setNote] = useState(String)
+    const [apartmentId, setApartmentId] = useState(Number)
+
+    //UseState Section and Apartment
     const [aptModel, setAptModel] = useState<AptModel>(inititi)
     const [sectModel, setSectModel] = useState<AptModel>(inititi)
     const { sections } = useSection()
     const [selectedSection, setSelectedSection] = useState(String(sectModel?.id))
-    const [selectedApartment, setSelectedApartment] = useState(String(aptModel?.name))
+    const [selectedApartment, setSelectedApartment] = useState(String(aptModel?.id))
     const { apts } = useApartments({ sectId: selectedSection })
-
-    const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
         if (params.Id) {
             const loadPetDetail = async (id: string) => {
-                let json = await pet.getPet(id)
-                let json2 = await apartment.getApartment(json.apartment_id)
-                let json3 = await secctt.getSection(json2.section_id)
-                setDetails(json)
-                setAptModel(json2)
-                setSelectedSection(json3.id)
-                setSelectedApartment(json2.name)
+                let res = await pet.getPet(id)
+                if (res.success) {
+                    let json2 = await apartment.getApartment(res.data.apartment_id)
+                    let json3 = await secctt.getSection(json2.section_id)
+                    setIdCad(("000000" + res.data.id).slice(-6))
+                    setDtRescue(moment(res.date_rescue).format('YYYY-MM-DD'))
+                    setDtCad(moment(res.date_cad).format('DD/MM/YYYY'))
+                    setName(res.data.name)
+                    setSpecies(res.data.species)
+                    setAge(res.data.age_approx)
+                    setSex(res.data.sex)
+                    setTemperament(res.data.temperament)
+                    setSize(res.data.size)
+                    setAdoptionStatus(res.data.status)
+                    setFood(res.data.qtd_food)
+                    setColor(res.data.color)
+                    setCoat(res.data.coat)
+                    setNote(res.data.note)
+                    setAptModel(json2)
+                    setApartmentId(res.data.apartment_id)
+                    setSelectedSection(json3.id)
+                    setSelectedApartment(json2.id)
+                } else {
+                    swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
+                        .then(() => {
+                            window.location.href = '/pets'
+                        })
+                }
+
             }
             loadPetDetail(params.Id)
         }
     }, [])
 
-    const handleSectionUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedSection(e.target.value)
-    }
-
     const handleApartmentUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedApartment(e.target.value)
+        setApartmentId(parseInt(e.target.value))
+    }
+
+    const handleSectionUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedSection(e.target.value)
+        setSelectedApartment('')
+    }
+
+    const handleUpdate = async () => {
+        const data: any = { idCad, dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, apartmentId }
+
+
+        if (selectedApartment == '') {
+            alert('Selecione o Apartamento')
+        } else {
+            const res = await pet.updatePet(data)
+            if (res.success) {
+                swal(res.message, " ", "success",)
+                    .then(() => {
+                        window.location.href = '/pets'
+                    })
+            } else {
+                swal("Error !", "" + JSON.stringify(res.message), "error")
+            }
+        }
+    }
+
+    const handleDelete = async () => {
+        if (idCad) {
+            const res = await pet.deletePet(idCad)
+            if (res.success) {
+                swal(res.message, " ", "success")
+                    .then(() => {
+                        window.location.href = '/pets'
+                    })
+            } else {
+                swal("Error !", "" + JSON.stringify(res.message), "error")
+            }
+        }
     }
 
     return (
         <div className='container--pet-single'>
-            <form action="" method="post" className='formDetail'>
+            <div className='formDetail'>
                 <div className="topBar">
                     <div className="topBar-interno">
                         <div className="topBar-inputs">
@@ -67,7 +137,7 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-id'
                                     type="text"
-                                    defaultValue={details?.id}
+                                    defaultValue={idCad}
                                     disabled
                                 />
                             </div>
@@ -76,7 +146,7 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-dtRescue'
                                     type="text"
-                                    defaultValue={details?.date_rescue}
+                                    defaultValue={dtCad}
                                     disabled
                                 />
                             </div>
@@ -84,15 +154,18 @@ export const PetSingle = () => {
                                 <label htmlFor="ipt-dtRescue">Data Resgate</label><br />
                                 <input
                                     className='ipt-dtRescue'
-                                    type="text"
-                                    defaultValue={details?.date_rescue}
+                                    type="date"
+                                    defaultValue={dtRescue}
+                                    max={moment().format('YYYY-MM-DD')}
                                 />
                             </div>
                         </div>
                         <div className="topBar-Btn">
-                            <input type="button" value="Salvar" className='btnSalvar'/>
-                            <input type="button" value="Cancelar" className='btnCancelar' />
-                            <input type="button" value="Excluir" className='btnExcluir' />
+                            <input type="submit" value="Salvar" className='btnSalvar' onClick={() => handleUpdate()} />
+                            <Link to={'/pets'}>
+                                <input type="button" value="Cancelar" className='btnCancelar' />
+                            </Link>
+                            <input type="button" value="Excluir" className='btnExcluir' onClick={() => handleDelete()} />
                         </div>
                     </div>
                 </div>
@@ -108,12 +181,9 @@ export const PetSingle = () => {
                                     className='ipt-name'
                                     type="text"
                                     name='nome'
-                                    defaultValue={details?.name}
+                                    defaultValue={name}
                                     onChange={
-                                        (e) => setDetails({
-                                            ...details,
-                                            name: e.target.value
-                                        })
+                                        (e) => setName(e.target.value)
                                     }
                                 />
                             </div>
@@ -121,12 +191,10 @@ export const PetSingle = () => {
                                 <label htmlFor="ipt-species">Espécie</label><br />
                                 <input className='ipt-species' type="text"
                                     name='species'
-                                    defaultValue={details?.species}
+                                    defaultValue={species}
                                     onChange={
-                                        (e) => setDetails({
-                                            ...details,
-                                            species: e.target.value
-                                        })}
+                                        (e) => setSpecies(e.target.value)
+                                    }
 
                                 />
                             </div>
@@ -136,12 +204,9 @@ export const PetSingle = () => {
                                     className='ipt-size'
                                     name="size"
                                     id="size"
-                                    defaultValue={details?.size}
+                                    value={size}
                                     onChange={
-                                        (e) => setDetails({
-                                            ...details,
-                                            size: e.target.value
-                                        })
+                                        (e) => setSize(e.target.value)
                                     }
                                 >
                                     <option value="PEQUENO">PEQUENO</option>
@@ -155,12 +220,9 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-age'
                                     type="text"
-                                    defaultValue={details?.age_approx}
+                                    defaultValue={age}
                                     onChange={
-                                        (e) => setDetails({
-                                            ...details,
-                                            age_approx: parseInt(e.target.value)
-                                        })
+                                        (e) => setAge(e.target.value)
                                     }
                                 />
                             </div>
@@ -169,12 +231,9 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-temperament'
                                     type="text"
-                                    defaultValue={details?.temperament}
+                                    defaultValue={temperament}
                                     onChange={
-                                        (e) => setDetails({
-                                            ...details,
-                                            temperament: e.target.value
-                                        })
+                                        (e) => setTemperament(e.target.value)
                                     }
                                 />
                             </div>
@@ -184,12 +243,9 @@ export const PetSingle = () => {
                                     className='ipt-status'
                                     name="status"
                                     id="status"
-                                    defaultValue={details?.adoptionStatus}
+                                    value={adptionStatus}
                                     onChange={
-                                        (e) => setDetails({
-                                            ...details,
-                                            adoptionStatus: e.target.value
-                                        })
+                                        (e) => setAdoptionStatus(e.target.value)
                                     }
                                 >
                                     <option value="INDISPONIVEL">INDISPONÍVEL</option>
@@ -201,14 +257,9 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-food'
                                     type="text"
-                                    defaultValue={details?.food}
+                                    defaultValue={food}
                                     onChange={
-                                        (e) => setDetails(
-                                            ({
-                                                ...details,
-                                                food: parseFloat(e.target.value)
-                                            })
-                                        )
+                                        (e) => setFood(e.target.value)
                                     }
                                 />
                             </div>
@@ -217,12 +268,9 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-color'
                                     type="text"
-                                    defaultValue={details?.color}
+                                    defaultValue={color}
                                     onChange={
-                                        (e) => setDetails({
-                                            ...details,
-                                            color: e.target.value
-                                        })
+                                        (e) => setColor(e.target.value)
                                     }
                                 />
                             </div>
@@ -232,30 +280,38 @@ export const PetSingle = () => {
                                     className='ipt-coat'
                                     name="coat"
                                     id="coat"
-                                    defaultValue={details?.coat}
+                                    value={coat}
                                     onChange={
-                                        (e) => setDetails({
-                                            ...details,
-                                            coat: e.target.value
-                                        })
+                                        (e) => setCoat(e.target.value)
                                     }
                                 >
                                     <option value="CURTO">CURTO</option>
                                     <option value="MEDIO">MÉDIO</option>
                                     <option value="LONGO">LONGO</option>
                                 </select>
-
+                            </div>
+                            <div className="boxSex">
+                                <label htmlFor="ipt-sex">Sexo</label><br />
+                                <select
+                                    className='ipt-sex'
+                                    name="sex"
+                                    id="sex"
+                                    value={sex}
+                                    onChange={
+                                        (e) => setSex(e.target.value)
+                                    }
+                                >
+                                    <option value="MACHO">MACHO</option>
+                                    <option value="FEMEA">FEMEA</option>
+                                </select>
                             </div>
                             <div className="boxInfo">
                                 <label htmlFor="ipt-info">Observações</label><br />
                                 <textarea className='ipt-info'
                                     name="ipt-info" id="ipt-info"
-                                    defaultValue={details?.note}
+                                    defaultValue={note}
                                     onChange={
-                                        (e) => setDetails({
-                                            ...details,
-                                            note: e.target.value
-                                        })}
+                                        (e) => setNote(e.target.value)}
                                 >
                                 </textarea>
                             </div>
@@ -268,11 +324,12 @@ export const PetSingle = () => {
                         <div className="bottonBar-interno">
                             <div className="boxSection">
                                 <label htmlFor="ipt-section">Seção</label><br />
-                                <select 
-                                    defaultValue={selectedSection}
+                                <select
+                                    value={selectedSection}
                                     onChange={handleSectionUpdate}
                                 >
-                                    {sections.map((item, index)=>(
+                                    <option disabled></option>
+                                    {sections.map((item, index) => (
                                         <option
                                             key={index}
                                             value={item.id}
@@ -283,45 +340,31 @@ export const PetSingle = () => {
                                 </select>
                             </div>
                             <div className="boxApartment">
-                                <label htmlFor="ipt-apartment">Apartment</label><br />
+                                <label htmlFor="ipt-apartment">Apartmento</label><br />
                                 <select
-                                    defaultValue={selectedApartment}
+                                    value={selectedApartment}
                                     onChange={handleApartmentUpdate}
                                 >
-                                    {apts.map((item, index)=>(
-                                        <option 
+                                    <option>Selecione</option>
+                                    {apts.map((item, index) => (
+                                        <option
                                             key={index}
+                                            value={item.id}
                                         >
                                             {item.name}
                                         </option>
                                     ))}
                                 </select>
                             </div>
-                            <fieldset className='fieldBoxButtons'>
-                                <legend>Botões Cadastro de Apartamentos e Seções</legend>
-                                <input 
-                                    className='btnNew' 
-                                    type="button" 
-                                    value="Novo" 
-                                    onClick={() => setShowModal(true)}
-                                />
-                                {
-                                    showModal === true ? <Modal 
-                                        closeModal={setShowModal}
-                                        bgColor={'rgba(0, 0, 0, 0.8)'}
-                                        >
-                                        <div className='listModal'>
-                                            <DatatableApartment />
-                                        </div>
-                                    </Modal > : null
-                                }
-                                <input className='btnList' type="button" value="Listar"/>
-                                <input className='btnDel' type="button" value="Excluir"/>
-                            </fieldset>
+                        </div>
+                        <div className="modalBox">
+                            <ModalSectionApartment
+                                Comp={<DatatableApartment />}
+                            />
                         </div>
                     </div>
                 </fieldset>
-            </form>
+            </div>
         </div>
     )
 }

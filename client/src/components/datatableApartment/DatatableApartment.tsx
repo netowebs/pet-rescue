@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react"
 import { PaginatedList } from "react-paginated-list"
+import swal from "sweetalert"
 import { apartment, sections } from "../../api/api"
 import { Apartment } from "../../types/typeApartment"
 import { Section } from "../../types/typeSection"
 import { DatatableSection } from "../datatableSection/DatatableSection"
 import { Modal } from "../modal/Modal"
 import './datatableapartment.scss'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const DatatableApartment = () => {
 
     const [listSection, setListSection] = useState<Section[]>([])
     const [listApartment, setListApartment] = useState<Apartment[]>([])
-    const [inputApt, setInputApt] = useState('')
-    const [inputSection, setInputSection] = useState('')
+    const [name, setName] = useState('')
+    const [sectionId, setSectionId] = useState('')
     const [showModalSection, setShowModalSection] = useState(false)
 
     const loadList = async () => {
@@ -24,72 +26,120 @@ export const DatatableApartment = () => {
 
     useEffect(() => {
         loadList()
-    }, [])
-
-    useEffect(() => {
-        console.log("ModalSection: " + showModalSection)
+        if (!showModalSection) {
+            loadList()
+        }
     }, [showModalSection])
 
-    return (
-        <div className="container--section">
-            <div className="inputs--section">
-                <div className="inputSection">
-                    <label htmlFor="iptSection--Modal">
-                        Apartamento
-                    </label><br />
-                    <input
-                        className="iptApartment--Modal"
-                        type="text"
-                        style={
-                            {
-                                height: '24px',
-                                width: '150px',
-                                border: '1px solid #a6a6a6',
-                                outline: 'none',
-                                textTransform: 'uppercase',
-                                padding: '5px'
+    const handleCreate = async () => {
+        const data: any = { name, sectionId }
 
+        if (name == '' || sectionId == null) {
+            alert('Existem campos desmarcados')
+        } else {
+            const res = await apartment.createApartment(data)
+            if (res.success) {
+                swal(res.message, " ", "success")
+                    .then(() => {
+                        loadList()
+                    })
+            } else {
+                swal("Error !", "" + JSON.stringify(res.message), "error")
+            }
+        }
+
+        setName('')
+        setSectionId('')
+    }
+
+    //Function Delete
+    const handleDelete = async (idApartment: number) => {
+        if (idApartment) {
+            const res = await apartment.deleteApartment(String(idApartment))
+            if (res.success) {
+                swal(res.message, " ", "success")
+                    .then(() => {
+                        loadList()
+                    })
+            } else {
+                swal("Error !", "" + JSON.stringify(res.message), "error")
+            }
+        }
+    }
+
+    return (
+        <div className="container--apartment">
+            <div className="inputs--apartment">
+                <div className="inputs">
+                    <div className="boxApartment">
+                        <label htmlFor="iptApartment">
+                            Apartamento
+                        </label><br />
+                        <input
+                            className="iptApartment"
+                            type="text"
+                            value={name}
+                            style={
+                                {
+                                    height: '25px',
+                                    width: '150px',
+                                    border: '1px solid #a6a6a6',
+                                    outline: 'none',
+                                    textTransform: 'uppercase',
+                                    padding: '5px'
+
+                                }
                             }
-                        }
-                        onChange={(e) => setInputApt(e.target.value)}
-                    />
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </div>
+                    <div className="boxSection">
+                        <div className="inputSection">
+                            <label htmlFor="selectSection--Modal">
+                                Seção
+                            </label><br />
+                            <select
+                                className="selectSection--Modal"
+                                name="sectionModal"
+                                defaultValue={''}
+                                style={
+                                    {
+                                        height: '25px',
+                                        width: '150px',
+                                        outline: 'none',
+                                    }
+                                }
+                                onChange={(e) => setSectionId(e.target.value.toUpperCase())}
+                            >{
+                                    name === '' &&
+                                    <option value="">Informe o Apto...</option> ||
+                                    name !== '' &&
+                                    <>
+                                        <option value="">Selecione...</option>
+                                        {listSection.map((item, index) => (
+                                            <option
+                                                key={index}
+                                                value={item.id}
+                                            >
+                                                {item.name.toUpperCase()}
+                                            </option>
+                                        ))}
+                                    </>
+                                }
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div className="inputSection">
-                    <label htmlFor="selectSection--Modal">
-                        Seção
-                    </label><br />
-                    <select
-                        className="selectSection--Modal"
-                        name="sectionModal"
-                        style={
-                            {
-                                height: '25px',
-                                width: '150px',
-                                outline: 'none',
-                            }
-                        }
-                        onChange={(e) => setInputSection(e.target.value)}
-                    >
-                        {listSection.map((item, index) => (
-                            <option
-                                key={index}
-                                value={item.id}
-                            >
-                                {item.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="inputCadSection">
+                <div className="boxBtnSection--Apartment">
                     <input
-                        className="btnNewSection"
+                        className="btnNewSection--Apartment"
                         type="button"
                         value="Nova Seção"
                         onClick={() => setShowModalSection(true)}
                     />
                     {
-                        showModalSection === true ? <Modal 
-                            closeModal={setShowModalSection} 
+                        showModalSection === true ? <Modal
+                            showModal={setShowModalSection}
                             bgColor={'none'}
                         >
                             <div className='listModal'>
@@ -97,47 +147,38 @@ export const DatatableApartment = () => {
                             </div>
                         </Modal > : null
                     }
-
                 </div>
             </div>
-            <div className="btnInsert--Modal">
+            <div className="btnInsertApartment">
                 <input
+                    className="btnSaveApartment"
                     type="button"
                     value="Gravar Apartmento"
                     style={{ width: '100%', height: '25px' }}
+                    onClick={() => handleCreate()}
                 />
             </div>
-            <div className="paginatedDiv">
+            <div className="paginatedDiv--apartment">
                 <PaginatedList
                     list={listApartment}
-                    itemsPerPage={10}
+                    itemsPerPage={9}
                     renderList={(list) => (
                         <>
                             {list.map((item, index) => (
-                                <div key={index} className='itemDiv'>
-                                    <div className="itemListId--section">
+                                <div key={index} className='itemDiv--apartment'>
+                                    <div className="itemListId--apartment">
                                         {item.id}
                                     </div>
-                                    <div className="itemListName--section">
+                                    <div className="itemListName--apartment">
                                         {item.name}
                                     </div>
-                                    <div className="itemListSection--section">
-                                        {item.SectionModel.name}
+                                    <div className="itemListSection--apartment">
+                                        {item.SectionModel.name.toUpperCase()}
                                     </div>
-                                    <div className="itemBtnDel--section">
-                                        <input
-                                            className="btnDelItem--section"
-                                            type="button"
-                                            value="X"
-                                            style={
-                                                {
-                                                    width: '18px',
-                                                    color: 'red',
-                                                    fontSize: '18px',
-                                                    fontWeight: 'bold',
-                                                    backgroundColor: 'transparent'
-                                                }
-                                            }
+                                    <div className="itemBtnDel--apartment">
+                                        <DeleteIcon
+                                            onClick={() => handleDelete(item.id)}
+                                            className='itemBtnDel--apartment'
                                         />
                                     </div>
 

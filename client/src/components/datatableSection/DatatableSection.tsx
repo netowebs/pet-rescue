@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
 import { PaginatedList } from "react-paginated-list"
+import swal from "sweetalert"
 import { sections } from "../../api/api"
 import { Section } from "../../types/typeSection"
 import './datatablesection.scss'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const DatatableSection = () => {
 
     const [listSection, setListSection] = useState<Section[]>([])
-    const [inputSect, setInputSect] = useState('')
+    const [name, setName] = useState('')
 
     const loadList = async () => {
         let json = await sections.getAllSections()
@@ -17,6 +19,40 @@ export const DatatableSection = () => {
     useEffect(() => {
         loadList()
     }, [])
+
+    //Function Create
+    const handleCreate = async () => {
+        const data: any = { name }
+
+        if (name == '') {
+            alert('Digite o nome da nova seção')
+        } else {
+            const res = await sections.createSection(data)
+            if (res.success) {
+                swal(res.message, " ", "success")
+                .then(()=>{
+                    loadList()
+                })
+            } else {
+                swal("Teste !", "" + JSON.stringify(res.message), "Error")
+            }
+        }
+    }
+
+    //Function Delete
+    const handleDelete = async (idSection: number) => {
+        if(idSection){
+            const res = await sections.deleteSection(String(idSection))
+            if(res.success){
+                swal(res.message, " ", "success")
+                .then(()=>{
+                    loadList()
+                })
+            }else{
+                swal("Error !", ""+JSON.stringify(res.message), "error")
+            }
+        } 
+    }
 
     return (
         <div className="container--section">
@@ -38,45 +74,37 @@ export const DatatableSection = () => {
                                 padding: '5px'
                             }
                         }
-                        onChange={(e) => setInputSect(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                     />
                 </div>
             </div>
-            <div className="btnInsert--Modal">
-                <input 
+            <div className="btnInsertSection">
+                <input
+                    className="btnSaveSection"
                     type="button" 
                     value="Gravar Seção"
                     style={{width:'100%', height:'25px'}}
+                    onClick={() => handleCreate()}
                 />
             </div>
             <div className="paginatedDiv">
                 <PaginatedList
                     list={listSection}
-                    itemsPerPage={10}
+                    itemsPerPage={9}
                     renderList={(list) => (
                         <>
                             {list.map((item, index) => (
-                                <div key={index} className='itemDiv'>
+                                <div key={index} className='itemDiv--section'>
                                     <div className="itemListId--section">
                                         {item.id}
                                     </div>
                                     <div className="itemListName--section">
-                                        {item.name}
+                                        {item.name.toUpperCase()}
                                     </div>
                                     <div className="itemBtnDel--section">
-                                        <input
-                                            className="btnDelItem--section"
-                                            type="button"
-                                            value="X"
-                                            style={
-                                                {
-                                                    width:'18px', 
-                                                    color:'red',
-                                                    fontSize: '18px',
-                                                    fontWeight: 'bold',
-                                                    backgroundColor: 'transparent'
-                                                }
-                                            }
+                                    <DeleteIcon 
+                                            onClick={()=> handleDelete(item.id)}
+                                            className='itemBtnDel--section'
                                         />
                                     </div>
                                 </div>

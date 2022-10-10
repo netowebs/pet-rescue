@@ -1,11 +1,11 @@
-.list{
+.list {
     display: flex;
 
-    .listContainer{
+    .listContainer {
         flex: 6;
         flex-direction: column;
 
-        .internalContainer{
+        .internalContainer {
             display: flex;
             flex-direction: column;
             padding-left: 15px;
@@ -16,39 +16,56 @@
             width: 85%;
 
 
-            .buttonBar{
+            .buttonBar {
                 width: 100%;
                 display: flex;
                 justify-content: flex-start;
                 height: 50px;
                 padding-bottom: 10px;
 
-                .button{
+                .button {
                     width: 100px;
                     margin-right: 15px;
                     padding: 5px;
+                    height: 40px;
                     background-color: rgb(22, 166, 133);
                     color: white;
                     border: 1px solid rgb(14, 166, 131);
                     border-radius: 3px;
 
-                    &:hover{
+                    &:hover {
                         cursor: pointer;
                         border: none;
                         background-color: #3ae0ba;
                     }
                 }
+                .btnPdf{
+                    width: 100px;
+                    margin-right: 15px;
+                    padding: 5px;
+                    height: 40px;
+                    background-color: #c52222;
+                    color: white;
+                    border: 1px solid #e56464;
+                    border-radius: 3px;
+
+                    &:hover {
+                        cursor: pointer;
+                        border: none;
+                        background-color: #e56464;
+                    }
+                }
 
             }
 
-            .searchBar{
+            .searchBar {
                 display: flex;
                 width: 100%;
                 height: 50px;
                 padding: 10px;
                 background-color: #179577;
 
-                span{
+                span {
                     padding: 5px;
                     font-weight: 600;
                     flex: 1;
@@ -58,7 +75,7 @@
                 }
 
 
-                .searchArea{
+                .searchArea {
                     display: flex;
                     align-items: center;
                     border: 0.5px solid lightgrey;
@@ -66,14 +83,14 @@
                     margin-left: 200px;
                     width: 300px;
                     background-color: white;
-        
-                    input{
+
+                    input {
                         border: none;
                         outline: none;
                         width: 300px;
                         background-color: transparent;
-        
-                        &::placeholder{
+
+                        &::placeholder {
                             font-size: 12px;
                         }
                     }
@@ -97,8 +114,8 @@
                 //     }
                 // }
             }
-            
-            .titleBar{
+
+            .titleBar {
                 align-items: center;
                 display: flex;
                 justify-content: space-around;
@@ -110,21 +127,21 @@
                 font-weight: 700;
                 border-bottom: 2px solid #095543;
 
-                .idPet-title, 
-                .namePet-title, 
-                .dtCad-title, 
+                .idPet-title,
+                .namePet-title,
+                .dtCad-title,
                 .zonePet-title,
                 .sectionPet-title,
-                .apartmentPet-title{
+                .apartmentPet-title {
                     flex: 1;
                     text-align: center;
                 }
 
-                .apartmentPet-title{
+                .apartmentPet-title {
                     margin-right: 130px;
                 }
 
-                .idPet-title{
+                .idPet-title {
                     margin-left: 10px;
                 }
             }
