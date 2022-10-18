@@ -12,7 +12,7 @@ import routerBrand from './routes/brandRoutes'
 import routerStock from './routes/stockRoutes'
 import routerCollab from './routes/collaboratorsRoutes'
 import routerUsers from './routes/usersRoutes'
-import routerLcto from './routes/lctoProductsRoutes'
+import routerStockUpdate from './routes/stockUpdateRoutes'
 
 dotenv.config();
 const server = express();
@@ -30,6 +30,6 @@ server.use(routerBrand)
 server.use(routerStock)
 server.use(routerCollab)
 server.use(routerUsers)
-server.use(routerLcto)
+server.use(routerStockUpdate)
 
 server.listen(process.env.PORT)

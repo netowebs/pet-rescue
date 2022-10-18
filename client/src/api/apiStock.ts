@@ -29,6 +29,20 @@ export const stock = {
         }
     },
 
+    getProductSku: async (sku: string) => {
+        try {
+            return await instance.get(`/productSku/${sku}`)
+                .then(
+                    response => { return response.data }
+                )
+                .catch(
+                    error => { return error }
+                )
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
     updateProduct: async (data: any) => {
         try {
             return await instance.put(`/product/update/${data.id}`, data)
@@ -36,7 +50,20 @@ export const stock = {
                     response => { return response.data }
                 )
                 .catch(
+                    error => { return error }
+                )
+        } catch (error) {
+            console.log(error)
+        }
+    },
 
+    updateProductLcto: async (data: any) => {
+        try {
+            return await instance.put(`/product/updateLcto/${[data.idProduct]}`, data)
+                .then(
+                    response => { return response.data }
+                )
+                .catch(
                     error => { return error }
                 )
         } catch (error) {

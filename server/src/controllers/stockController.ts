@@ -29,6 +29,26 @@ export const productDetail = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+
+export const productDetailSku = async (req: Request, res: Response) => {
+    try {
+        let detail = await StockModel.findOne({ where: { sku: req.params.skuProduct }})
+        .then((data) => {
+            if(data?.sku){
+                return { success: true, data: data}
+            }else{
+                return{success: false}
+            }
+        })
+        .catch(error => {
+            return { success: false, message: error.message }
+        })
+        res.json(detail)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const productCreate = async (req: Request, res: Response) => {
     try {
         const { description, sku, qtd, validity, brandsId, categoryId, location, cost, unit, obs, dtCad } = req.body
@@ -103,6 +123,36 @@ export const productUpdate = async (req: Request, res: Response) => {
             date_cad: dtCad
         }, {
             where: { id: req.body.idCad }
+        })
+            .then(() => {
+                return { success: true, message: 'Atualizado com Sucesso' }
+            })
+            .catch(error => {
+                return { success: false, message: error.message }
+            })
+        res.json(update)
+    } catch (error) {
+        const resp = { success: false, message: error }
+        res.json(resp)
+        console.log(error)
+
+    }
+}
+
+export const productUpdateLcto = async (req: Request, res: Response) => {
+    try {
+        const { ...productLcto } = req.body
+
+        const convertDate = (dateString: string) => {
+            return new Date(moment(dateString).format('YYYY-MM-DD'))
+        }
+
+        const update = await StockModel.update({
+            qtd: productLcto.qtd,
+            validity: convertDate(productLcto.validity),
+            cost: productLcto.cost,
+        }, {
+            where: { id: productLcto.idProduct }
         })
             .then(() => {
                 return { success: true, message: 'Atualizado com Sucesso' }

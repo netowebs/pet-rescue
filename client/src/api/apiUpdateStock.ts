@@ -4,20 +4,20 @@ const instance = axios.create({
     baseURL: 'http://192.168.0.103:3001'
 })
 
-export const lcto = {
+export const stockUpdate = {
 
-    getAllLctos: async () => {
+    getAllUpdates: async () => {
         try {
-            let response = await instance.get(`/lctos`);
+            let response = await instance.get(`/stockUpdates`);
             return response.data
         } catch (error) {
             console.log(error)
         }
     },
 
-    getLcto: async (id: string) => {
+    getUpdate: async (id: string) => {
         try {
-            return await instance.get(`/lcto/${id}`)
+            return await instance.get(`/stockUpdate/${id}`)
                 .then(
                     response => { return response.data }
                 )
@@ -29,24 +29,9 @@ export const lcto = {
         }
     },
 
-    updateLcto: async (data: any) => {
+    createUpdate: async (data: any) => {
         try {
-            return await instance.put(`/lcto/update/${data.id}`, data)
-                .then(
-                    response => { return response.data }
-                )
-                .catch(
-
-                    error => { return error }
-                )
-        } catch (error) {
-            console.log(error)
-        }
-    },
-
-    createLcto: async (data: any) => {
-        try {
-            return await instance.post(`/lcto/create`, data)
+            return await instance.post(`/stockUpdate/create`, data)
                 .then(
                     response => { return response.data }
                 )
@@ -58,9 +43,9 @@ export const lcto = {
         }
     },
 
-    deleteLcto: async (id: string) => {
+    deleteUpdate: async (id: string) => {
         try {
-            return await instance.delete(`/lcto/del/${id}`)
+            return await instance.delete(`/stockUpdate/del/${id}`)
                 .then(
                     response => { return response.data }
                 )

@@ -19,7 +19,6 @@ export const petDetail = async (req: Request, res: Response) => {
             if(data?.id){
                 return { success: true, data: data}
             }else{
-                // res.status(404).send('Nao encontrado')
                 return{success: false}
                 
             }

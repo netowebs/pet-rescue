@@ -161,9 +161,9 @@ export const DatatableStock = ({ search, setSearch }: Prop) => {
                                 .map((item, index) => (
                                     <div key={index} className='listTutor'>
                                         <div className="idProduct">{("000000" + item.id).slice(-6)}</div>
-                                        <div className="skuProduct" >{item.sku.toUpperCase()}</div>
-                                        <div className="descriptionProduct" >{item.description.toUpperCase().substring(0,25)}</div>
-                                        <div className="validityProduct">{moment(item.validity.toString()).format('DD/MM/YYYY')}</div>
+                                        <div className="skuProduct" >{item.sku?.toUpperCase()}</div>
+                                        <div className="descriptionProduct" >{item.description?.toUpperCase().substring(0,25)}</div>
+                                        <div className="validityProduct">{moment(item.validity?.toString()).format('DD/MM/YYYY')}</div>
                                         <div className="qtdProduct">{item.qtd +'-'+ item.unit}</div>
                                         <div className="btnStock">
                                             <PictureAsPdfIcon className="icon pdf" />

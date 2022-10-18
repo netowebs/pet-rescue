@@ -9,8 +9,8 @@ import moment from "moment";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { sortAndToggle } from '../../sortList/SortListTutor'
-import { lcto } from "../../../api/apiLcto";
 import { Lcto } from "../../../types/typeLcto";
+import { stockUpdate } from "../../../api/apiUpdateStock";
 
 type Prop = {
     search: string;
@@ -24,8 +24,8 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
 
     const loadLctos = async () => {
         try {
-            let json = await lcto.getAllLctos();
-            setLoadList(json);
+            let json = await stockUpdate.getAllUpdates();
+            setLoadList(json.data);
         } catch (error) {
             console.log(error);
         }
@@ -152,8 +152,8 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
                                 if (search == '') {
                                     return val
                                 } else if (
-                                    (val.user.name.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.product.sku.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                                    (val.user.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                                    (val.user.includes(search.toLocaleLowerCase()))
                                 ) {
                                     return val;
                                 }
@@ -161,13 +161,13 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
                                 .map((item, index) => (
                                     <div key={index} className='listTutor'>
                                         <div className="idLcto">{("000000" + item.id).slice(-6)}</div>
-                                        <div className="userLcto" >{item.user.name.toUpperCase()}</div>
-                                        <div className="dataLcto" >{item.date_lcto.toString()}</div>
-                                        <div className="itensLcto">{item.product.sku}</div>
-                                        <div className="qtdTotalLcto">{item.qtd_itens}</div>
+                                        <div className="userLcto" >{item.user?.toUpperCase()}</div>
+                                        <div className="dataLcto" >{item.date?.toString()}</div>
+                                        <div className="itensLcto">{item.qtd_itens}</div>
+                                        <div className="qtdTotalLcto">{item.amount}</div>
                                         <div className="btnStock">
                                             <PictureAsPdfIcon className="icon pdf" />
-                                            <Link className="link" to={`/stock/${item.id}`}>
+                                            <Link className="link" to={`/stockUpdate/${item.id}`}>
                                                 <EditIcon className="icon edit" />
                                             </Link>
                                             <LocalPrintshopIcon className="icon print" />

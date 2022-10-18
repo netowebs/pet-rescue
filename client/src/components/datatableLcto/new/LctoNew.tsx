@@ -1,66 +1,146 @@
 //import PrintIcon from '@mui/icons-material/Print';
 import { MenuItem } from '@mui/material';
 import moment from 'moment';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './lctonew.scss'
 import swal from 'sweetalert'
 import { stock } from '../../../api/apiStock';
 import { useCategoryProduct } from '../../hooks/useCategoryProduct';
 import { useBrandProduct } from '../../hooks/useBrandProduct';
-import { ModalCategoryProduct } from '../../buttons/modalCategoryProduct/ModalCategoryProduct';
-import { DatatableCategoryProduct } from '../../datatableCategoryProduct/DatatableCategoryProduct';
-import { ModalBrandProduct } from '../../buttons/modalBrandProduct/ModalBrandProduct';
-import { DatatableBrandProduct } from '../../datatableBrandProduct/DatatableBrandProduct';
-import { Stock } from '../../../types/typeStock';
-import { PaginatedList } from 'react-paginated-list';
-import { lcto } from '../../../api/apiLcto';
+import { stockUpdate } from '../../../api/apiUpdateStock';
+//import { PaginatedList } from 'react-paginated-list';
+
+type ArrProduct = {
+    idProduct: number,
+    sku: string,
+    description: string,
+    cost: string,
+    validity: string,
+    qtd: number
+}
 
 export const LctoNew = () => {
 
     const params = useParams()
 
-    //UseState Inputs
-    const [idCad, setIdCad] = useState(String)
+    //Dados do lançamento
     const [dtCad, setDtCad] = useState(String)
+    const [nf, setNf] = useState(Number)
+    const [qtdItens, setQtdItens] = useState(Number)
+    const [amount, setAmount] = useState(Number)
+    const [donation, setDonation] = useState(Number)
+    const [withdraw, setWithdraw] = useState(String)
     const [user, setUser] = useState(String)
-    const [qtdItens, setQtdItens] = useState(50)
-    const [valNf, setValNf] = useState(Number)
+    const [provider, setProvider] = useState(String)
 
-    const [listProducts, setListProducts] = useState<Stock>()
-    const [productsLctos, setProductsLcto] = useState<Stock[]>([])
+    //Dados do produto
+    const [arrProduct, setArrProduct] = useState<Number[]>([])
+    const [idProduct, setIdProduct] = useState(Number)
+    const [sku, setSku] = useState('')
+    const [qtd, setQtd] = useState(Number)
+    const [description, setDescription] = useState(String)
+    const [cost, setCost] = useState(String)
+    const [validity, setValidity] = useState(String)
+    const [productsLcto, setProductsLcto] = useState<ArrProduct[]>([])
 
     const getProduct = async (sku: string) => {
-        let json = await stock.getProduct(sku)
-        setListProducts(json)
+        if (sku && sku != '') {
+            let json = await stock.getProductSku(sku)
+            if(json.success){
+                setIdProduct(json.data.id)
+                setDescription(json.data.description)
+                setCost(json.data.cost)
+                setValidity(json.data.validity)
+            }else{
+                alert('Produto Não Encontrado')
+                setSku('')
+            }
+            
+        }else{
+            
+        }
     }
 
+    const addProduct = (sku: string, description: string) => {
+        if (sku) {
+            setTimeout(() => {
+                let index = productsLcto.map(item => item.sku).indexOf(sku)
+                if (index > -1) {
+                    alert('Produto consta na listagem')
+                } else {
+                    let newArr = ([...productsLcto, { idProduct, sku, description, cost, qtd, validity }])
+                    setProductsLcto([...newArr])
+                    setArrProduct(arrProduct => [...arrProduct, idProduct])
+                }})
+            setSku('')
+            setDescription('')
+            setCost('')
+            setValidity('')
+            setQtd(0)
+        }
+    }
 
-    const { categories } = useCategoryProduct()
-    const { brands } = useBrandProduct()
+    const delProduct = (sku: string, id: number) => {
+        if (sku) {
+            let newArr = [...productsLcto]
+            let arrBack = [...arrProduct]
+            
+            setTimeout(() => {
+                const index = productsLcto.map(item => item.sku).indexOf(sku)
+                if (index !== -1) {
+                    newArr.splice(index, 1)
+                    setProductsLcto(newArr)
+                    const indexArrBack = arrProduct.map(item => item).indexOf(id)
+                    if(indexArrBack !== -1){
+                        arrBack.splice(indexArrBack, 1)
+                        setArrProduct(arrBack)
+                    }
+                    
+                } else {
+                    console.log('Caiu no Else')
+                }
+            }, 100)
+        }
+        console.log('idProduct', id)
+    }
 
-    useEffect(() => {
-        setDtCad(moment().format('DD/MM/YYYY'))
-    }, [dtCad])
+    useEffect(()=>{
+        console.log('ID Product',productsLcto.map(item => item.idProduct))
+        console.log('ID Qtd',productsLcto.map(item => item.qtd))
+        console.log('ID Custo',productsLcto.map(item => item.cost))
+        console.log('ID Validity',productsLcto.map(item => item.validity))
+        console.log('arrayProduct',...productsLcto)
+        console.log('arrayBackend', ...arrProduct)
+    }, [productsLcto])
 
-    //Function Create
+
     const handleCreate = async () => {
-        const data: any = { user, qtdItens, valNf }
+        const data: any = { arrProduct, dtCad, nf, qtdItens, amount, donation, withdraw, user, ...productsLcto }
 
-        if (user == '' || qtdItens == null || valNf == null) {
+        if (qtdItens == null || amount == null || donation === null || withdraw == '' || user == '' || idProduct == null || dtCad == '') {
             alert('Existem campos vazios')
         } else {
-            const res = await stock.createProduct(data)
+            const res = await stockUpdate.createUpdate(data)
             if (res.success) {
                 swal(res.message, " ", "success")
+                .then(()=>{
+                    productsLcto.forEach(async (item) =>{
+                        await stock.updateProductLcto(item)
+                    })
+                })
                     .then(() => {
-                        window.location.href = '/stock'
+                        window.location.href = '/lcto'
                     })
             } else {
                 swal("Error !", "" + JSON.stringify(res.message), "error")
             }
         }
     }
+
+    useEffect(() => {
+        setDtCad(moment().format('DD/MM/YYYY'))
+    }, [dtCad])
 
     return (
         <div className='container--stock-new'>
@@ -88,7 +168,7 @@ export const LctoNew = () => {
                         </div>
                         <div className="topBar-Btn">
                             <input type="submit" value="Salvar" className='btnSalvar' onClick={() => handleCreate()} />
-                            <Link to={'/stock'}>
+                            <Link to={'/lcto'}>
                                 <input type="button" value="Cancelar" className='btnCancelar' />
                             </Link>
                         </div>
@@ -100,161 +180,194 @@ export const LctoNew = () => {
                     </legend>
                     <div className="middleBar">
                         <div className="middleBar-interno">
-                            <div className="boxDescription">
-                                <label htmlFor="ipt-description">Descrição</label><br />
+                            <div className="boxUser">
+                                <label htmlFor="ipt-user">Usuário</label><br />
                                 <input
-                                    className='ipt-description'
+                                    className='ipt-user'
                                     type="text"
-                                    name='description'
-                                // onChange={
-                                //     (e) => setDescription(e.target.value)
-                                // }
+                                    name='user'
+                                    onChange={
+                                        (e) => setUser(e.target.value)
+                                    }
                                 />
                             </div>
-                            <div className="boxSku">
-                                <label htmlFor="ipt-sku">Código</label><br />
-                                <input className='ipt-sku' type="text"
-                                    name='sku'
-                                // onChange={
-                                //     (e) => setSku(e.target.value)
-                                // }
+                            <div className="boxNf">
+                                <label htmlFor="ipt-nf">Nota Fiscal</label><br />
+                                <input 
+                                    className='ipt-nf' 
+                                    type="text"
+                                    name='nf'
+                                    onChange={
+                                        (e) => setNf(parseInt(e.target.value))
+                                    }
 
                                 />
                             </div>
-                            <div className="boxValidity">
-                                <label htmlFor="ipt-validity">Validade</label><br />
+                            <div className="boxAmount">
+                                <label htmlFor="ipt-amount">Valor Total</label><br />
                                 <input
-                                    className='ipt-validity'
+                                    className='ipt-amount'
                                     type="text"
-                                // onChange={
-                                //     (e) => setValidity(moment(e.target.value).format('YYYY-MM-DD'))
-                                // }
+                                    onChange={
+                                        (e) => setAmount(parseFloat(e.target.value))
+                                    }
                                 />
                             </div>
                             <div className="boxQtd">
-                                <label htmlFor="ipt-qtd">Quantidade</label><br />
+                                <label htmlFor="ipt-qtd">Qtd. Itens</label><br />
                                 <input
                                     className='ipt-qtd'
                                     type="text"
-                                // onChange={
-                                //     (e) => setQtd(e.target.value)
-                                // }
+                                    onChange={
+                                        (e) => setQtdItens(parseInt(e.target.value))
+                                    }
                                 />
                             </div>
-                            <div className="boxUnit">
-                                <label htmlFor="ipt-unit">Unidade</label><br />
+                            <div className="boxDonation">
+                                <label htmlFor="ipt-donation">Doação?</label><br />
                                 <select
-                                    className='ipt-unit'
-                                    name="unit"
-                                    id="unit"
-                                // onChange={(e) => setUnit(e.target.value)}
+                                    className='ipt-donation'
+                                    name="donation"
+                                    id="donation"
+                                    onChange={(e) => setDonation(parseInt(e.target.value))}
                                 >
-                                    <option value="KG">Kg</option>
-                                    <option value="MT">Mt</option>
-                                    <option value="Un">Un</option>
+                                    <option value="0">Não</option>
+                                    <option value="1">Sim</option>
                                 </select>
                             </div>
-                            <div className="boxLocation">
-                                <label htmlFor="ipt-location">Localização</label><br />
+                            <div className="boxWithdraw">
+                                <label htmlFor="ipt-withdraw">Sacar de </label><br />
+                                <select 
+                                    name="withdraw" 
+                                    id="withdraw"
+                                    defaultValue={'Selecione...'}
+                                    onChange={(e) => setWithdraw(e.target.value)}
+                                >
+                                    <option disabled>SELECIONE...</option>
+                                    <option value="DINHEIRO">Dinheiro</option>
+                                    <option value="BANCO DO BRASIL">Banco Brasil</option>
+                                    <option value="CAIXA FEDERAL">Caixa Federal</option>
+                                </select>
+                            </div>
+                            <div className="boxProvider">
+                                <label htmlFor="ipt-provider">Fornecedor</label><br />
                                 <input
-                                    className='ipt-location'
+                                    className='ipt-provider'
                                     type="text"
-                                // onChange={
-                                //     (e) => setLocation(e.target.value)
-                                // }
-                                />
-                            </div>
-                            <div className="boxCost">
-                                <label htmlFor="ipt-cost">Custo</label><br />
-                                <input
-                                    className='ipt-cost'
-                                    type="number"
-                                // onChange={
-                                //     (e) => setCost(e.target.value)
-                                // }
-                                />
-                            </div>
-                            <div className="boxCategory">
-                                <label htmlFor="ipt-category">Categoria</label><br />
-                                <select
-                                    className='ipt-category'
-                                    name="category"
-                                    id="category"
-                                    defaultValue={'SELECIONE...'}
-                                // onChange={(e) => setCategory(e.target.value)}
-                                >
-                                    <option disabled>SELECIONE...</option>
-                                    {
-                                        categories.map((item, index) => (
-                                            <option
-                                                value={item.id}
-                                                key={index}
-                                            >
-
-                                                {item.description}
-                                            </option>
-                                        ))
+                                    onChange={
+                                        (e) => setProvider(e.target.value)
                                     }
-                                </select>
-                            </div>
-                            <div className="boxNewCategory">
-                                <ModalCategoryProduct
-                                    Comp={<DatatableCategoryProduct />}
-                                />
-                            </div>
-                            <div className="boxBrand">
-                                <label htmlFor="ipt-brand">Marca</label><br />
-                                <select
-                                    defaultValue={'SELECIONE...'}
-                                    className='ipt-brand'
-                                    name="brand"
-                                    id="brand"
-                                // onChange={(e) => setBrand(e.target.value)}
-                                >
-                                    <option disabled>SELECIONE...</option>
-                                    {
-                                        brands.map((item, index) => (
-                                            <option
-                                                value={item.id}
-                                                key={index}
-                                            >
-                                                {item.name}
-                                            </option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
-                            <div className="boxNewBrand">
-                                <ModalBrandProduct
-                                    Comp={<DatatableBrandProduct />}
                                 />
                             </div>
                             <fieldset className='fieldset--category-brand'>
                                 <legend>Itens do Estoque</legend>
-                                <div className="boxObs">
-                                    <div
-                                        className='container--productsLcto'
-                                    >
-                                        {
-                                            <div
-                                                className='containner--productsLcto'
-                                            >
-                                                <section>
-                                                    {Array.from({ length: qtdItens }, (_, i) =>
-                                                        <>
-                                                            <div
-                                                                className='sku'
-                                                            >
-                                                                <input type="text" placeholder='SKU' />
-                                                                <input type="text" placeholder='Descrição' />
-                                                                <input type="text" placeholder='Quantidade' />
-                                                                <input type="text" placeholder='Validade' />
-                                                            </div>
-                                                        </>)}
-                                                </section>
-                                            </div>
-                                        }
+                                <div className="boxAddItens">
+                                    <div className='container-itemLcto'>
+                                        <input
+                                            className='iptSku'
+                                            type="text"
+                                            onChange={(e) => setSku(e.target.value)}
+                                            placeholder={'Código...'}
+                                            onBlur={() => getProduct(sku)}
+                                            value={sku}
+                                        />
+                                        <input
+                                            className='iptDescription'
+                                            type="text"
+                                            onChange={(e) => setDescription(e.target.value)}
+                                            placeholder={'Descrição...'}
+                                            value={description}
+                                        />
+                                        <input
+                                            type="text"
+                                            onChange={(e) => setCost(e.target.value)}
+                                            placeholder={'Custo...'}
+                                            value={cost}
+                                        />
+                                        <input
+                                            type="date"
+                                            onChange={(e) => setValidity(e.target.value)}
+                                            placeholder={'Validade...'}
+                                            value={validity}
+                                        />
+                                        <input
+                                            type="text"
+                                            onChange={(e) => setQtd(parseInt(e.target.value))}
+                                            placeholder={'Quantidade...'}
+                                            value={qtd}
+                                        />
+                                        <button
+                                            onClick={() => addProduct(sku, description)}
+                                        >
+                                            Inserir
+                                        </button>
                                     </div>
+                                    <table className='lctoProductsTable'>
+                                        <thead>
+                                            <tr className='trHead'>
+                                                <th>SKU</th>
+                                                <th>Descrição</th>
+                                                <th>Custo</th>
+                                                <th>Validade</th>
+                                                <th>Quantidade</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                productsLcto.map((item, index) => (
+                                                    <tr className='tableRow' key={index}>
+                                                        <td>
+                                                            <input
+                                                                className='tbSku'
+                                                                type="text"
+                                                                defaultValue={item.sku}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                className='tbDescription'
+                                                                type="text"
+                                                                defaultValue={item.description}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                type="text"
+                                                                defaultValue={item.cost}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                type="date"
+                                                                defaultValue={item.validity}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                type="text"
+                                                                defaultValue={item.qtd}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                className='btnDel'
+                                                                type="button"
+                                                                value="X"
+                                                                onClick={() => delProduct(item.sku, item.idProduct)}
+                                                            />
+                                                        </td>
+                                                    </tr>
+
+                                                ))
+                                            }
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </fieldset>
                         </div>
