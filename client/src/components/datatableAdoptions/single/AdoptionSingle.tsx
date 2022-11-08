@@ -4,29 +4,9 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './adoptionsingle.scss'
 import swal from 'sweetalert'
-import { VetTab } from '../tabs/vetTab';
-import { ItensTab } from '../tabs/itensTab';
 import { pet } from '../../../api/api';
-import { vet } from '../../../api/apiVet';
-import { medicalRecords } from '../../../api/apiMedicalRecords';
-import { ItensList } from '../../../types/typeItensList';
-import { VetList } from '../../../types/typeVetList';
-import { EventsTab } from '../tabs/eventsTab';
-import { EventsList } from '../../../types/typeEventsList';
-import { stock } from '../../../api/apiStock';
-
-export type Pivo = {
-    qtd: number
-    date: string
-    vetIdProduct: number
-}
-
-export type UpdateStock = {
-    id: number
-    sku: string
-    qtd: number
-    newOld: number
-}
+import { adoption } from '../../../api/apiAdoption';
+import { tutor } from '../../../api/apiTutors';
 
 export const AdoptionSingle = () => {
 
@@ -34,14 +14,10 @@ export const AdoptionSingle = () => {
 
     //Dados do lançamento
     const [dtCad, setDtCad] = useState(String)
-    const [status, setStatus] = useState(String)
-    const [lastChange, setLastChange] = useState(String)
-    const [user, setUser] = useState(String)
-    const [obs, setObs] = useState(String)
     const [id, setId] = useState(String)
-    const [statusMr, setStatusMr] = useState(Number)
-    const [txtBtnBaixar, setTxtBtnBaixar] = useState('')
-    const [linkTo, setLinkTo] = useState('')
+    const [status, setStatus] = useState(String)
+    const [obs, setObs] = useState(String)
+    const [user, setUser] = useState(String)
 
     //Dados do animal
     const [animalId, setAnimalId] = useState(String)
@@ -51,46 +27,13 @@ export const AdoptionSingle = () => {
     const [animalAge, setAnimalAge] = useState(String)
     const [animalSex, setAnimalSex] = useState(String)
 
-    // //Dados do Veterinário Reponsável
-    const [vetRespId, setVetRespId] = useState(Number)
-    const [vetRespCrmv, setVetRespCrmv] = useState(String)
-    const [vetRespName, setVetRespName] = useState(String)
-    const [vetRespSpeciality, setVetRespSpeciality] = useState(String)
-    const [vetRespPhone, setVetRespPhone] = useState(String)
-
-    //Arrays dos componentes Vet, Itens e Events
-    const [vetList, setVetList] = useState<VetList[]>([])
-    const [vetIdList, setVetIdList] = useState<number[]>([])
-    const [listItens, setlistItens] = useState<ItensList[]>([])
-    const [eventsList, setEventsList] = useState<EventsList[]>([])
-    const [idVets, setIdVets] = useState<number[]>([])
-    const [idProducts, setIdProducts] = useState<number[]>([])
-
-    //UpdateStock
-    const [qtdMedical, setQtdMedical] = useState<number[]>([])
-    const [stockQtd, setStockQtd] = useState<UpdateStock[]>([])
-
-    //Tab Controll
-    const [activeTab, setActiveTab] = useState('obsTab')
-
-    const handleTab = (flag: number) => {
-        switch (flag) {
-            case 0:
-                setActiveTab('obsTab')
-                break
-            case 1:
-                setActiveTab('vetTab')
-                break
-            case 2:
-                setActiveTab('itensTab')
-                break
-            case 3:
-                setActiveTab('eventsTab')
-                break
-            default:
-                alert('Guia não encontrada')
-        }
-    }
+    //Dados do Tutor
+    const [tutorId, setTutorId] = useState(String)
+    const [tutorName, setTutorName] = useState(String)
+    const [tutorCpf, setTutorCpf] = useState(String)
+    const [tutorPhone, setTutorPhone] = useState(String)
+    const [tutorAddress, setTutorAddress] = useState(String)
+    const [tutorAddressNum, setTutorAddressNum] = useState(Number)
 
     //Get Animal
     const getAnimal = async (id: string) => {
@@ -103,104 +46,56 @@ export const AdoptionSingle = () => {
         setAnimalSex(json.data.sex)
     }
 
-    //Get Veterinario
-    const getVetResp = async (id: string) => {
-        let json = await vet.getVet(id)
+    //Get Tutor
+    const getTutor = async (id: string) => {
+        let json = await tutor.getTutor(id)
         if (json.success) {
-            setVetRespId(json.data.id)
-            setVetRespName(json.data.name)
-            setVetRespCrmv(json.data.crmv)
-            setVetRespSpeciality(json.data.speciality)
-            setVetRespPhone(json.data.phone)
+            setTutorId(json.data.id)
+            setTutorName(json.data.name)
+            setTutorCpf(json.data.cpf)
+            setTutorPhone(json.data.phone)
+            setTutorAddress(json.data.address)
+            setTutorAddressNum(json.data.address_num)
         }
     }
 
-    const data = { id: vetRespId, name: vetRespName, crmv: vetRespCrmv, speciality: vetRespSpeciality, phone: vetRespPhone }
-
-    //Get Medical Record
+    //Get Adoption
     useEffect(() => {
         if (params.Id) {
-            const loadMedical = async (id: string) => {
-                let res = await medicalRecords.getMedicalRecord(id)
+            const loadAdoption = async (id: string) => {
+                let res = await adoption.getAdotpion(id)
                 if (res.success) {
-                    let path = res.data.ItenFicha
                     setId(("000000" + res.data.id).slice(-6))
                     setDtCad(moment(res.data.date).format('DD/MM/YYYY'))
-                    setStatus(res.data.status)
-                    setLastChange(res.data.last_change)
-                    setUser(res.data.user)
+                    getAnimal(res.data.id_animal)
+                    getTutor(res.data.id_tutor)
                     setObs(res.data.obs)
-                    getAnimal(res.data.animals_id)
-                    getVetResp(res.data.VetMedical[0].id)
-                    setVetList(res.data.VetMedical)
-                    setStatusMr(res.data.statusMR)
-                    if (res.data.statusMR === 0) {
-                        setTxtBtnBaixar('Baixar')
-                        setLinkTo(`medical-records`)
-                    } else {
-                        setTxtBtnBaixar('Reabrir')
-                        setLinkTo(`medical-closed`)
-                    }
-                    if (res.data.itens !== null) {
-                        setlistItens(res.data.itens)
-                        if (listItens) {
-                            listItens.forEach((item, index) => {
-                                console.log('Aqui', item?.qtdProduct)
-                            })
-                        }
-                    }
-                    if (res.data.events !== null) {
-                        setEventsList(res.data.events)
-                    }
-
+                    setUser(res.data.user)
                 } else {
                     swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
                         .then(() => {
-                            window.location.href = '/medical-records'
+                            window.location.href = '/adoptions'
                         })
                 }
             }
-            loadMedical(params.Id)
+            loadAdoption(params.Id)
         }
     }, [])
 
-    useEffect(() => {
-        setLastChange(moment().format('DD/MM/YYYY'))
-    }, [])
-
-    const handleCreate = async () => {
-
-        const data: any = { idMedicalRecord: id, status, lastChange, vetList, listItens, eventsList, idVets, idProducts, vetIdList, statusMr, stockQtd }
-        const res = await medicalRecords.updateMedicalRecord(data)
-        if (res.success) {
-            swal(res.message, " ", "success")
-                .then(() => {
-                    stockQtd.forEach(async (item) => {
-                        await stock.updateProductMedicalRecord(item)
+    const handleDelete = async () => {
+        if (params.Id) {
+            const res = await adoption.deleteAdoption(params.Id)
+            if (res.success) {
+                swal(res.message, " ", "success")
+                    .then(() => {
+                        window.location.href = '/adoptions'
                     })
-                })
-                .then(() => {
-                    window.location.href = '/medical-records'
-                })
-        } else {
-            swal("Error !", "" + JSON.stringify(res.message), "error")
-
+            } else {
+                swal("Error !", "" + JSON.stringify(res.message), "error")
+            }
         }
     }
 
-    const handleStatusMr = () => {
-        if (statusMr === 1) {
-            setStatusMr(0)
-            setTxtBtnBaixar('Baixar')
-        } else {
-            setStatusMr(1)
-            setTxtBtnBaixar('Reabrir')
-        }
-    }
-
-    useEffect(() => {
-        console.log('Status: ', statusMr)
-    }, [statusMr])
 
     return (
         <div className='container--medicalRecord-single'>
@@ -237,30 +132,10 @@ export const AdoptionSingle = () => {
                                     disabled
                                 />
                             </div>
-                            <div className="boxStatus">
-                                <label htmlFor="ipt-status">Status do Animal</label><br />
-                                <select
-                                    name=""
-                                    id=""
-                                    value={status}
-                                    style={
-                                        status === 'saudavel' ? { backgroundColor: '#16a685', color: 'white' } :
-                                            status === 'observacao' ? { backgroundColor: '#f0d569' } :
-                                                status === 'critico' ? { backgroundColor: '#ad2a2a', color: 'white' } :
-                                                    { backgroundColor: 'white', color: 'black' }
-                                    }
-                                    onChange={(e) => setStatus(e.target.value)}
-                                >
-                                    <option value="saudavel" style={{ backgroundColor: 'white', color: 'black' }}>SAUDÁVEL</option>
-                                    <option value="observacao" style={{ backgroundColor: 'white', color: 'black' }}>OBSERVAÇÃO</option>
-                                    <option value="critico" style={{ backgroundColor: 'white', color: 'black' }}>CRÍTICO</option>
-                                </select>
-                            </div>
                         </div>
                         <div className="topBar-Btn">
-                            <input type="submit" value={txtBtnBaixar} className='btnBaixar' onClick={() => handleStatusMr()} />
-                            <input type="submit" value="Salvar" className='btnSalvar' onClick={() => handleCreate()} />
-                            <Link to={`/${linkTo}`}>
+                            <input type="button" value="Excluir" className='btnExcluir' onClick={() => handleDelete()} />
+                            <Link to={`/adoptions`}>
                                 <input type="button" value="Cancelar" className='btnCancelar' />
                             </Link>
                         </div>
@@ -331,105 +206,73 @@ export const AdoptionSingle = () => {
                                 </div>
                             </fieldset>
                             <fieldset className='fieldVetBox'>
-                                <legend>Dados do Veterinário Responsável</legend>
+                                <legend>Dados do Tutor</legend>
                                 <div className="boxVetId">
-                                    <label htmlFor="ipt-idVet">Código</label><br />
+                                    <label htmlFor="ipt-idTutor">Código</label><br />
                                     <input
                                         type="text"
-                                        value={("000000" + vetRespId).slice(-6)}
-                                        className='ipt-idVet'
+                                        value={("000000" + tutorId).slice(-6)}
+                                        className='ipt-idTutor'
                                         disabled
                                     />
                                 </div>
-                                <div className="boxVetName">
-                                    <label htmlFor="ipt-nameVet">Nome</label><br />
+                                <div className="boxTutorName">
+                                    <label htmlFor="ipt-nameTutor">Nome</label><br />
                                     <input
                                         type="text"
-                                        className='ipt-nameVet'
-                                        defaultValue={vetRespName}
+                                        className='ipt-nameTutor'
+                                        defaultValue={tutorName.toUpperCase()}
                                         disabled
                                     />
                                 </div>
-                                <div className="boxVetCrmv">
-                                    <label htmlFor="ipt-crmvVet">CRMV</label><br />
+                                <div className="boxTutorCpf">
+                                    <label htmlFor="ipt-cpfTutor">CPF</label><br />
                                     <input
                                         type="text"
-                                        className='ipt-crmvVet'
-                                        defaultValue={vetRespCrmv}
+                                        className='ipt-cpfTutor'
+                                        defaultValue={tutorCpf}
                                         disabled
                                     />
                                 </div>
-                                <div className="boxVetSpeciality">
-                                    <label htmlFor="ipt-specialityVet">Especialidade</label><br />
+                                <div className="boxTutorPhone">
+                                    <label htmlFor="ipt-phoneTutor">Telefone</label><br />
                                     <input
                                         type="text"
-                                        className='ipt-specialityVet'
-                                        defaultValue={vetRespSpeciality}
+                                        className='ipt-phoneTutor'
+                                        defaultValue={tutorPhone}
                                         disabled
                                     />
                                 </div>
-                                <div className="boxVetPhone">
-                                    <label htmlFor="ipt-phoneVet">Telefone</label><br />
+                                <div className="boxTutorAddress">
+                                    <label htmlFor="ipt-addressTutor">Endereço</label><br />
                                     <input
                                         type="text"
-                                        className='ipt-phoneVet'
-                                        defaultValue={vetRespPhone}
+                                        className='ipt-addressTutor'
+                                        defaultValue={tutorAddress.toUpperCase()}
+                                        disabled
+                                    />
+                                </div>
+                                <div className="boxTutorAddressNum">
+                                    <label htmlFor="ipt-numTutor">N°</label><br />
+                                    <input
+                                        type="text"
+                                        className='ipt-numTutor'
+                                        defaultValue={tutorAddressNum}
                                         disabled
                                     />
                                 </div>
                             </fieldset>
-                            <fieldset className='fieldset--vetItens'>
-                                <legend>Itens do Estoque</legend>
-                                <div className="boxTabs">
-                                    <div className="vetItens">
-                                        <ul className='nav'>
-                                            <li
-                                                className={activeTab === 'obsTab' ? 'active' : ''}
-                                                onClick={() => handleTab(0)}
-                                            >
-                                                Observações
-                                            </li>
-                                            <li
-                                                className={activeTab === 'vetTab' ? 'active' : ''}
-                                                onClick={() => handleTab(1)}
-                                            >
-                                                Veterinários
-                                            </li>
-                                            <li
-                                                className={activeTab === 'itensTab' ? 'active' : ''}
-                                                onClick={() => handleTab(2)}
-                                            >
-                                                Itens
-                                            </li>
-                                            <li
-                                                className={activeTab === 'eventsTab' ? 'active' : ''}
-                                                onClick={() => handleTab(3)}
-                                            >
-                                                Ocorrências
-                                            </li>
-                                        </ul>
-                                        <div className="outLet">
-                                            {
-                                                activeTab === 'obsTab' ?
-                                                    <div className='boxObs'>
-                                                        <textarea
-                                                            className='ipt-obs'
-                                                            name=""
-                                                            id=""
-                                                            defaultValue={obs}
-                                                            disabled
-                                                        >
-                                                        </textarea>
-                                                    </div> :
-                                                    activeTab === 'vetTab' ?
-                                                        <VetTab list={vetList} setList={setVetList} vetResp={data} listItens={listItens} setIdVets={setIdVets} idVets={idVets} statusMr={statusMr} /> :
-                                                        activeTab === 'itensTab' ?
-                                                            <ItensTab list={listItens} setList={setlistItens} vetList={vetList} vetResp={data} idProducts={idProducts} setIdProducts={setIdProducts} vetIdList={vetIdList} setVetIdList={setVetIdList} user={user} statusMr={statusMr} setQtdMedical={setQtdMedical} setQtdStock={setStockQtd} qtdMedical={qtdMedical} qtdStock={stockQtd} /> :
-                                                            activeTab === 'eventsTab' ?
-                                                                <EventsTab list={eventsList} setList={setEventsList} vetList={vetList} vetResp={data} user={user} statusMr={statusMr} /> : null
-                                            }
-                                        </div>
-                                    </div>
+                            <fieldset className='fieldset--obsAdoption'>
+                            <legend>Observações da Adoção</legend>
+                                <div className="boxObs">
+                                    <label htmlFor="ipt-obs">Observações e informações úteis</label><br />
+                                    <textarea
+                                        name="ipt-obs"
+                                        id="ipt-obs"
+                                        onChange={(e) => setObs(e.target.value)}
+                                        disabled
+                                    >
+                                    </textarea>
                                 </div>
                             </fieldset>
                         </div>

@@ -5,7 +5,9 @@ import { TutorModel } from './TutorModel'
 
 export interface AdoptionInstance extends Model {
     id: number,
-    user: string
+    user: string,
+    date: Date,
+    obs: string
 }
 
 export const AdoptionModel = sequelize.define<AdoptionInstance>("AdoptionModel", {
@@ -15,6 +17,14 @@ export const AdoptionModel = sequelize.define<AdoptionInstance>("AdoptionModel",
         type: DataTypes.INTEGER
     },
     user: {
+        type: DataTypes.STRING
+    },
+
+    date: {
+        type: DataTypes.DATE
+    },
+
+    obs: {
         type: DataTypes.STRING
     }
 }, {

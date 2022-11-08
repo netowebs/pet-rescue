@@ -1,7 +1,8 @@
 import axios from "axios";
 
+
 const instance = axios.create({
-    baseURL: 'http://192.168.0.103:3001'
+    baseURL: 'http://localhost:3001'
 })
 
 export const pet = {

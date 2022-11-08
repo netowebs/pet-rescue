@@ -25,7 +25,9 @@ export const DatatablePets = ({ search, setSearch }: Prop) => {
     const loadPets = async () => {
         try {
             let json = await pet.getAllPets();
-            setLoadList(json);
+                let newArr = json
+                let newArrFiltered = newArr.filter((item:any) => item.adoption_id <=0)
+                setLoadList(newArrFiltered)
         } catch (error) {
             console.log(error);
         }

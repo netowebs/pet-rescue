@@ -13,25 +13,25 @@ export const adoptionList = async (req: Request, res: Response) => {
     }
 }
 
-// export const petDetail = async (req: Request, res: Response) => {
-//     try {
-//         let detail = await AnimalModel.findOne({ where: { id: req.params.idPet }, include: ApartmentModel })
-//         .then((data) => {
-//             if(data?.id){
-//                 return { success: true, data: data}
-//             }else{
-//                 return{success: false}
+export const adoptionDetail = async (req: Request, res: Response) => {
+    try {
+        let detail = await AdoptionModel.findOne({ where: { id: req.params.idAdoption }})
+        .then((data) => {
+            if(data?.id){
+                return { success: true, data: data}
+            }else{
+                return{success: false}
                 
-//             }
-//         })
-//         .catch(error => {
-//             return { success: false, message: error.message }
-//         })
-//         res.json(detail)
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+            }
+        })
+        .catch(error => {
+            return { success: false, message: error.message }
+        })
+        res.json(detail)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 // export const petUpdate = async (req: Request, res: Response) => {
 //     try {
@@ -88,19 +88,19 @@ export const adoptionCreate = async (req: Request, res: Response) => {
     }
 }
 
-// export const petDelete = async (req: Request, res: Response) => {
-//     try {
-//         const del = await AnimalModel.destroy({
-//             where: {id: req.params.idDel}
-//         })
-//         .then(()=>{
-//             return { success: true, message: 'Cadastro Excluido com Sucesso' }
-//         })
-//         .catch(error =>{
-//             return { success: false, message: error.message }
-//         })
-//         res.send(del)
-//     } catch (error) {
-//         console.log(error)   
-//     }
-// }
+export const adoptionDelete = async (req: Request, res: Response) => {
+    try {
+        const del = await AdoptionModel.destroy({
+            where: {id: req.params.idDel}
+        })
+        .then(()=>{
+            return { success: true, message: 'Cadastro Excluido com Sucesso' }
+        })
+        .catch(error =>{
+            return { success: false, message: error.message }
+        })
+        res.send(del)
+    } catch (error) {
+        console.log(error)   
+    }
+}
