@@ -25,58 +25,67 @@
         overflow-x: 0px;
         overflow-y: 0px;
 
-        .search{
-            display: flex;
-            align-items: center;
-            border: 0.5px solid lightgrey;
-            padding: 3px;
-            margin-left: 200px;
-            width: 300px;
-            background-color: white;
-
-            input{
-                border: none;
-                outline: none;
-                width: 300px;
-                background-color: transparent;
-
-                &::placeholder{
-                    font-size: 12px;
-                }
-            }
+        .texto{
+            width: 100vw;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            font-size: 28px;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
-        .items{
-            display: flex;
-            align-items: center;
+        // .search{
+        //     display: flex;
+        //     align-items: center;
+        //     border: 0.5px solid lightgrey;
+        //     padding: 3px;
+        //     margin-left: 200px;
+        //     width: 300px;
+        //     background-color: white;
 
-            .item{
-                display: flex;
-                align-items: center;
-                margin-right: 20px;
-                position: relative;
+        //     input{
+        //         border: none;
+        //         outline: none;
+        //         width: 300px;
+        //         background-color: transparent;
 
-                .icon{
-                    font-size: 20px;
-                    color: white;
-                }
+        //         &::placeholder{
+        //             font-size: 12px;
+        //         }
+        //     }
+        // }
 
-                .counter{
-                    display: flex;
-                    font-size: 10px;
-                    width: 15px;
-                    height: 15px;
-                    background-color: red;
-                    border-radius: 50%;
-                    color: white;
-                    justify-content: center;
-                    align-items: center;
-                    position: relative;
-                    top: -7px;
-                    right: 8px;
-                }
-            }
+        // .items{
+        //     display: flex;
+        //     align-items: center;
 
-        }
+        //     .item{
+        //         display: flex;
+        //         align-items: center;
+        //         margin-right: 20px;
+        //         position: relative;
+
+        //         .icon{
+        //             font-size: 20px;
+        //             color: white;
+        //         }
+
+        //         .counter{
+        //             display: flex;
+        //             font-size: 10px;
+        //             width: 15px;
+        //             height: 15px;
+        //             background-color: red;
+        //             border-radius: 50%;
+        //             color: white;
+        //             justify-content: center;
+        //             align-items: center;
+        //             position: relative;
+        //             top: -7px;
+        //             right: 8px;
+        //         }
+        //     }
+
+        // }
     }
 }

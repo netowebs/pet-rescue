@@ -1,141 +1,174 @@
 //import PrintIcon from '@mui/icons-material/Print';
-import { MenuItem } from '@mui/material';
 import moment from 'moment';
-import React, { useState, useEffect} from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import './lctonew.scss'
 import swal from 'sweetalert'
 import { stock } from '../../../api/apiStock';
-import { useCategoryProduct } from '../../hooks/useCategoryProduct';
-import { useBrandProduct } from '../../hooks/useBrandProduct';
 import { stockUpdate } from '../../../api/apiUpdateStock';
-//import { PaginatedList } from 'react-paginated-list';
 
 type ArrProduct = {
     idProduct: number,
     sku: string,
     description: string,
     cost: string,
+    costTot: string
     validity: string,
     qtd: number
 }
 
-export const LctoNew = () => {
+type ArrPivo = {
+    sku: string
+    qtdPivo: number,
+    valUnit: number,
+    valTot: number
+}
 
-    const params = useParams()
+export const LctoNew = () => {
 
     //Dados do lançamento
     const [dtCad, setDtCad] = useState(String)
-    const [nf, setNf] = useState(Number)
-    const [qtdItens, setQtdItens] = useState(Number)
-    const [amount, setAmount] = useState(Number)
-    const [donation, setDonation] = useState(Number)
+    const [nf, setNf] = useState(0)
+    const [qtdItens, setQtdItens] = useState(0)
+    const [amount, setAmount] = useState(String)
+    const [donation, setDonation] = useState(-1)
     const [withdraw, setWithdraw] = useState(String)
     const [user, setUser] = useState(String)
     const [provider, setProvider] = useState(String)
 
-    //Dados do produto
-    const [arrProduct, setArrProduct] = useState<Number[]>([])
+    //Array tabela pivo
+    const [arrProduct, setArrProduct] = useState<number[]>([])
+    const [addArrPivo, setAddArrPivo] = useState<ArrPivo[]>([])
+
+    //Dados do produto para get e set no array que é iterado para exibir na tela e enviado ao backend
     const [idProduct, setIdProduct] = useState(Number)
     const [sku, setSku] = useState('')
-    const [qtd, setQtd] = useState(Number)
+    const [qtd, setQtd] = useState(0)
     const [description, setDescription] = useState(String)
     const [cost, setCost] = useState(String)
+    const [qtdOld, setQtdOld] = useState(Number)
+    const [qtdUpdate, setQtdUpdate] = useState<number[]>([])
     const [validity, setValidity] = useState(String)
     const [productsLcto, setProductsLcto] = useState<ArrProduct[]>([])
+    const [somaQtd, setSomaQtd] = useState(Number)
+    const [somaValue, setSomaValue] = useState(Number)
 
+    //Busca de produtos através do SKU
     const getProduct = async (sku: string) => {
         if (sku && sku != '') {
             let json = await stock.getProductSku(sku)
-            if(json.success){
+            if (json.success) {
                 setIdProduct(json.data.id)
                 setDescription(json.data.description)
-                setCost(json.data.cost)
+                //setCost(json.data.cost)
                 setValidity(json.data.validity)
-            }else{
+                setQtdOld(json.data.qtd)
+            } else {
                 alert('Produto Não Encontrado')
                 setSku('')
             }
-            
-        }else{
-            
+        } else {
+            return
         }
     }
 
-    const addProduct = (sku: string, description: string) => {
+    const addProduct = (sku: string, description: string, costTot: string, custo: string) => {
         if (sku) {
-            setTimeout(() => {
+            if (cost === '') {
+                setCost('0')
+            }
+            if (qtd <= 0) {
+                alert('Quantidade não pode ser menor ou igual a zero')
+            } else {
                 let index = productsLcto.map(item => item.sku).indexOf(sku)
                 if (index > -1) {
                     alert('Produto consta na listagem')
                 } else {
-                    let newArr = ([...productsLcto, { idProduct, sku, description, cost, qtd, validity }])
-                    setProductsLcto([...newArr])
-                    setArrProduct(arrProduct => [...arrProduct, idProduct])
-                }})
-            setSku('')
-            setDescription('')
-            setCost('')
-            setValidity('')
-            setQtd(0)
-        }
-    }
-
-    const delProduct = (sku: string, id: number) => {
-        if (sku) {
-            let newArr = [...productsLcto]
-            let arrBack = [...arrProduct]
-            
-            setTimeout(() => {
-                const index = productsLcto.map(item => item.sku).indexOf(sku)
-                if (index !== -1) {
-                    newArr.splice(index, 1)
+                    let pivoAux = ([...addArrPivo, {sku, qtdPivo: qtd, valUnit: (parseFloat(custo.replace(/[R$]/g, '').replace(/[',']/, '.'))), valTot: (parseFloat(custo.replace(/[R$]/g, '').replace(/[',']/, '.')))*qtd }])
+                    setAddArrPivo(pivoAux)
+                    setSomaQtd(somaQtd + qtd)
+                    setSomaValue(somaValue + parseFloat(costTot.replace(/[R$]/g, '').replace(/[',']/, '.')))
+                    let newArr = ([...productsLcto, { idProduct, sku, description, cost, costTot, qtd, validity}])
                     setProductsLcto(newArr)
-                    const indexArrBack = arrProduct.map(item => item).indexOf(id)
-                    if(indexArrBack !== -1){
-                        arrBack.splice(indexArrBack, 1)
-                        setArrProduct(arrBack)
-                    }
-                    
-                } else {
-                    console.log('Caiu no Else')
+                    setArrProduct(arrProduct => [...arrProduct, idProduct])
+                    setQtdUpdate(qtdUpdate => [...qtdUpdate, (qtd + qtdOld)])
                 }
-            }, 100)
-        }
-        console.log('idProduct', id)
-    }
-
-    useEffect(()=>{
-        console.log('ID Product',productsLcto.map(item => item.idProduct))
-        console.log('ID Qtd',productsLcto.map(item => item.qtd))
-        console.log('ID Custo',productsLcto.map(item => item.cost))
-        console.log('ID Validity',productsLcto.map(item => item.validity))
-        console.log('arrayProduct',...productsLcto)
-        console.log('arrayBackend', ...arrProduct)
-    }, [productsLcto])
-
-
-    const handleCreate = async () => {
-        const data: any = { arrProduct, dtCad, nf, qtdItens, amount, donation, withdraw, user, ...productsLcto }
-
-        if (qtdItens == null || amount == null || donation === null || withdraw == '' || user == '' || idProduct == null || dtCad == '') {
-            alert('Existem campos vazios')
-        } else {
-            const res = await stockUpdate.createUpdate(data)
-            if (res.success) {
-                swal(res.message, " ", "success")
-                .then(()=>{
-                    productsLcto.forEach(async (item) =>{
-                        await stock.updateProductLcto(item)
-                    })
-                })
-                    .then(() => {
-                        window.location.href = '/lcto'
-                    })
-            } else {
-                swal("Error !", "" + JSON.stringify(res.message), "error")
+                setSku('')
+                setDescription('')
+                setCost('')
+                setValidity('')
+                setQtd(0)
             }
         }
+    }
+
+    //Função que valida data vencimento
+    //Não pode lançar um produto com vencimento anterior ao dia atual
+    const handleValidity = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault()
+        if (e.target.value < moment().format('YYYY-MM-DD')) {
+            alert('Dia Inválido')
+        } else {
+            setValidity(e.target.value)
+        }
+    }
+
+    const delProduct = (sku: string, id: number, qtd: number, costTot: string) => {
+        let newArr = [...productsLcto]
+        let arrBack = [...arrProduct]
+
+        setTimeout(() => {
+            const index = productsLcto.map(item => item.sku).indexOf(sku)
+            if (index !== -1) {
+                newArr.splice(index, 1)
+                setProductsLcto(newArr)
+                setSomaQtd(somaQtd - qtd)
+                setSomaValue(somaValue - parseFloat(costTot.replace(/[R$]/g, '').replace(/[',']/, '.')))
+                const indexArrBack = arrProduct.map(item => item).indexOf(id)
+                if (indexArrBack !== -1) {
+                    arrBack.splice(indexArrBack, 1)
+                    setArrProduct(arrBack)
+                    qtdUpdate.splice(index, 1)
+                    setQtdUpdate([...qtdUpdate])
+                    addArrPivo.splice(index, 1)
+                    setAddArrPivo([...addArrPivo])
+                }
+            } else {
+                return
+            }
+        }, 100)
+    }
+
+    const handleCreate = async () => {
+        const amountNum = parseFloat(amount.replace(/[R$]/g, '').replace(/[',']/, '.'))
+        const data: any = { addArrPivo, arrProduct, dtCad, nf, qtdItens, amountNum, donation, withdraw, user, provider, ...productsLcto }
+
+        if (nf !== null && nf !== 0 && qtdItens >= 0 && amountNum !== 0 && user.trim() !== '' && donation === 1 || donation === 0) {
+            if (qtdItens === somaQtd && somaValue === amountNum) {
+                productsLcto.forEach((item, index) => {
+                    item.qtd = qtdUpdate[index]
+                })
+                const res = await stockUpdate.createUpdate(data)
+                if (res.success) {
+                    swal(res.message, " ", "success")
+                        .then(() => {
+                            productsLcto.forEach(async (item) => {
+                                await stock.updateProductLcto(item)
+                            })
+                        })
+                        .then(() => {
+                            window.location.href = '/lctos'
+                        })
+                } else {
+                    swal("Error !", "" + JSON.stringify(res.message), "error")
+                }
+            } else {
+                alert('Quantidades e/ou valores dos itens estão diferentes dos totais informados')
+            }
+        } else {
+            alert('Preencha todos os campos')
+        }
+
     }
 
     useEffect(() => {
@@ -168,7 +201,7 @@ export const LctoNew = () => {
                         </div>
                         <div className="topBar-Btn">
                             <input type="submit" value="Salvar" className='btnSalvar' onClick={() => handleCreate()} />
-                            <Link to={'/lcto'}>
+                            <Link to={'/lctos'}>
                                 <input type="button" value="Cancelar" className='btnCancelar' />
                             </Link>
                         </div>
@@ -193,8 +226,8 @@ export const LctoNew = () => {
                             </div>
                             <div className="boxNf">
                                 <label htmlFor="ipt-nf">Nota Fiscal</label><br />
-                                <input 
-                                    className='ipt-nf' 
+                                <input
+                                    className='ipt-nf'
                                     type="text"
                                     name='nf'
                                     onChange={
@@ -204,13 +237,15 @@ export const LctoNew = () => {
                                 />
                             </div>
                             <div className="boxAmount">
-                                <label htmlFor="ipt-amount">Valor Total</label><br />
+                                <label htmlFor="ipt-amount">Valor Total do Lançamento</label><br />
                                 <input
                                     className='ipt-amount'
                                     type="text"
-                                    onChange={
-                                        (e) => setAmount(parseFloat(e.target.value))
-                                    }
+                                    step={'0.01'}
+                                    value={amount}
+                                    onChange={(e) => { setAmount(e.target.value) }}
+                                    onBlur={() => setAmount('R$ ' + amount)}
+                                    onFocus={() => setAmount('')}
                                 />
                             </div>
                             <div className="boxQtd">
@@ -228,19 +263,21 @@ export const LctoNew = () => {
                                 <select
                                     className='ipt-donation'
                                     name="donation"
+                                    defaultValue={'...'}
                                     id="donation"
                                     onChange={(e) => setDonation(parseInt(e.target.value))}
                                 >
+                                    <option disabled>...</option>
                                     <option value="0">Não</option>
                                     <option value="1">Sim</option>
                                 </select>
                             </div>
                             <div className="boxWithdraw">
                                 <label htmlFor="ipt-withdraw">Sacar de </label><br />
-                                <select 
-                                    name="withdraw" 
+                                <select
+                                    name="withdraw"
                                     id="withdraw"
-                                    defaultValue={'Selecione...'}
+                                    defaultValue={'SELECIONE...'}
                                     onChange={(e) => setWithdraw(e.target.value)}
                                 >
                                     <option disabled>SELECIONE...</option>
@@ -264,7 +301,7 @@ export const LctoNew = () => {
                                 <div className="boxAddItens">
                                     <div className='container-itemLcto'>
                                         <input
-                                            className='iptSku'
+                                            className='iptSku-new'
                                             type="text"
                                             onChange={(e) => setSku(e.target.value)}
                                             placeholder={'Código...'}
@@ -272,21 +309,27 @@ export const LctoNew = () => {
                                             value={sku}
                                         />
                                         <input
-                                            className='iptDescription'
+                                            className='iptDescription-new'
                                             type="text"
                                             onChange={(e) => setDescription(e.target.value)}
                                             placeholder={'Descrição...'}
-                                            value={description}
+                                            defaultValue={description}
+                                            disabled
                                         />
                                         <input
                                             type="text"
+                                            value={cost}
                                             onChange={(e) => setCost(e.target.value)}
                                             placeholder={'Custo...'}
-                                            value={cost}
+                                            onBlur={() => setCost('R$ ' + cost)}
+                                            onFocus={() => ''}
+
                                         />
                                         <input
                                             type="date"
-                                            onChange={(e) => setValidity(e.target.value)}
+                                            min={moment().format('YYYY-MM-DD')}
+                                            onChange={handleValidity}
+                                            onKeyDown={(e) => e.key !== 'Tab' ? e.preventDefault : null}
                                             placeholder={'Validade...'}
                                             value={validity}
                                         />
@@ -297,7 +340,7 @@ export const LctoNew = () => {
                                             value={qtd}
                                         />
                                         <button
-                                            onClick={() => addProduct(sku, description)}
+                                            onClick={() => addProduct(sku, description, 'R$ ' + ((parseFloat(cost.replace(/[R$]/g, '').replace(/[',']/, '.')) * qtd).toFixed(2).toString()), cost)}
                                         >
                                             Inserir
                                         </button>
@@ -307,7 +350,8 @@ export const LctoNew = () => {
                                             <tr className='trHead'>
                                                 <th>SKU</th>
                                                 <th>Descrição</th>
-                                                <th>Custo</th>
+                                                <th>Custo Unit</th>
+                                                <th>Custo Total</th>
                                                 <th>Validade</th>
                                                 <th>Quantidade</th>
                                             </tr>
@@ -318,47 +362,56 @@ export const LctoNew = () => {
                                                     <tr className='tableRow' key={index}>
                                                         <td>
                                                             <input
-                                                                className='tbSku'
+                                                                className='tbSku-new'
                                                                 type="text"
-                                                                defaultValue={item.sku}
+                                                                value={item.sku}
                                                                 disabled
                                                             />
                                                         </td>
                                                         <td>
                                                             <input
-                                                                className='tbDescription'
+                                                                className='tbDescription-new'
                                                                 type="text"
-                                                                defaultValue={item.description}
+                                                                value={item.description}
                                                                 disabled
                                                             />
                                                         </td>
                                                         <td>
                                                             <input
+                                                                className='tbCostUnit-new'
                                                                 type="text"
-                                                                defaultValue={item.cost}
+                                                                value={item.cost}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                className='tbCostTot-new'
+                                                                type="text"
+                                                                value={item.costTot}
                                                                 disabled
                                                             />
                                                         </td>
                                                         <td>
                                                             <input
                                                                 type="date"
-                                                                defaultValue={item.validity}
+                                                                value={item.validity}
                                                                 disabled
                                                             />
                                                         </td>
                                                         <td>
                                                             <input
                                                                 type="text"
-                                                                defaultValue={item.qtd}
+                                                                value={item.qtd}
                                                                 disabled
                                                             />
                                                         </td>
                                                         <td>
                                                             <input
-                                                                className='btnDel'
+                                                                className='btnDel-new'
                                                                 type="button"
                                                                 value="X"
-                                                                onClick={() => delProduct(item.sku, item.idProduct)}
+                                                                onClick={() => delProduct(item.sku, item.idProduct, item.qtd, item.costTot)}
                                                             />
                                                         </td>
                                                     </tr>

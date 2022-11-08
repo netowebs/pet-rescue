@@ -49,9 +49,6 @@ export const PetNew = () => {
     const [selectedApartment, setSelectedApartment] = useState(String(aptModel?.id))
     const { apts } = useApartments({ sectId: selectedSection })
 
-    //UseState Modal
-    //const [showModal, setShowModal] = useState(false)
-
     //Functions Section and Apartment
     const handleSectionUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedSection(e.target.value)

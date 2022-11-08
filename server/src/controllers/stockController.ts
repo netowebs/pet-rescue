@@ -51,23 +51,25 @@ export const productDetailSku = async (req: Request, res: Response) => {
 
 export const productCreate = async (req: Request, res: Response) => {
     try {
-        const { description, sku, qtd, validity, brandsId, categoryId, location, cost, unit, obs, dtCad } = req.body
+        const { description, sku, qtd, validity, brand, category, location, cost, unit, obs, dtCad } = req.body
+
+        const convertCost = (costString: string) => {
+            return parseFloat(costString.replace(/[R$]/g, '').replace(/[',']/, '.'))
+        }
 
         const convertDate = (dateString: string) => {
             return new Date(moment(dateString).format('YYYY-MM-DD'))
-        }
-
-        console.log('Nova Data: ' + validity)
+        }      
 
         let create = await StockModel.create({
             description: description,
             sku: sku,
             qtd: qtd,
             validity: convertDate(validity),
-            brands: brandsId,
-            categoryId: categoryId,
+            brands_id: brand,
+            categories_id: category,
             location: location,
-            cost: cost,
+            cost: convertCost(cost),
             unit: unit,
             obs: obs,
             date_cad: dtCad
@@ -103,7 +105,11 @@ export const productDelete = async (req: Request, res: Response) => {
 
 export const productUpdate = async (req: Request, res: Response) => {
     try {
-        const { description, sku, qtd, validity, brandsId, categoryId, location, cost, unit, obs, dtCad } = req.body
+        const { description, sku, qtd, validity, brand, category, location, cost, unit, obs, dtCad } = req.body
+        
+        const convertCost = (costString: string) => {
+            return parseFloat(costString.replace(/[R$]/g, '').replace(/[',']/, '.'))
+        }
 
         const convertDate = (dateString: string) => {
             return new Date(moment(dateString).format('YYYY-MM-DD'))
@@ -114,10 +120,10 @@ export const productUpdate = async (req: Request, res: Response) => {
             sku: sku,
             qtd: qtd,
             validity: convertDate(validity),
-            brandsId: brandsId,
-            categoryId: categoryId,
+            brands_id: brand,
+            categories_id: category,
             location: location,
-            cost: cost,
+            cost: convertCost(cost),
             unit: unit,
             obs: obs,
             date_cad: dtCad
@@ -147,10 +153,14 @@ export const productUpdateLcto = async (req: Request, res: Response) => {
             return new Date(moment(dateString).format('YYYY-MM-DD'))
         }
 
+        const convertCost = (costString: string) => {
+            return parseFloat(costString.replace(/[R$]/g, '').replace(/[',']/, '.'))
+        }
+
         const update = await StockModel.update({
-            qtd: productLcto.qtd,
+            qtd: (productLcto.qtd),
             validity: convertDate(productLcto.validity),
-            cost: productLcto.cost,
+            cost: convertCost(productLcto.cost)
         }, {
             where: { id: productLcto.idProduct }
         })
@@ -167,4 +177,30 @@ export const productUpdateLcto = async (req: Request, res: Response) => {
         console.log(error)
 
     }
+
+}
+
+export const productUpdateMedicalRecord = async (req: Request, res: Response) => {
+    try {
+        const { ...stockQtd } = req.body
+
+        const update = await StockModel.update({
+            qtd: (stockQtd.newOld),
+        }, {
+            where: { id: stockQtd.id }
+        })
+            .then(() => {
+                return { success: true, message: 'Atualizado com Sucesso' }
+            })
+            .catch(error => {
+                return { success: false, message: error.message }
+            })
+        res.json(update)
+    } catch (error) {
+        const resp = { success: false, message: error }
+        res.json(resp)
+        console.log(error)
+
+    }
+    
 }

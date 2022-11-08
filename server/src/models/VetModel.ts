@@ -1,6 +1,9 @@
 import {Model, DataTypes} from 'sequelize'
 import {sequelize} from '../instances/mysql'
 
+import {MedicalRecordsModel } from './MedicalRecordsModel'
+import { VetsMedicalRecordsModel } from './VetsMedicalRecordsModel'
+
 export interface VetInstance extends Model {
     id: number
     name: string
@@ -18,7 +21,6 @@ export interface VetInstance extends Model {
     city: string
     uf: string,
     date_cad: Date
-
 }
 
 export const VetModel = sequelize.define<VetInstance>("VetModel",{
@@ -77,4 +79,18 @@ export const VetModel = sequelize.define<VetInstance>("VetModel",{
 {
     tableName: 'vets',
     timestamps: false
+})
+
+MedicalRecordsModel.belongsToMany(VetModel, {
+    through: {model: VetsMedicalRecordsModel},
+    as: 'VetMedical',
+    foreignKey: 'id_medicalRecords',
+    constraints: true
+})
+
+VetModel.belongsToMany(MedicalRecordsModel, {
+    through: {model: VetsMedicalRecordsModel},
+    as: 'MedicalVet',
+    foreignKey: 'id_vets',
+    constraints: true
 })

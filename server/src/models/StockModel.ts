@@ -1,8 +1,8 @@
 import { BrandsModel } from './BrandsModel'
 import { CategoriesModel } from './CategoriesModel'
 import { ItensStockUpdateModel } from './ItensStockUpdateModel'
-import { StockUpdateInstance, StockUpdateModel } from './StockUpdateModel'
-import {Model, DataTypes, BelongsToManyGetAssociationsMixin, BelongsToManyAddAssociationsMixin} from 'sequelize'
+import { StockUpdateModel } from './StockUpdateModel'
+import {Model, DataTypes} from 'sequelize'
 import {sequelize} from '../instances/mysql'
 
 export interface StockInstace extends Model{
@@ -16,10 +16,6 @@ export interface StockInstace extends Model{
     unit: string
     obs: string,
     date_cad: Date,
-    getStock: BelongsToManyGetAssociationsMixin<StockInstace>
-    getUpdate: BelongsToManyGetAssociationsMixin<StockUpdateInstance>
-    setStock: BelongsToManyAddAssociationsMixin<StockInstace, StockInstace['id']>
-    setUpdate: BelongsToManyAddAssociationsMixin<StockUpdateInstance, StockUpdateInstance['id']>
 }
 
 export const StockModel = sequelize.define<StockInstace>("stockModel",{
@@ -45,7 +41,7 @@ export const StockModel = sequelize.define<StockInstace>("stockModel",{
         type: DataTypes.STRING
     },
     cost: {
-        type: DataTypes.NUMBER
+        type: DataTypes.FLOAT
     },
     unit: {
         type: DataTypes.STRING

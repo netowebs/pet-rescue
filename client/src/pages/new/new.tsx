@@ -1,5 +1,9 @@
 import { useParams } from 'react-router-dom'
+import { AdoptionNew } from '../../components/datatableAdoptions/new/AdoptionNew'
+import { BankNew } from '../../components/datatableBank/new/BankNew'
 import { LctoNew } from '../../components/datatableLcto/new/LctoNew'
+import { LctoNewFinancial } from '../../components/datatableLctoFinancial/new/LctoNewFinancial'
+import { MedicalRecordNew } from '../../components/datatableMedicalRecords/new/MedicalRecordsNew'
 import { PetNew } from '../../components/datatablePet/new/PetNew'
 import { StockNew } from '../../components/datatableStock/new/StockNew'
 import { TutorNew } from '../../components/datatableTutors/new/TutorNew'
@@ -19,30 +23,24 @@ export const New = () => {
             <div className="conteudo">
                 <>
                     {
-                        <span>
-                            {
-                                params.slug === 'tutors' &&
-                                "Tutores" ||
-                                params.slug === 'medical-records' &&
-                                "Fichas Médicas" ||
-                                params.slug === `financial` &&
-                                `Lançamentos Financeiros`
-                            }
-                        </span>
-                    }
-                    {
                         params.slug === 'pets' &&
                         <PetNew /> ||
                         params.slug === 'tutors' &&
                         <TutorNew /> ||
                         params.slug === 'medical-records' &&
-                        {} ||
+                        <MedicalRecordNew /> ||
                         params.slug === 'vets' &&
                         <VetNew /> ||
                         params.slug === 'stock' &&
                         <StockNew /> ||
-                        params.slug === 'lcto' &&
-                        <LctoNew />
+                        params.slug === 'lctos' &&
+                        <LctoNew /> ||
+                        params.slug === 'bank' &&
+                        <BankNew /> ||
+                        params.slug === 'financial' &&
+                        <LctoNewFinancial /> ||
+                        params.slug === 'adoptions' &&
+                        <AdoptionNew />
                     }
                 </>
             </div>

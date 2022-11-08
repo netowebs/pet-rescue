@@ -8,9 +8,9 @@ export const sortAndToggle = (sort: string, a: any, b: any, toggle: boolean) => 
             }
         case 'id':
             if (toggle) {
-                return a.id.toString().localeCompare(b.id.toString())
+                return a.id.toString() - b.id.toString()
             } else {
-                return b.id.toString().localeCompare(a.id.toString())
+                return b.id.toString() - a.id.toString()
             }
         case 'address':
             if(toggle) {

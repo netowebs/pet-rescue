@@ -18,7 +18,7 @@ export const MedicalRecords = () => {
                         <div className='title-dt'>Atualizacao</div>
                     </div>
                 </div>
-                <ListRecords />
+                {/* <ListRecords /> */}
             </div>
         </div>
     )

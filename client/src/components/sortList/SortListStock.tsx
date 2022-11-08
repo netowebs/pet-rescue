@@ -6,23 +6,23 @@ export const sortAndToggle = (sort: string, a: any, b: any, toggle: boolean) => 
             } else {
                 return b.description.localeCompare(a.description)
             }
-        case 'id':
-            if (toggle) {
-                return a.id.toString().localeCompare(b.id.toString())
-            } else {
-                return b.id.toString().localeCompare(a.id.toString())
-            }
+            case 'id':
+                if (toggle) {
+                    return a.id.toString() - b.id.toString()
+                } else {
+                    return b.id.toString() - a.id.toString()
+                }
         case 'qtd':
             if (toggle) {
-                return a.qtd.localeCompare(b.qtd)
+                return a.qtd.toString().localeCompare(b.qtd.toString())
             } else {
-                return b.qtd.localeCompare(a.qtd)
+                return b.qtd.toString().localeCompare(a.qtd.toString())
             }
         case 'validity':
             if (toggle) {
-                return a.validity.localeCompare(b.validity)
+                return a.validity.toString().localeCompare(b.validity.toString())
             } else {
-                return b.validity.localeCompare(a.validity)
+                return b.validity.toString().localeCompare(a.validity.toString())
             }
         case 'sku':
             if (toggle) {

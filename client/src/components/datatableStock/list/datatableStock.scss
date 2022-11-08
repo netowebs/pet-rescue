@@ -49,54 +49,65 @@
         }
     }
 
-.listProduct{
-    display: flex;
-    justify-content: space-around;   
-    align-items: center;
-    border-bottom: 1px solid rgb(181, 179, 179);
-    padding: 10px;
+    .container--stock{
+        display: flex;
+        flex-direction: column;
 
-    &:hover{
-        background-color: #f0f2f1;
+        .listProduct{
+            display: flex;
+            justify-content: space-around;   
+            align-items: center;
+            border-bottom: 1px solid rgb(181, 179, 179);
+            padding: 10px;
+            text-align: center;
+        
+            &:hover{
+                background-color: #f0f2f1;
+            }
+        
+            .idProduct{
+                margin-left: 20px;
+                flex: 1;
+            }
+
+            .skuProduct{
+                flex: 2;
+            }
+
+            .descriptionProduct{
+                flex: 2.9;
+            }
+        
+            .validityProduct{
+                flex: 1.5;
+                margin-right: 53px;
+            }
+        
+            .qtdProduct{
+                flex: 0.6;
+                margin-right: 120px;
+            }
+        
+            .icon{
+                width: 32px;
+            }
+        
+            .pdf{
+                color: red;
+                cursor: pointer;
+                margin-right: 10px;
+            }
+        
+            .print{
+                color: purple;
+                cursor: pointer;
+                margin-right: 10px;
+            }
+        
+            .edit{
+                color: green;
+                cursor: pointer;
+                margin-right: 10px;
+            }
     }
-
-    .idProduct,
-    .skuProduct,
-    .descriptionProduct{
-        flex: 2;
-        text-align: center;
-    }
-
-    .validityProduct{
-        flex: 1;
-    }
-
-    .qtdProduct{
-        flex: 2;
-        margin-right: 130px;
-    }
-
-
-    .icon{
-        width: 32px;
-    }
-
-    .pdf{
-        color: red;
-        cursor: pointer;
-        margin-right: 10px;
-    }
-
-    .print{
-        color: purple;
-        cursor: pointer;
-        margin-right: 10px;
-    }
-
-    .edit{
-        color: green;
-        cursor: pointer;
-        margin-right: 10px;
-    }
-
 }

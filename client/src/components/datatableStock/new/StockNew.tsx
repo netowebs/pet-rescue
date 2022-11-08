@@ -15,8 +15,6 @@ import { DatatableBrandProduct } from '../../datatableBrandProduct/DatatableBran
 
 export const StockNew = () => {
 
-    const params = useParams()
-
     //UseState Inputs
     const [idCad, setIdCad] = useState(String)
     const [dtCad, setDtCad] = useState(String)
@@ -38,15 +36,15 @@ export const StockNew = () => {
         setDtCad(moment().format('DD/MM/YYYY'))
     }, [dtCad])
 
-    useEffect(() => {
-
-    })
-
     //Function Create
     const handleCreate = async () => {
+        if(qtd === 'null'){
+            setQtd('0')
+        }
+
         const data: any = { sku, description, validity, qtd, brand, category, obs, location, cost, unit }
 
-        if (description == '' || validity == '' || qtd == '' || sku == '' || brand == '' || category === '' || location === '' || cost === '' || unit === '') {
+        if (description == '' || validity == '' || qtd == '' || sku == '' || brand == '' || category === '' || location === ''  || unit === '') {
             alert('Existem campos vazios')
         } else {
             const res = await stock.createProduct(data)
@@ -124,7 +122,8 @@ export const StockNew = () => {
                                 <label htmlFor="ipt-validity">Validade</label><br />
                                 <input
                                     className='ipt-validity'
-                                    type="text"
+                                    type="date"
+                                    min={moment().format('YYYY-MM-DD')}
                                     onChange={
                                         (e) => setValidity(moment(e.target.value).format('YYYY-MM-DD'))
                                     }
@@ -146,8 +145,10 @@ export const StockNew = () => {
                                     className='ipt-unit'
                                     name="unit" 
                                     id="unit"
+                                    defaultValue={'...'}
                                     onChange={(e) => setUnit(e.target.value)}
                                 >
+                                    <option disabled>...</option>
                                     <option value="KG">Kg</option>
                                     <option value="MT">Mt</option>
                                     <option value="Un">Un</option>
@@ -166,11 +167,13 @@ export const StockNew = () => {
                             <div className="boxCost">
                                 <label htmlFor="ipt-cost">Custo</label><br />
                                 <input
-                                    className='ipt-cost'
-                                    type="number"
-                                    onChange={
-                                        (e) => setCost(e.target.value)
-                                    }
+                                    className='ipt-cost' 
+                                    type="text"
+                                    step={'0.01'}
+                                    value={cost}
+                                    onChange={(e) => {setCost(e.target.value)}}
+                                    onBlur={() => setCost('R$ '+cost)}
+                                    onFocus={() => setCost('')}
                                 />
                             </div>
                             <div className="boxCategory">
@@ -228,7 +231,7 @@ export const StockNew = () => {
                                     Comp={<DatatableBrandProduct />} 
                                 />
                             </div>
-                            <fieldset className='fieldset--category-brand'>
+                            <fieldset className='fieldset--obs'>
                                 <legend>Observações</legend>
                                 <div className="boxObs">
                                     <textarea

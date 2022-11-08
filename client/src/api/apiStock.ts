@@ -71,6 +71,20 @@ export const stock = {
         }
     },
 
+    updateProductMedicalRecord: async (data: any) => {
+        try {
+            return await instance.put(`/product/updateMedicalRecord/${[data.id]}`, data)
+                .then(
+                    response => { return response.data }
+                )
+                .catch(
+                    error => { return error }
+                )
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
     createProduct: async (data: any) => {
         try {
             return await instance.post(`/product/create`, data)

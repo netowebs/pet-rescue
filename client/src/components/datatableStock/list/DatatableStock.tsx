@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { sortAndToggle } from '../../sortList/SortListTutor'
+import { sortAndToggle } from '../../sortList/SortListStock'
 import { stock } from "../../../api/apiStock";
 import { Stock } from "../../../types/typeStock";
 
@@ -79,7 +79,7 @@ export const DatatableStock = ({ search, setSearch }: Prop) => {
                         </div>
                         <div
                             className="skuProduct--list-title"
-                            onClick={() => handleSort("address")}
+                            onClick={() => handleSort("sku")}
                         >
                             {
                                 sort === 'sku' ?
@@ -113,7 +113,7 @@ export const DatatableStock = ({ search, setSearch }: Prop) => {
                         </div>
                         <div
                             className="validityProduct--list-title"
-                            onClick={() => handleSort("phone")}
+                            onClick={() => handleSort("validity")}
                         >
                             {
                                 sort === 'validity' ?
@@ -130,7 +130,7 @@ export const DatatableStock = ({ search, setSearch }: Prop) => {
                         </div>
                         <div
                             className="qtdProduct--list-title"
-                            onClick={() => handleSort("cpf")}
+                            onClick={() => handleSort("qtd")}
                         >
                             {
                                 sort === 'qtd' ?
@@ -146,20 +146,21 @@ export const DatatableStock = ({ search, setSearch }: Prop) => {
                             <span>Quantidade</span>
                         </div>
                     </div>
-                    <div className="container">
+                    <div className="container--stock">
                         {
                             list.filter((val) => {
                                 if (search == '') {
                                     return val
                                 } else if (
                                     (val.description.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.sku.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                                    (val.sku.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                                    (val.id.toString().includes(search))
                                 ) {
                                     return val;
                                 }
                             }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
-                                    <div key={index} className='listTutor'>
+                                    <div key={index} className='listProduct'>
                                         <div className="idProduct">{("000000" + item.id).slice(-6)}</div>
                                         <div className="skuProduct" >{item.sku?.toUpperCase()}</div>
                                         <div className="descriptionProduct" >{item.description?.toUpperCase().substring(0,25)}</div>

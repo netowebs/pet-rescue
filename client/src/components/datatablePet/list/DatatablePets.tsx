@@ -204,8 +204,8 @@ export const DatatablePets = ({ search, setSearch }: Prop) => {
                                     return val
                                 } else if (
                                     (val.name.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.id.toString().includes(search)) ||
-                                    (val.species.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                                    (val.id.toString().includes(search))
+                                    // (val.species.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
                                 ) {
                                     return val;
                                 }

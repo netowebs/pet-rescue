@@ -9,6 +9,7 @@ routerStock.get('/productSku/:skuProduct', StockController.productDetailSku)
 routerStock.post('/product/create', StockController.productCreate)
 routerStock.put('/product/update/:idUpdate', StockController.productUpdate)
 routerStock.put('/product/updateLcto/:idUpdate', StockController.productUpdateLcto)
+routerStock.put('/product/updateMedicalRecord/:idProduct', StockController.productUpdateMedicalRecord)
 routerStock.delete('/product/del/:idDel', StockController.productDelete)
 
 

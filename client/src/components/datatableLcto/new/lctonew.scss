@@ -175,6 +175,8 @@
                 }
 
                 .boxProvider{
+                    margin-top: 10px;
+                    margin-bottom: 10px;
                     width: 350px;
 
                     input{
@@ -185,6 +187,8 @@
                 .fieldset--category-brand{
                     display: flex;
                     width: 100%;
+                    height: 390px;
+
 
                     .boxAddItens{
                         display: flex;
@@ -193,14 +197,14 @@
 
                         .container-itemLcto{
                             display: flex;
-                            justify-content: space-around;
+                            justify-content: space-evenly;
 
-                            .iptSku{
+                            .iptSku-new{
                                 width: 130px;
                             }
 
-                            .iptDescription{
-                                width: 426px;
+                            .iptDescription-new{
+                                width: 451px;
                             }
                         }
 
@@ -216,16 +220,26 @@
                             }
 
                             .tableRow{
-
+                                justify-content: space-evenly;
+                                width: 100%;
                                 input{
                                     font-size: 13px;
                                 }
 
-                                .tbDescription{
-                                    width: 377px;
+                                .tbSku-new{
+                                    width: 150px;
                                 }
 
-                                .btnDel{
+                                .tbCostUnit-new,
+                                .tbCostTot-new{
+                                    width: 150px;
+                                }
+
+                                .tbDescription-new{
+                                    width: 350px;
+                                }
+
+                                .btnDel-new{
                                     width: 20px;
                                 }
                             }

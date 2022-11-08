@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { sortAndToggle } from '../../sortList/SortListTutor'
+import { sortAndToggle } from '../../sortList/SortListLcto'
 import { Lcto } from "../../../types/typeLcto";
 import { stockUpdate } from "../../../api/apiUpdateStock";
 
@@ -78,11 +78,11 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
                             <span>ID</span>
                         </div>
                         <div
-                            className="userLcto--list-title"
-                            onClick={() => handleSort("address")}
+                            className="nfLcto--list-title"
+                            onClick={() => handleSort("nf")}
                         >
                             {
-                                sort === 'user' ?
+                                sort === 'nf' ?
                                     toggle &&
                                     <ArrowDownwardIcon
                                         className="downArrow"
@@ -92,11 +92,28 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
                                     />
                                     : null
                             }
-                            <span>Usuário</span>
+                            <span>NF</span>
+                        </div>
+                        <div
+                            className="providerLcto--list-title"
+                            onClick={() => handleSort("provider")}
+                        >
+                            {
+                                sort === 'provider' ?
+                                    toggle &&
+                                    <ArrowDownwardIcon
+                                        className="downArrow"
+                                    /> ||
+                                    <ArrowUpwardIcon
+                                        className="upArrow"
+                                    />
+                                    : null
+                            }
+                            <span>Fornecedor</span>
                         </div>
                         <div
                             className="dateLcto--list-title"
-                            onClick={() => handleSort("description")}
+                            onClick={() => handleSort("date")}
                         >
                             {
                                 sort === 'date' ?
@@ -112,11 +129,11 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
                             <span>Data</span>
                         </div>
                         <div
-                            className="itensLcto--list-title"
-                            onClick={() => handleSort("phone")}
+                            className="amountLcto--list-title"
+                            onClick={() => handleSort("amount")}
                         >
                             {
-                                sort === 'itens' ?
+                                sort === 'amount' ?
                                     toggle &&
                                     <ArrowDownwardIcon
                                         className="downArrow"
@@ -126,14 +143,14 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
                                     />
                                     : null
                             }
-                            <span>Itens</span>
+                            <span>Valor Total</span>
                         </div>
                         <div
-                            className="qtdTotalLcto--list-title"
-                            onClick={() => handleSort("cpf")}
+                            className="sourceLcto--list-title"
+                            onClick={() => handleSort("withdraw")}
                         >
                             {
-                                sort === 'qtd' ?
+                                sort === 'withdraw' ?
                                     toggle &&
                                     <ArrowDownwardIcon
                                         className="downArrow"
@@ -143,7 +160,24 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
                                     />
                                     : null
                             }
-                            <span>Quantidade</span>
+                            <span>Caixa</span>
+                        </div>
+                        <div
+                            className="userLcto--list-title"
+                            onClick={() => handleSort("user")}
+                        >
+                            {
+                                sort === 'user' ?
+                                    toggle &&
+                                    <ArrowDownwardIcon
+                                        className="downArrow"
+                                    /> ||
+                                    <ArrowUpwardIcon
+                                        className="upArrow"
+                                    />
+                                    : null
+                            }
+                            <span>Usuário</span>
                         </div>
                     </div>
                     <div className="container">
@@ -159,12 +193,14 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
                                 }
                             }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
-                                    <div key={index} className='listTutor'>
+                                    <div key={index} className='listLcto'>
                                         <div className="idLcto">{("000000" + item.id).slice(-6)}</div>
-                                        <div className="userLcto" >{item.user?.toUpperCase()}</div>
-                                        <div className="dataLcto" >{item.date?.toString()}</div>
-                                        <div className="itensLcto">{item.qtd_itens}</div>
-                                        <div className="qtdTotalLcto">{item.amount}</div>
+                                        <div className="nfLcto" >{item.nf}</div>
+                                        <div className="providerLcto" >{item.provider?.toUpperCase()}</div>
+                                        <div className="dateLcto" >{moment(item.date.toString()).format('DD/MM/YYYY')}</div>
+                                        <div className="amountLcto">{'R$ '+item.amount.toFixed(2).replace(/['.']/, ',')}</div>
+                                        <div className="sourceLcto">{item.withdraw?.toUpperCase()}</div>
+                                        <div className="userLcto">{item.user?.toUpperCase()}</div>
                                         <div className="btnStock">
                                             <PictureAsPdfIcon className="icon pdf" />
                                             <Link className="link" to={`/stockUpdate/${item.id}`}>

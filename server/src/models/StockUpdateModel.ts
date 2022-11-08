@@ -8,7 +8,10 @@ export interface StockUpdateInstance extends Model {
     nf: number,
     qtd_itens: number,
     amount: number,
-    donation: number
+    donation: number,
+    provider: string,
+    user: string,
+    withdraw: string
     getStock: BelongsToManyGetAssociationsMixin<StockInstace>
     getUpdate: BelongsToManyGetAssociationsMixin<StockUpdateInstance>
     setStock: BelongsToManyAddAssociationsMixin<StockInstace, StockInstace['id']>
@@ -36,6 +39,15 @@ export const StockUpdateModel = sequelize.define<StockUpdateInstance>("stockUpda
     },
     donation: {
         type: DataTypes.NUMBER
+    },
+    provider: {
+        type: DataTypes.STRING
+    },
+    user: {
+        type: DataTypes.STRING
+    },
+    withdraw: {
+        type: DataTypes.STRING
     }
 },
 {

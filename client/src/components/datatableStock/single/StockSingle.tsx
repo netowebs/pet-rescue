@@ -1,12 +1,10 @@
 //import PrintIcon from '@mui/icons-material/Print';
 import { MenuItem } from '@mui/material';
 import moment from 'moment';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './stocksingle.scss'
 import swal from 'sweetalert'
-import { viaCep } from '../../../api/apiViaCep';
-import { tutor } from '../../../api/apiTutors';
 import { useCategoryProduct } from '../../hooks/useCategoryProduct';
 import { useBrandProduct } from '../../hooks/useBrandProduct';
 import { stock } from '../../../api/apiStock';
@@ -25,19 +23,19 @@ export const StockSingle = () => {
     const [description, setDescription] = useState(String)
     const [validity, setValidity] = useState(String)
     const [qtd, setQtd] = useState(String)
-    const [brand, setBrand] = useState(String)
-    const [category, setCategory] = useState(String)
+    const [brand, setBrand] = useState(Number)
+    const [category, setCategory] = useState(Number)
     const [obs, setObs] = useState(String)
     const [location, setLocation] = useState(String)
     const [cost, setCost] = useState(String)
+    const [tempCost, setTempCost] = useState(String)
     const [unit, setUnit] = useState(String)
-
     const { categories } = useCategoryProduct()
     const { brands } = useBrandProduct()
 
     useEffect(() => {
         if (params.Id) {
-            const loadTutor = async (id: string) => {
+            const loadStock = async (id: string) => {
                 let res = await stock.getProduct(id)
                 if (res.success) {
                     setIdCad(("000000" + res.data.id).slice(-6))
@@ -46,11 +44,12 @@ export const StockSingle = () => {
                     setDescription(res.data.description)
                     setValidity(res.data.validity)
                     setQtd(res.data.qtd)
-                    setBrand(res.data.brand)
-                    setCategory(res.data.category)
+                    setBrand(res.data.brands_id)
+                    setCategory(res.data.categories_id)
                     setObs(res.data.obs)
                     setLocation(res.data.location)
-                    setCost(res.data.cost)
+                    setCost('R$ '+res.data.cost)
+                    setTempCost('R$ '+res.data.cost)
                     setUnit(res.data.unit)
                 } else {
                     swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
@@ -59,8 +58,7 @@ export const StockSingle = () => {
                         })
                 }
             }
-            loadTutor(params.Id)
-            
+            loadStock(params.Id) 
         }
     }, [])
 
@@ -177,6 +175,7 @@ export const StockSingle = () => {
                                     defaultValue={unit}
                                     onChange={(e) => setUnit(e.target.value)}
                                 >
+                                    <option disabled>...</option>
                                     <option value="KG">Kg</option>
                                     <option value="MT">Mt</option>
                                     <option value="Un">Un</option>
@@ -196,12 +195,13 @@ export const StockSingle = () => {
                             <div className="boxCost">
                                 <label htmlFor="ipt-cost">Custo</label><br />
                                 <input
-                                    className='ipt-cost'
-                                    type="number"
-                                    defaultValue={cost}
-                                    onChange={
-                                        (e) => setCost(e.target.value)
-                                    }
+                                    className='ipt-cost' 
+                                    type="text"
+                                    step={'0.01'}
+                                    value={cost}
+                                    onChange={(e) => {setCost(e.target.value)}}
+                                    onBlur={() => { cost.indexOf('R$') < 0 && cost !== '' ? setCost('R$ '+cost) :  setCost(tempCost)}}
+                                    onFocus={() => setCost('')}
                                 />
                             </div>
                             <div className="boxCategory">
@@ -210,10 +210,11 @@ export const StockSingle = () => {
                                     className='ipt-category'
                                     name="category"
                                     id="category"
-                                    defaultValue={category}
-                                    onChange={(e) => setCategory(e.target.value)}
+                                    value={category}
+                                    onChange={(e) => setCategory(parseInt(e.target.value))}
                                 >
                                     {
+                                        
                                         categories.map((item, index) => (
                                             <option 
                                                 value={item.id}
@@ -234,11 +235,11 @@ export const StockSingle = () => {
                             <div className="boxBrand">
                                 <label htmlFor="ipt-brand">Marca</label><br />
                                 <select
-                                    defaultValue={brand}
+                                    value={brand}
                                     className='ipt-brand'
                                     name="brand"
                                     id="brand"
-                                    onChange={(e) => setBrand(e.target.value)}
+                                    onChange={(e) => setBrand(parseInt(e.target.value))}
                                 >
                                     {
                                         brands.map((item, index) => (
@@ -257,7 +258,7 @@ export const StockSingle = () => {
                                     Comp={<DatatableBrandProduct />} 
                                 />
                             </div>
-                            <fieldset className='fieldset--category-brand'>
+                            <fieldset className='fieldset--obs'>
                                 <legend>Observações</legend>
                                 <div className="boxObs">
                                     <textarea

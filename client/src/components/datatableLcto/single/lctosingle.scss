@@ -1,4 +1,4 @@
-.container--tutor-single {
+.container--stock-new {
     display: flex;
     width: 100%;
 
@@ -54,6 +54,7 @@
                     .boxDtCad {
                         margin-right: 20px;
                     }
+
                 }
 
                 .topBar-Btn {
@@ -109,6 +110,7 @@
         fieldSet {
             border: 1px solid #e3e6e4;
             margin-bottom: 10px;
+            height: 550px;
 
             legend {
                 margin-left: 30px;
@@ -118,14 +120,19 @@
                 padding: 0px 10px 0px 10px;
                 text-decoration: underline;
                 color: #16a685;
+
+                .obgt {
+                    margin-left: 10px;
+                    color: #ad2a2a;
+                    text-decoration: underline;
+                }
             }
         }
 
         .middleBar {
             width: 100%;
-            height: 400px;
+            height: 500px;
             display: flex;
-            //border: 1px solid #e3e6e4;
 
             .middleBar-interno {
                 display: flex;
@@ -133,128 +140,117 @@
                 padding: 10px;
                 flex-wrap: wrap;
 
-                input {
-                    height: 30px;
-                    font-size: 15px;
-                    font-weight: bold;
-                    width: 200px;
-                    text-align: right;
-                    outline: none;
-                    border: 1px solid #b9bdba;
-                    padding: 10px;
-                    text-transform: uppercase;
-                }
+                .boxUser{
+                    width: 350px;
+                    margin-right: 15px;
 
-                .boxName,
-                .boxSpecies,
-                .boxSize,
-                .boxAge,
-                .boxTemperament,
-                .boxStatuAdoptions,
-                .boxFood,
-                .boxColor,
-                .boxCoat {
-                    margin-right: 20px;
-                }
-
-                .ipt-age {
-                    width: 98.5px;
-                }
-
-                label {
-                    font-size: 15px;
-                    color: #16a685;
-                    font-weight: bold;
-                }
-
-                .ipt-size,
-                .ipt-status,
-                .ipt-coat {
-                    height: 30px;
-                    font-size: 15px;
-                    font-weight: bold;
-                    width: 200px;
-                    text-align: right;
-                    outline: 0;
-                    border: 1px solid #b9bdba;
-                }
-
-                .boxInfo {
-                    width: 100%;
-                    height: 190px;
-
-                    .ipt-info {
-                        padding: 10px;
+                    input{
                         width: 100%;
-                        height: 100%;
-                        resize: none;
-                        outline: 0;
-                        border: 1px solid #b9bdba;
-                        text-transform: uppercase;
                     }
-
                 }
-                select {
-                    height: 30px;
-                    font-size: 15px;
-                    font-weight: bold;
-                    width: 200px;
-                    text-align: right;
-                    outline: none;
-                    border: 1px solid #b9bdba;
-                    text-transform: uppercase;
+
+                .boxNf{
+                    margin-right: 15px;
                 }
-            }
 
-            
+                .boxAmount{
+                    margin-right: 15px;
+                }
 
-        }
+                .boxDonation{
+                    width: 90px;
+                    margin-right: 15px;
 
-        .field-botton {
+                    select{
+                        width: 100%
+                    }
+                }
 
+                .boxWithdraw{
+                    width: 197px;
 
-            .bottonBar {
-                width: 100%;
-                height: 100%;
-                display: flex;
+                    select{
+                        width: 100%;
+                    }
+                }
 
-                .bottonBar-interno {
+                .boxProvider{
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    width: 350px;
+
+                    input{
+                        width: 100%;
+                    }
+                }
+
+                .fieldset--category-brand{
                     display: flex;
                     width: 100%;
-                    flex-wrap: wrap;
-                    flex: 1;
+                    height: 390px;
 
-                    label {
-                        font-size: 15px;
-                        color: #16a685;
-                        font-weight: bold;
+
+                    .boxAddItens{
+                        display: flex;
+                        flex-direction: column;
+                        width: 100%;
+
+                        .container-itemLcto{
+                            display: flex;
+                            justify-content: space-evenly;
+
+                            .iptSku{
+                                width: 130px;
+                            }
+
+                            .iptDescription{
+                                width: 451px;
+                            }
+                        }
+
+                        .lctoProductsTable{
+                            border-collapse: collapse;
+                            margin-top: 10px;
+                            .trHead{
+                                background-color: #16a685;
+                                color: white;
+                                height: 25px;
+                                border-bottom: 1px solid #ad2a2a;
+                                font-family: Arial, Helvetica, sans-serif;
+                            }
+
+                            .tableRow{
+                                justify-content: space-evenly;
+                                width: 100%;
+                                input{
+                                    font-size: 13px;
+                                }
+
+                                .tbSku{
+                                    width: 150px;
+                                }
+
+                                .tbCostUnit,
+                                .tbCostTot{
+                                    width: 150px;
+                                }
+
+                                .tbDescription{
+                                    width: 368px;    
+                                }
+
+                                .btnDel{
+                                    width: 20px;
+                                }
+                            }
+                        }
+
+
                     }
 
-                    select {
-                        height: 30px;
-                        font-size: 15px;
-                        font-weight: bold;
-                        width: 200px;
-                        text-align: right;
-                        outline: none;
-                        border: 1px solid #b9bdba;
-                        text-transform: uppercase;
-                    }
 
-                    .boxSection,
-                    .boxApartment {
-                        margin-right: 20px;
-                        padding: 10px;
-                        
-                    }
-                    .modalBox{
-                        padding-right: 10px;
-                        flex: 1.5;
-                    }              
                 }
-                
             }
         }
-
     }
 }

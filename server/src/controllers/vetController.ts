@@ -29,6 +29,7 @@ export const vetDetail = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+
 export const vetCreate = async (req: Request, res: Response) => {
     try {
         const { name, cpf, rg, nasc, sex, phone, crmv, speciality, cep, street, num, complement, districtName, city, state, dtCad } = req.body

@@ -41,19 +41,5 @@ export const stockUpdate = {
         } catch (error) {
             console.log(error)
         }
-    },
-
-    deleteUpdate: async (id: string) => {
-        try {
-            return await instance.delete(`/stockUpdate/del/${id}`)
-                .then(
-                    response => { return response.data }
-                )
-                .catch(
-                    error => { return error }
-                )
-        } catch (error) {
-            console.log(error)
-        }
     }
 }

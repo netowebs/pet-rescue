@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import moment from 'moment';
+import { AdoptionModel } from '../models/AdoptionModel';
 import { ApartmentModel } from '../models/ApartmentModel';
 import { AnimalModel } from '../models/PetModel'
 

@@ -1,104 +1,114 @@
 //import PrintIcon from '@mui/icons-material/Print';
 import { MenuItem } from '@mui/material';
 import moment from 'moment';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import './tutorsingle.scss'
+import './lctosingle.scss'
 import swal from 'sweetalert'
-import { viaCep } from '../../../api/apiViaCep';
-import { tutor } from '../../../api/apiTutors';
+import { stock } from '../../../api/apiStock';
+import { stockUpdate } from '../../../api/apiUpdateStock';
 
-export const TutorSingle = () => {
+type ArrProduct = {
+    idProduct: number,
+    sku: string,
+    description: string,
+    cost: string,
+    costTot: string
+    validity: string,
+    qtd: number,
+    ItensStockUpdateModel: {
+        qtd: number,
+        valUnit: number,
+        valTot: number
+    }
+}
+
+export const LctoSingle = () => {
 
     const params = useParams()
 
-    const [idCad, setIdCad] = useState(String)
+    //Dados do lançamento
+    const [id, setId] = useState(String)
     const [dtCad, setDtCad] = useState(String)
-    const [name, setName] = useState(String)
-    const [cpf, setCpf] = useState(String)
-    const [rg, setRg] = useState(String)
-    const [sex, setSex] = useState(String)
-    const [phone, setPhone] = useState(String)
-    const [cep, setCep] = useState(String)
-    const [street, setStreet] = useState(String)
-    const [num, setNum] = useState(Number)
-    const [complement, setComplement] = useState(String)
-    const [district, setDistrict] = useState(String)
-    const [city, setCity] = useState(String)
-    const [state, setState] = useState(String)
-    const [nasc, setNasc] = useState(String)
+    const [nf, setNf] = useState(0)
+    const [qtdItens, setQtdItens] = useState(0)
+    const [amount, setAmount] = useState(String)
+    const [donation, setDonation] = useState(-1)
+    const [withdraw, setWithdraw] = useState(String)
+    const [user, setUser] = useState(String)
+    const [provider, setProvider] = useState(String)
 
+    //Array tabela pivo
+    const [arrProduct, setArrProduct] = useState<number[]>([])
+
+    //Dados do produto para get e set no array que é iterado para exibir na tela e enviado ao backend
+    const [idProduct, setIdProduct] = useState(Number)
+    const [sku, setSku] = useState('')
+    const [qtd, setQtd] = useState(0)
+    const [description, setDescription] = useState(String)
+    const [cost, setCost] = useState(String)
+    const [qtdOld, setQtdOld] = useState(Number)
+    const [qtdUpdate, setQtdUpdate] = useState<number[]>([])
+    const [validity, setValidity] = useState(String)
+    const [productsLcto, setProductsLcto] = useState<ArrProduct[]>([])
+    const [somaQtd, setSomaQtd] = useState(Number)
+    const [somaValue, setSomaValue] = useState(Number)
+    const [costTot, setCostTot] = useState(String)
+
+    //get header lcto
     useEffect(() => {
         if (params.Id) {
-            const loadTutor = async (id: string) => {
-                console.log('teste')
-                let res = await tutor.getTutor(id)
+            const loadUpdate = async (id: string) => {
+                let res = await stockUpdate.getUpdate(id)
                 if (res.success) {
-                    setIdCad(("000000" + res.data.id).slice(-6))
+                    setId(("000000" + res.data.id).slice(-6))
                     setDtCad(moment(res.data.dtCad).format('DD/MM/YYYY'))
-                    setName(res.data.name)
-                    setCpf(res.data.cpf)
-                    setRg(res.data.rg)
-                    setSex(res.data.sex)
-                    setPhone(res.data.phone)
-                    setCep(res.data.cep)
-                    setStreet(res.data.address)
-                    setNum(res.data.num)
-                    setComplement(res.data.complement)
-                    setDistrict(res.data.district)
-                    setCity(res.data.city)
-                    setState(res.data.uf)
-                    setNasc(moment(res.data.date_birth).format('DD/MM/YYYY'))
+                    setNf(res.data.nf)
+                    setQtdItens(res.data.qtd_itens)
+                    console.log(res.data.qtd_itens)
+                    setAmount(res.data.amount)
+                    setDonation(res.data.donation)
+                    setUser(res.data.user)
+                    setProvider(res.data.provider)
+                    setWithdraw(res.data.withdraw)
+                    setProductsLcto(res.data.Stock)
                 } else {
                     swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
                         .then(() => {
-                            window.location.href = '/tutors'
+                            window.location.href = '/lctos'
                         })
                 }
             }
-            loadTutor(params.Id)
-            
+            loadUpdate(params.Id)
         }
     }, [])
 
-    const getCep = async (cep: string) => {
-        let json = await viaCep.getCep(cep)
-        setStreet(json.logradouro)
-        setDistrict(json.bairro)
-        setCity(json.localidade)
-        setState(json.uf)
-    }
 
-    const handleDelete = async () => {
-        if (idCad) {
-            const res = await tutor.deleteTutor(idCad)
-            if (res.success) {
-                swal(res.message, " ", "success")
-                    .then(() => {
-                        window.location.href = '/tutors'
-                    })
+    //Busca de produtos através do SKU
+    const getProduct = async (sku: string) => {
+        if (sku && sku != '') {
+            let json = await stock.getProductSku(id)
+            if (json.success) {
+                setIdProduct(json.data.id)
+                setDescription(json.data.description)
+                //setCost(json.data.cost)
+                setValidity(json.data.validity)
+                setQtdOld(json.data.qtd)
             } else {
-                swal("Error !", "" + JSON.stringify(res.message), "error")
+                alert('Produto Não Encontrado')
+                setSku('')
             }
-        }
-    }
-
-    const handleUpdate = async () => {
-        const data: any = { idCad, name, cpf, rg, nasc, sex, phone, cep, street, num, complement, district, city, state }
-
-        const res = await tutor.updateTutor(data)
-        if (res.success) {
-            swal(res.message, " ", "success",)
-                .then(() => {
-                    window.location.href = '/tutors'
-                })
         } else {
-            swal("Error !", "" + JSON.stringify(res.message), "error")
+            return
         }
     }
+
+    useEffect(() => {
+        setDtCad(moment().format('DD/MM/YYYY'))
+    }, [dtCad])
 
     return (
-        <div className='container--tutor-new'>
+        <div className='container--stock-new'>
             <div className='formDetail'>
                 <div className="topBar">
                     <div className="topBar-interno">
@@ -108,26 +118,24 @@ export const TutorSingle = () => {
                                 <input
                                     className='ipt-id'
                                     type="text"
-                                    defaultValue={idCad}
+                                    value={id}
                                     disabled
                                 />
                             </div>
                             <div className="boxDtCad">
                                 <label htmlFor="ipt-dtCad">Data Cadastro</label><br />
                                 <input
+                                    defaultValue={dtCad}
                                     className='ipt-dtCad'
                                     type="text"
-                                    defaultValue={dtCad}
                                     disabled
                                 />
                             </div>
                         </div>
                         <div className="topBar-Btn">
-                            <input type="submit" value="Salvar" className='btnSalvar' onClick={() => handleUpdate()} />
-                            <Link to={'/tutors'}>
-                                <input type="button" value="Cancelar" className='btnCancelar' />
+                            <Link to={'/lctos'}>
+                                <input type="button" value="Voltar" className='btnCancelar' />
                             </Link>
-                            <input type="button" value="Excluir" className='btnExcluir' onClick={() => handleDelete()} />
                         </div>
                     </div>
                 </div>
@@ -137,170 +145,179 @@ export const TutorSingle = () => {
                     </legend>
                     <div className="middleBar">
                         <div className="middleBar-interno">
-                            <div className="boxName">
-                                <label htmlFor="ipt-name">Nome</label><br />
+                            <div className="boxUser">
+                                <label htmlFor="ipt-user">Usuário</label><br />
                                 <input
-                                    className='ipt-name'
+                                    className='ipt-user'
                                     type="text"
-                                    name='nome'
-                                    defaultValue={name}
+                                    name='user'
+                                    value={user}
+                                    disabled
                                     onChange={
-                                        (e) => setName(e.target.value)
+                                        (e) => setUser(e.target.value)
                                     }
                                 />
                             </div>
-                            <div className="boxCpf">
-                                <label htmlFor="ipt-cpf">CPF</label><br />
-                                <input className='ipt-cpf' type="text"
-                                    name='cpf'
-                                    defaultValue={cpf}
+                            <div className="boxNf">
+                                <label htmlFor="ipt-nf">Nota Fiscal</label><br />
+                                <input
+                                    className='ipt-nf'
+                                    type="text"
+                                    value={nf}
+                                    disabled
+                                    name='nf'
                                     onChange={
-                                        (e) => setCpf(e.target.value)
+                                        (e) => setNf(parseInt(e.target.value))
                                     }
 
                                 />
                             </div>
-                            <div className="boxRg">
-                                <label htmlFor="ipt-rg">RG</label><br />
+                            <div className="boxAmount">
+                                <label htmlFor="ipt-amount">Valor Total do Lançamento</label><br />
                                 <input
+                                    className='ipt-amount'
                                     type="text"
-                                    className='ipt-rg'
-                                    defaultValue={rg}
-                                    onChange={(e) => setRg(e.target.value)}
+                                    step={'0.01'}
+                                    value={'R$ ' + amount}
+                                    disabled
+                                    onChange={(e) => { setAmount(e.target.value) }}
+                                    onBlur={() => setAmount('R$ ' + amount)}
+                                    onFocus={() => setAmount('')}
                                 />
                             </div>
-                            <div className="boxNasc">
-                                <label htmlFor="ipt-nasc">Nascimento</label><br />
+                            <div className="boxQtd">
+                                <label htmlFor="ipt-qtd">Qtd. Itens</label><br />
                                 <input
-                                    className='ipt-nasc'
+                                    className='ipt-qtd'
                                     type="text"
-                                    defaultValue={nasc}
+                                    value={qtdItens}
+                                    disabled
                                     onChange={
-                                        (e) => setNasc(moment(e.target.value).format('YYYY-MM-DD'))
+                                        (e) => setQtdItens(parseInt(e.target.value))
                                     }
                                 />
                             </div>
-                            <div className="boxSex">
-                                <label htmlFor="ipt-sex">Sexo</label><br />
-                                <select 
-                                    className='ipt-sex'
-                                    name="sex" 
-                                    id="sex"
-                                    value={sex}
-                                    onChange={
-                                        (e) => setSex(e.target.value)
-                                    }
+                            <div className="boxDonation">
+                                <label htmlFor="ipt-donation">Doação?</label><br />
+                                <select
+                                    className='ipt-donation'
+                                    name="donation"
+                                    value={donation}
+                                    id="donation"
+                                    disabled
+                                    onChange={(e) => setDonation(parseInt(e.target.value))}
                                 >
-                                    <option value="F">Feminino</option>
-                                    <option value="M">Masculino</option>
+                                    <option disabled>...</option>
+                                    <option value="0">Não</option>
+                                    <option value="1">Sim</option>
                                 </select>
                             </div>
-                            <div className="boxPhone">
-                                <label htmlFor="ipt-phone">Telefone</label><br />
+                            <div className="boxWithdraw">
+                                <label htmlFor="ipt-withdraw">Sacar de </label><br />
+                                <select
+                                    name="withdraw"
+                                    id="withdraw"
+                                    value={withdraw}
+                                    disabled
+                                    onChange={(e) => setWithdraw(e.target.value)}
+                                >
+                                    <option disabled>SELECIONE...</option>
+                                    <option value="DINHEIRO">Dinheiro</option>
+                                    <option value="BANCO DO BRASIL">Banco Brasil</option>
+                                    <option value="CAIXA FEDERAL">Caixa Federal</option>
+                                </select>
+                            </div>
+                            <div className="boxProvider">
+                                <label htmlFor="ipt-provider">Fornecedor</label><br />
                                 <input
-                                    className='ipt-sex'
+                                    className='ipt-provider'
                                     type="text"
-                                    defaultValue={phone}
+                                    value={provider}
+                                    disabled
                                     onChange={
-                                        (e) => setPhone(e.target.value)
+                                        (e) => setProvider(e.target.value)
                                     }
                                 />
                             </div>
-                            <fieldset className='fieldset--endereco'>
-                                <legend>Endereço</legend>
-                                <div className="boxCep">
-                                    <label htmlFor="ipt-cep">CEP</label><br />
-                                    <input
-                                        type="text"
-                                        defaultValue={cep}
-                                        className='ipt-cep'
-                                        onChange={(e) => setCep(e.target.value)}
-                                        onBlur={() => getCep(cep)}
-                                    />
-                                </div>
-                                <div className="boxStreet">
-                                    <label htmlFor="ipt-street">Rua:</label><br />
-                                    <input
-                                        type="text"
-                                        defaultValue={street}
-                                        className='ipt-street'
-                                        onChange={(e) => setStreet(e.target.value)}
-                                    />
-                                </div>
-                                <div className="boxStrNum">
-                                    <label htmlFor="ipt-num">Número</label><br />
-                                    <input
-                                        type="text"
-                                        defaultValue={num}
-                                        className='ipt-num'
-                                        onChange={(e) => setNum(parseInt(e.target.value))}
-                                    />
-                                </div>
-                                <div className="boxComplement">
-                                    <label htmlFor="ipt-complement">Complemento</label><br />
-                                    <input
-                                        type="text"
-                                        defaultValue={complement}
-                                        className='ipt-complement'
-                                        onChange={(e) => setComplement(e.target.value)}
-                                    />
-                                </div>
-                                <div className="boxDistrict">
-                                    <label htmlFor="ipt-district">Bairro</label><br />
-                                    <input
-                                        type="text"
-                                        defaultValue={district}
-                                        className='ipt-district'
-                                        onChange={(e) => setDistrict(e.target.value)}
-                                    />
-                                </div>
-                                <div className="boxCidade">
-                                    <label htmlFor="ipt-cidade">Cidade</label><br />
-                                    <input
-                                        type="text"
-                                        defaultValue={city}
-                                        className='ipt-cidade'
-                                        onChange={(e) => setCity(e.target.value)}
-                                    />
-                                </div>
-                                <div className="boxUF">
-                                    <label htmlFor="ipt-uf">Estado</label><br />
-                                    <select
-                                        name="state"
-                                        id="state"
-                                        value={state}
-                                        onChange={
-                                            (e) => setState(e.target.value)
-                                        }
-                                    >
-                                        <option value="AC">ACRE</option>
-                                        <option value="AL">ALAGOAS</option>
-                                        <option value="AP">AMAPÁ</option>
-                                        <option value="AM">AMAZONAS</option>
-                                        <option value="BA">BAHIA</option>
-                                        <option value="CE">CEARÁ</option>
-                                        <option value="DF">DISTRITO FEDERAL</option>
-                                        <option value="ES">ESPÍRITO SANTO</option>
-                                        <option value="GO">GOIÁS</option>
-                                        <option value="MA">MARANHÃO</option>
-                                        <option value="MT">MATO GROSSO</option>
-                                        <option value="MS">MATO GROSSO DO SUL</option>
-                                        <option value="MG">MINAS GERAIS</option>
-                                        <option value="PA">PARÁ</option>
-                                        <option value="PB">PARAÍBA</option>
-                                        <option value="PR">PARANÁ</option>
-                                        <option value="PE">PERNAMBUCO</option>
-                                        <option value="PI">PIAUÍ</option>
-                                        <option value="RJ">RIO DE JANEIRO</option>
-                                        <option value="RN">RIO GRANDE DO NORTE</option>
-                                        <option value="RS">RIO GRANDE DO SUL</option>
-                                        <option value="RO">RONDÔNIA</option>
-                                        <option value="RR">RORAIMA</option>
-                                        <option value="SC">SANTA CATARINA</option>
-                                        <option value="SP">SÃO PAULO</option>
-                                        <option value="SE">SERGIPE</option>
-                                        <option value="TO">TOCANTINS</option>
-                                    </select>
+                            <fieldset className='fieldset--category-brand'>
+                                <legend>Itens do Estoque</legend>
+                                <div className="boxAddItens">
+                                    <table className='lctoProductsTable'>
+                                        <thead>
+                                            <tr className='trHead'>
+                                                <th>SKU</th>
+                                                <th>Descrição</th>
+                                                <th>Custo Unit</th>
+                                                <th>Custo Total</th>
+                                                <th>Validade</th>
+                                                <th>Quantidade</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                productsLcto.map((item, index) => (
+                                                    <tr className='tableRow' key={index}>
+                                                        <td>
+                                                            <input
+                                                                className='tbSku'
+                                                                type="text"
+                                                                value={item.sku}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                className='tbDescription'
+                                                                type="text"
+                                                                value={item.description}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                className='tbCostUnit'
+                                                                type="text"
+                                                                value={item.cost}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                className='tbCostTot'
+                                                                type="text"
+                                                                value={item.ItensStockUpdateModel.valTot}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                type="date"
+                                                                value={item.validity}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                type="text"
+                                                                value={item.ItensStockUpdateModel.qtd}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        {/* <td>
+                                                            <input
+                                                                className='btnDel'
+                                                                type="button"
+                                                                value="X"
+                                                                onClick={() => delProduct(item.sku, item.idProduct, item.qtd, item.costTot)}
+                                                            />
+                                                        </td> */}
+                                                    </tr>
+
+                                                ))
+                                            }
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </fieldset>
                         </div>

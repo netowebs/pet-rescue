@@ -3,6 +3,7 @@ import { Apartment } from "./typeApartment"
 export type Pet ={
     id: number,
     dtCad: string,
+    adoption_id: number
     date_rescue: string,
     name: string,
     species: string,

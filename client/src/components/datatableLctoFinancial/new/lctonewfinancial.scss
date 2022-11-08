@@ -1,0 +1,328 @@
+.container--financial-new {
+    display: flex;
+    width: 100%;
+
+    .formDetail {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .topBar {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            border: 1px solid #e3e6e4;
+            margin-bottom: 10px;
+
+            .topBar-interno {
+                display: flex;
+                padding: 10px;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                justify-content: space-around;
+
+                .topBar-inputs {
+                    display: flex;
+                    width: 100%;
+                    justify-content: flex-start;
+
+                    input {
+                        height: 30px;
+                        font-size: 20px;
+                        font-weight: bold;
+                        width: 200px;
+                        text-align: right;
+                        background-color: #edf0ee;
+                        outline: none;
+                        border: none;
+                        padding: 10px;
+                        text-transform: uppercase;
+
+                        &:disabled {
+                            color: #ad2a2a;
+                        }
+                    }
+
+                    label {
+                        font-size: 15px;
+                        color: #16a685;
+                        font-weight: bold;
+                    }
+
+                    .boxSelectSup {
+                        width: 350px;
+
+                        select {
+                            width: 100%;
+                            height: 30px;
+                            font-size: 15px;
+                            font-weight: bold;
+                            text-align: right;
+                            outline: none;
+                            border: none;
+                        }
+                    }
+
+                    .boxUser,
+                    .boxDtCad {
+                        margin-right: 20px;
+                    }
+
+                    .boxUser {
+                        width: 250px;
+
+                        input {
+                            width: 100%;
+                        }
+                    }
+
+                }
+
+                .topBar-Btn {
+                    display: flex;
+
+                    .btnSalvar,
+                    .btnCancelar,
+                    .btnExcluir {
+                        width: 100px;
+                        padding: 5px;
+                        margin: 10px;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-weight: bold;
+                        color: white;
+                        border-radius: 3px;
+                        height: 35px;
+                        font-size: 17px;
+                        cursor: pointer;
+                    }
+
+                    .btnSalvar {
+                        background-color: #16a685;
+                        border: 1px solid #3ae0ba;
+
+                        &:hover {
+                            background-color: #3ae0ba;
+                        }
+                    }
+
+                    .btnCancelar {
+                        background-color: #b89b2a;
+                        border: 1px solid #f0d569;
+
+                        &:hover {
+                            background-color: #f0d569;
+
+                        }
+                    }
+
+                    .btnExcluir {
+                        background-color: #ad2a2a;
+                        border: 1px solid #ed5f5f;
+
+                        &:hover {
+                            background-color: #ed5f5f;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        fieldSet {
+            border: 1px solid #e3e6e4;
+            margin-bottom: 10px;
+            height: 550px;
+
+            legend {
+                margin-left: 30px;
+                font-family: Arial, Helvetica, sans-serif;
+                margin-bottom: 10px;
+                font-size: 13px;
+                padding: 0px 10px 0px 10px;
+                text-decoration: underline;
+                color: #16a685;
+
+                .obgt {
+                    margin-left: 10px;
+                    color: #ad2a2a;
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .middleBar {
+            width: 100%;
+            height: 500px;
+            display: flex;
+
+            .middleBar-interno {
+                display: flex;
+                max-width: 100%;
+                padding: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+
+                label {
+                    font-size: 15px;
+                    color: #16a685;
+                    font-weight: bold;
+                }
+
+                .ipt-idBank, .ipt-nameBank, .ipt-agency, .ipt-account{
+                    height: 30px;
+                    font-size: 15px;
+                    font-weight: bold;
+                    text-align: right;
+                    background-color: #edf0ee;
+                    outline: none;
+                    border: none;
+                    padding: 10px;
+                    text-transform: uppercase;
+                }
+
+                .boxIdBank {
+                    width: 100px;
+                    margin-right: 15px;
+
+                    input {
+                        width: 100%;
+                    }
+                }                
+
+                .boxNameBank {
+                    width: 350px;
+                    margin-right: 15px;
+
+                    input {
+                        width: 100%;
+                    }
+                }
+
+                .boxAgency {
+                    margin-right: 15px;
+                }
+
+                .fieldset--category-brand {
+                    display: flex;
+                    width: 100%;
+                    height: 390px;
+
+
+                    .boxAddItens {
+                        display: flex;
+                        flex-direction: column;
+                        width: 100%;
+
+                        .container-financialLcto {
+                            display: flex;
+                            justify-content: space-evenly;
+
+                            label {
+                                font-size: 15px;
+                                color: #16a685;
+                                font-weight: bold;
+                            }
+            
+                            input{
+                                height: 30px;
+                                font-size: 15px;
+                                font-weight: bold;
+                                text-align: right;
+                                //background-color: #edf0ee;
+                                border: 1px solid gray;
+                                outline: none;
+                                padding: 10px;
+                                text-transform: uppercase;
+                            }
+            
+                            select {
+                                width: 250px;
+                                height: 30px;
+                                font-size: 15px;
+                                font-weight: bold;
+                                text-align: right;
+                                outline: none;
+                                border: none;
+                            }
+                            
+                            .btn-insertLcto{
+                                width: 100px;
+                                color: white;
+                                background-color: #16a685;
+                                border: none;
+                                cursor: pointer;
+                    
+                                &:hover{
+                                    background-color: #3ae0ba;
+                                    border: 1px solid #16a685;
+                                }
+                            }
+
+                            .iptSku-new {
+                                width: 130px;
+                            }
+
+                            .iptDescription-new {
+                                width: 451px;
+                            }
+                        }
+
+                        .lctoFinancial {
+                            border-collapse: collapse;
+                            width: 100%;
+                            margin-top: 10px;
+
+                            .divThead {
+                                background-color: #16a685;
+
+                                .trHeadFinancialNew {
+                                    display: flex;
+                                    color: white;
+                                    height: 25px;
+                                    align-items: center;
+                                    justify-content: space-around;
+                                    border-bottom: 2px solid #ad2a2a;
+                                    font-family: Arial, Helvetica, sans-serif;
+                                }
+
+                            }
+
+                            .tableRow {
+                                justify-content: space-evenly;
+                                width: 100%;
+
+                                input {
+                                    font-size: 15px;
+                                    text-align: center;
+                                    text-transform: uppercase;
+                                }
+
+                                .tbDescription-new {
+                                    width: 722px;
+                                }
+
+                                .tbType-new {
+                                    width: 230px;
+                                }
+
+                                .tbValue-new {
+                                    width: 230px;
+                                }
+
+                                .btnDel-new {
+                                    width: 20px;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+
+
+                    }
+
+
+                }
+            }
+        }
+    }
+}
