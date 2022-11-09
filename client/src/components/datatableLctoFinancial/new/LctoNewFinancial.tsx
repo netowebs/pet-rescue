@@ -84,11 +84,6 @@ export const LctoNewFinancial = () => {
         setArrLctos(newArr)
     }
 
-    useEffect(() => {
-        console.log('Total de Créditos: ',totCredito)
-        console.log('Total de Débitos: ',totDebito)
-    },[totCredito, totDebito])
-
     const handleCreate = async () => {
         //const valueFloat = parseFloat(value.replace(/[R$]/g, '').replace(/[',']/, '.'))
         const data: any = { arrLctos, user, dtCad, idBank, nameBank, agency, account, idCad, totCredito, totDebito }

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import moment from 'moment';
+import { BankModel } from '../models/BankModel';
 import { StockModel } from '../models/StockModel';
 import { StockUpdateModel } from '../models/StockUpdateModel';
 
@@ -11,6 +12,9 @@ export const stockUpdateList = async (req: Request, res: Response) => {
                     model: StockModel,
                     as: 'Stock',
                     through: { attributes: [] }
+                },
+                {
+                    model: BankModel
                 }
             ]
         })
@@ -39,6 +43,9 @@ export const stockUpdateDetail = async (req: Request, res: Response) => {
                     model: StockModel,
                     as: 'Stock',
                     through: { attributes: ['qtd', 'valUnit', 'valTot'] }
+                },
+                {
+                    model: BankModel
                 }
             ]
         }
@@ -63,6 +70,8 @@ export const updateStockCreate = async (req: Request, res: Response) => {
     try {
         const { addArrPivo, arrProduct, ...data } = req.body
 
+        console.log(data.bankId)
+
         const convertDate = (dateString: string) => {
             return new Date(moment(dateString).format('YYYY-MM-DD'))
         }
@@ -80,7 +89,7 @@ export const updateStockCreate = async (req: Request, res: Response) => {
             qtd_itens: data.qtdItens,
             amount: data.amountNum,
             donation: data.donation,
-            withdraw: data.withdraw,
+            id_bank: data.bankId,
             user: data.user,
             provider: newProvider
         })

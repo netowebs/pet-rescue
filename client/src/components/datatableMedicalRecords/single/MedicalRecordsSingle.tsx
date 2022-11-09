@@ -245,15 +245,17 @@ export const MedicalRecordSingle = () => {
                                     value={status}
                                     style={
                                         status === 'saudavel' ? { backgroundColor: '#16a685', color: 'white' } :
-                                            status === 'observacao' ? { backgroundColor: '#f0d569' } :
-                                                status === 'critico' ? { backgroundColor: '#ad2a2a', color: 'white' } :
-                                                    { backgroundColor: 'white', color: 'black' }
+                                        status === 'observacao' ? { backgroundColor: '#f0d569' } :
+                                        status === 'critico' ? { backgroundColor: '#ad2a2a', color: 'white' } :
+                                        status === 'obito' ? { backgroundColor: '#abb8b7', color: 'white' } :
+                                        { backgroundColor: 'white', color: 'black' }
                                     }
                                     onChange={(e) => setStatus(e.target.value)}
                                 >
                                     <option value="saudavel" style={{ backgroundColor: 'white', color: 'black' }}>SAUDÁVEL</option>
                                     <option value="observacao" style={{ backgroundColor: 'white', color: 'black' }}>OBSERVAÇÃO</option>
                                     <option value="critico" style={{ backgroundColor: 'white', color: 'black' }}>CRÍTICO</option>
+                                    <option value="obito" style={{ backgroundColor: 'white', color: 'black' }}>ÓBITO</option>
                                 </select>
                             </div>
                         </div>

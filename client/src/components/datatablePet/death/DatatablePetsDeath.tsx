@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import './datatablePetAdopteds.scss'
+import './datatablePetDeath.scss'
 import { pet } from '../../../api/api'
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import EditIcon from '@mui/icons-material/Edit';
@@ -17,7 +17,7 @@ type Prop = {
     setSearch: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const DatatablePetsAdopteds = ({ search, setSearch }: Prop) => {
+export const DatatablePetsDeath = ({ search, setSearch }: Prop) => {
     const [loadList, setLoadList] = useState<Pet[]>([]);
     const [sort, setSort] = useState(String)
     const [toggle, setToggle] = useState(true)
@@ -27,7 +27,7 @@ export const DatatablePetsAdopteds = ({ search, setSearch }: Prop) => {
             let json = await pet.getAllPets();
             console.log(json)
             let newArr = json
-            let arrFiltered = newArr.filter((item:any) => item.adoption_id !== null && item.obito !== 'SIM')
+            let arrFiltered = newArr.filter((item:any) => item.obito === 'SIM')
             setLoadList(arrFiltered);
         } catch (error) {
             console.log(error);

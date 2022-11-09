@@ -1,5 +1,6 @@
 import {Model, DataTypes, BelongsToManyGetAssociationsMixin, BelongsToManyAddAssociationsMixin} from 'sequelize'
 import {sequelize} from '../instances/mysql'
+import { BankModel } from './BankModel'
 import { StockInstace } from './StockModel'
 
 export interface StockUpdateInstance extends Model {
@@ -53,4 +54,9 @@ export const StockUpdateModel = sequelize.define<StockUpdateInstance>("stockUpda
 {
     tableName: 'stock_update',
     timestamps: false
+})
+
+StockUpdateModel.belongsTo(BankModel,{
+    foreignKey: 'id_bank',
+    constraints: true
 })

@@ -35,11 +35,22 @@ export const MedicalRecordNew = () => {
     const getAnimal = async (id: string) => {
         let json = await pet.getPet(id)
         if (json.success) {
-            setAnimalName(json.data.name.toUpperCase())
-            setAnimalSpecie(json.data.species)
-            setAnimalTemperament(json.data.temperament)
-            setAnimalAge(json.data.age_approx)
-            setAnimalSex(json.data.sex)
+            console.log(json.data)
+            if (json.data.obito !== 'SIM') {
+                setAnimalName(json.data.name.toUpperCase())
+                setAnimalSpecie(json.data.species)
+                setAnimalTemperament(json.data.temperament)
+                setAnimalAge(json.data.age_approx)
+                setAnimalSex(json.data.sex)
+            } else {
+                alert('Animal em óbito')
+                setAnimalId('')
+                setAnimalName('')
+                setAnimalSpecie('')
+                setAnimalTemperament('')
+                setAnimalAge('')
+                setAnimalSex('')
+            }
         } else if (animalId.trim() !== '') {
             alert('Animal não encontrado')
             setAnimalId('')
@@ -84,7 +95,7 @@ export const MedicalRecordNew = () => {
             } else {
                 swal("Error !", "" + JSON.stringify(res.message), "error")
             }
-        }else{
+        } else {
             alert('Existem campos não preenchidos')
         }
 
@@ -142,7 +153,7 @@ export const MedicalRecordNew = () => {
                             </div>
                         </div>
                         <div className="topBar-Btn">
-                            <input type="submit" value="Salvar" className='btnSalvar' onClick={() => handleCreate()}/>
+                            <input type="submit" value="Salvar" className='btnSalvar' onClick={() => handleCreate()} />
                             <Link to={'/medical-records'}>
                                 <input type="button" value="Cancelar" className='btnCancelar' />
                             </Link>

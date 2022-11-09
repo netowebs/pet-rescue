@@ -17,6 +17,7 @@ import { DatatableBank } from '../../components/datatableBank/list/DatatableBank
 import { DatatableLctoFinancial } from '../../components/datatableLctoFinancial/list/DatatableLctoFinancial';
 import { DatatableAdoptions } from '../../components/datatableAdoptions/list/DatatableAdoptions';
 import { DatatablePetsAdopteds } from '../../components/datatablePet/adopteds/DatatablePetsAdopteds';
+import { DatatablePetsDeath } from '../../components/datatablePet/death/DatatablePetsDeath';
 
 export const List = () => {
 
@@ -34,9 +35,14 @@ export const List = () => {
             <div className="listContainer">
                 <div className="internalContainer">
                     <div className="buttonBar">
-                        <Link className='btnNew' to={`/${params.slug !== 'medical-closed'? params.slug : 'medical-records'}/new`}>
-                            <input className='button' type="submit" value="Novo Cadastro" />
-                        </Link>
+
+                        {
+                            params.slug !== 'medical-closed' && params.slug !== 'adopted' && params.slug !== 'death' ? <Link className='btnNew' to={`/${params.slug !== 'medical-closed' ? params.slug : 'medical-records'}/new`}>
+                                <input className='button' type="submit" value="Novo +" />
+                            </Link> : null 
+                        }
+
+
                         {/* <input
                             className='btnPdf'
                             type="submit"
@@ -80,6 +86,18 @@ export const List = () => {
                                 <input className='button' type="submit" value="Disponiveis" />
                             </Link>
                         }
+                        {
+                            params.slug === 'pets' &&
+                            <Link className='btnDeath' to={`/death`}>
+                                <input className='button' type="submit" value="Óbitos" />
+                            </Link>
+                        }
+                        {
+                            params.slug === 'death' &&
+                            <Link className='btnDeath' to={`/pets`}>
+                                <input className='button' type="submit" value="Disponiveis" />
+                            </Link>
+                        }
                     </div>
                     <div className="searchBar">
                         <span>Listagem de
@@ -107,7 +125,9 @@ export const List = () => {
                                         params.slug === 'adoptions' &&
                                         'Adoção' ||
                                         params.slug === 'adopted' &&
-                                        'Animais Adotados'
+                                        'Animais Adotados' ||
+                                        params.slug === 'death' &&
+                                        'Óbitos de Animais'
                                     }
                                 </span>
                             }
@@ -145,7 +165,9 @@ export const List = () => {
                             params.slug === 'adoptions' &&
                             <DatatableAdoptions search={search} setSearch={setSearch} /> ||
                             params.slug === 'adopted' &&
-                            <DatatablePetsAdopteds search={search} setSearch={setSearch} />
+                            <DatatablePetsAdopteds search={search} setSearch={setSearch} /> ||
+                            params.slug === 'death' &&
+                            <DatatablePetsDeath search={search} setSearch={setSearch} />
                         }
                     </div>
                 </div>

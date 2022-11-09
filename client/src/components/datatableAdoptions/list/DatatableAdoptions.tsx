@@ -10,8 +10,8 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { sortAndToggle } from '../../sortList/SortListMedicalRecord'
 import { MedicalRecord } from "../../../types/typeMedicalRecord";
-import { medicalRecords } from "../../../api/apiMedicalRecords";
 import { adoption } from "../../../api/apiAdoption";
+import { Adoption } from "../../../types/typeAdoption";
 
 type Prop = {
     search: string;
@@ -19,7 +19,7 @@ type Prop = {
 }
 
 export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
-    const [loadList, setLoadList] = useState<MedicalRecord[]>([]);
+    const [loadList, setLoadList] = useState<Adoption[]>([]);
     const [sort, setSort] = useState(String)
     const [toggle, setToggle] = useState(true)
 
@@ -35,9 +35,7 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
                 console.log(error);
             }
         }
-
         loadingList()
-
     }, [])
 
     const handleSort = (value: string) => {
@@ -64,9 +62,9 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
             itemsPerPage={8}
             renderList={(list) => (
                 <>
-                    <div className="titleBar--ListMR">
+                    <div className="titleBar--ListAdoption">
                         <div
-                            className="idMR--list-title"
+                            className="idAdoption--list-title"
                             onClick={() => handleSort("id")}
                         >
                             {
@@ -83,7 +81,7 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
                             <span>ID</span>
                         </div>
                         <div
-                            className="statusMR--list-title"
+                            className="petAdoption--list-title"
                             onClick={() => handleSort("status")}
                         >
                             {
@@ -97,10 +95,10 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
                                     />
                                     : null
                             }
-                            <span>Status</span>
+                            <span>Animal</span>
                         </div>
                         <div
-                            className="vetMR--list-title"
+                            className="tutorAdoption--list-title"
                             onClick={() => handleSort("vet")}
                         >
                             {
@@ -114,10 +112,10 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
                                     />
                                     : null
                             }
-                            <span>Veterinário</span>
+                            <span>Tutor</span>
                         </div>
                         <div
-                            className="petMR--list-title"
+                            className="dateAdoption--list-title"
                             onClick={() => handleSort("pet")}
                         >
                             {
@@ -131,10 +129,10 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
                                     />
                                     : null
                             }
-                            <span>Animal</span>
+                            <span>Data Adoção</span>
                         </div>
                         <div
-                            className="lastChangeMR--list-title"
+                            className="userAdoption--list-title"
                             onClick={() => handleSort("last")}
                         >
                             {
@@ -148,7 +146,7 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
                                     />
                                     : null
                             }
-                            <span>Última Alteração</span>
+                            <span>Usuário</span>
                         </div>
                     </div>
                     <div className="container">
@@ -157,20 +155,19 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
                                 if (search == '') {
                                     return val
                                 } else if (
-                                    (val.vet_name.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.status.includes(search.toLocaleLowerCase())) ||
-                                    (val.animal_name.includes(search.toLocaleLowerCase()))
+                                    (val.AnimalModel.name.includes(search.toLocaleLowerCase())) ||
+                                    (val.TutorModel.name.includes(search.toLocaleLowerCase()))
                                 ) {
                                     return val;
                                 }
                             }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
                                     <div key={index} className='listMedicalRecords'>
-                                        <div className="idMR">{("000000" + item.id).slice(-6)}</div>
-                                        <div className="statusMR" >{item.status?.toUpperCase()}</div>
-                                        <div className="vetMR" >{item.vet_name}</div>
-                                        <div className="animalMR" >{item.animal_name}</div>
-                                        <div className="lastMR" >{moment(item.last_change).format('DD/MM/YYYY')}</div>
+                                        <div className="idAdoption">{("000000" + item.id).slice(-6)}</div>
+                                        <div className="petAdoption" >{item.AnimalModel.name.toUpperCase()}</div>
+                                        <div className="tutorAdoption" >{item.TutorModel.name.toUpperCase()}</div>
+                                        <div className="dateAdoption" >{moment(item.date).format('DD/MM/YYYY')}</div>
+                                        <div className="userAdoption" >{item.user.toUpperCase()}</div>
                                         <div className="btnStock">
                                             <PictureAsPdfIcon className="icon pdf" />
                                             <Link className="link" to={`/adoptions/${item.id}`}>

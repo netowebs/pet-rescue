@@ -1,4 +1,4 @@
-.titleBar--ListMR{
+.titleBar--ListAdoption{
     align-items: center;
     display: flex;
     justify-content: space-around;
@@ -11,32 +11,28 @@
     border-bottom: 2px solid #095543;
     text-align: center;
 
+    .idAdoption--list-title{
+        flex: 0.5;
+    }
 
-    .lastChangeMR--list-title{
-        margin-right: 200px;
+    .userAdoption--list-title{
+        margin-right: 230px;
     }
     
-    .idMR--list-title{
-        flex: 0.8;
+    .petAdoption--list-title{
+        flex: 0.7;
     }
-    .statusMR--list-title{
-        margin-left: 30px;
+    .tutorAdoption--list-title{
+        flex: 1.4;
+    }
+    .dateAdoption--list-title{
         flex: 0.6;
     }
-    .vetMR--list-title{
-        margin-left: 35px;
-        flex: 1.5;
+
+    .userAdoption--list-title{
+        flex: 0.7;
     }
 
-    .petMR--list-title{
-        flex: 1.2;
-        margin-right: 20px;
-    }
-
-    .lastChangeMR--list-title{
-        flex: 1;
-        margin-right: 245px;
-    }
 
     .downArrow{
         font-size: 15px;
@@ -62,28 +58,25 @@ margin-right: 5px;
     background-color: #f0f2f1;
 }
 
-.idMR{
-    margin-left: 20px;
+.idAdoption{
+    flex: 0.5;
+}
+
+.petAdoption{
     flex: 0.7;
 }
 
-.statusMR{
-    margin-left: 15px;
-    flex: 1;
+.tutorAdoption{
+    flex: 1.5;
 }
 
-.vetMR{
-    flex: 2;
+.dateAdoption{
+    flex: 0.7;
 }
 
-.animalMR{
-    flex: 1;
-    margin-right: 100px;
-}
-
-.lastMR{
-    flex: 0.5;
-    margin-right: 150px;
+.userAdoption{
+    flex: 0.7;
+    margin-right: 90px;
 }
 
 .icon{

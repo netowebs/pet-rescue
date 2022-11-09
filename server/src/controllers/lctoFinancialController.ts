@@ -105,11 +105,6 @@ export const lctoBankUpdate = async (req: Request, res: Response) => {
     try {
         const { arrLctos, user, dtCad, idBank, nameBank, agency, account, id, totCredito, totDebito, idBankDb } = req.body
 
-        console.log('AQUI: ========>>', id)
-        console.log('idBank: ',idBank)
-        console.log('Total de Crédito: ', totCredito)
-        console.log('Total de Débito: ', totDebito)
-
         const lctoCreate = await BankLctoModel.update(
             {
                 totCredito, totDebito

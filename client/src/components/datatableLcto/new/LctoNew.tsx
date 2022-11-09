@@ -6,6 +6,8 @@ import './lctonew.scss'
 import swal from 'sweetalert'
 import { stock } from '../../../api/apiStock';
 import { stockUpdate } from '../../../api/apiUpdateStock';
+import { bank } from '../../../api/apiBank';
+import { Bank } from '../../../types/typeBank';
 
 type ArrProduct = {
     idProduct: number,
@@ -32,9 +34,10 @@ export const LctoNew = () => {
     const [qtdItens, setQtdItens] = useState(0)
     const [amount, setAmount] = useState(String)
     const [donation, setDonation] = useState(-1)
-    const [withdraw, setWithdraw] = useState(String)
     const [user, setUser] = useState(String)
     const [provider, setProvider] = useState(String)
+    const [bankList, setBankList] = useState<Bank[]>([])
+    const [bankId, setBankId] = useState(Number)
 
     //Array tabela pivo
     const [arrProduct, setArrProduct] = useState<number[]>([])
@@ -52,6 +55,16 @@ export const LctoNew = () => {
     const [productsLcto, setProductsLcto] = useState<ArrProduct[]>([])
     const [somaQtd, setSomaQtd] = useState(Number)
     const [somaValue, setSomaValue] = useState(Number)
+
+    useEffect(() => {
+        const loadBanks = async () => {
+            let json = await bank.getAllBanks()
+            if(json){
+                setBankList(json)
+            }
+        }
+        loadBanks()
+    },[])
 
     //Busca de produtos através do SKU
     const getProduct = async (sku: string) => {
@@ -141,7 +154,7 @@ export const LctoNew = () => {
 
     const handleCreate = async () => {
         const amountNum = parseFloat(amount.replace(/[R$]/g, '').replace(/[',']/, '.'))
-        const data: any = { addArrPivo, arrProduct, dtCad, nf, qtdItens, amountNum, donation, withdraw, user, provider, ...productsLcto }
+        const data: any = { addArrPivo, arrProduct, dtCad, nf, qtdItens, amountNum, bankId, donation, user, provider, ...productsLcto }
 
         if (nf !== null && nf !== 0 && qtdItens >= 0 && amountNum !== 0 && user.trim() !== '' && donation === 1 || donation === 0) {
             if (qtdItens === somaQtd && somaValue === amountNum) {
@@ -278,12 +291,19 @@ export const LctoNew = () => {
                                     name="withdraw"
                                     id="withdraw"
                                     defaultValue={'SELECIONE...'}
-                                    onChange={(e) => setWithdraw(e.target.value)}
+                                    onChange={(e) => setBankId(parseInt(e.target.value))}
+                                    disabled={donation === 0 ? false : true}
                                 >
                                     <option disabled>SELECIONE...</option>
+                                    {
+                                        bankList.map((item, index) => (
+                                            <option key={index} value={item.id}>{item.name_bank}</option>
+                                        ))
+                                    }
+                                    {/* <option disabled>SELECIONE...</option>
                                     <option value="DINHEIRO">Dinheiro</option>
                                     <option value="BANCO DO BRASIL">Banco Brasil</option>
-                                    <option value="CAIXA FEDERAL">Caixa Federal</option>
+                                    <option value="CAIXA FEDERAL">Caixa Federal</option> */}
                                 </select>
                             </div>
                             <div className="boxProvider">

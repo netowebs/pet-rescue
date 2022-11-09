@@ -26,6 +26,7 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
         try {
             let json = await stockUpdate.getAllUpdates();
             setLoadList(json.data);
+            console.log(json.data)
         } catch (error) {
             console.log(error);
         }
@@ -199,7 +200,7 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
                                         <div className="providerLcto" >{item.provider?.toUpperCase()}</div>
                                         <div className="dateLcto" >{moment(item.date.toString()).format('DD/MM/YYYY')}</div>
                                         <div className="amountLcto">{'R$ '+item.amount.toFixed(2).replace(/['.']/, ',')}</div>
-                                        <div className="sourceLcto">{item.withdraw?.toUpperCase()}</div>
+                                        <div className="sourceLcto">{item.id_bank ? item.BankModel.name_bank.toUpperCase() : 'DOAÇÃO'}</div>
                                         <div className="userLcto">{item.user?.toUpperCase()}</div>
                                         <div className="btnStock">
                                             <PictureAsPdfIcon className="icon pdf" />

@@ -37,6 +37,8 @@ export const LctoSingle = () => {
     const [withdraw, setWithdraw] = useState(String)
     const [user, setUser] = useState(String)
     const [provider, setProvider] = useState(String)
+    const [bankId, setBankId] = useState(Number)
+    const [bankName, setBankName] = useState(String)
 
     //Array tabela pivo
     const [arrProduct, setArrProduct] = useState<number[]>([])
@@ -61,17 +63,19 @@ export const LctoSingle = () => {
             const loadUpdate = async (id: string) => {
                 let res = await stockUpdate.getUpdate(id)
                 if (res.success) {
+                    console.log(res.data)
                     setId(("000000" + res.data.id).slice(-6))
                     setDtCad(moment(res.data.dtCad).format('DD/MM/YYYY'))
                     setNf(res.data.nf)
                     setQtdItens(res.data.qtd_itens)
-                    console.log(res.data.qtd_itens)
                     setAmount(res.data.amount)
                     setDonation(res.data.donation)
                     setUser(res.data.user)
                     setProvider(res.data.provider)
                     setWithdraw(res.data.withdraw)
                     setProductsLcto(res.data.Stock)
+                    setBankId(res.data.id_bank)
+                    setBankName(res.data.BankModel.name_bank)
                 } else {
                     swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
                         .then(() => {
@@ -214,18 +218,12 @@ export const LctoSingle = () => {
                             </div>
                             <div className="boxWithdraw">
                                 <label htmlFor="ipt-withdraw">Sacar de </label><br />
-                                <select
-                                    name="withdraw"
-                                    id="withdraw"
-                                    value={withdraw}
+                                <input 
+                                    type="text" 
+                                    className='withdraw'
+                                    defaultValue={bankId !== null ? bankName : 'DOAÇÃO'}
                                     disabled
-                                    onChange={(e) => setWithdraw(e.target.value)}
-                                >
-                                    <option disabled>SELECIONE...</option>
-                                    <option value="DINHEIRO">Dinheiro</option>
-                                    <option value="BANCO DO BRASIL">Banco Brasil</option>
-                                    <option value="CAIXA FEDERAL">Caixa Federal</option>
-                                </select>
+                                />
                             </div>
                             <div className="boxProvider">
                                 <label htmlFor="ipt-provider">Fornecedor</label><br />

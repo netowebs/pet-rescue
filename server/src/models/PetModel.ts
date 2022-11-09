@@ -16,7 +16,8 @@ export interface PetInstance extends Model {
     qtd_food: number,
     color: string,
     coat_size: string,
-    adoption_id: number
+    adoption_id: number,
+    obito: string
 }
 
 export const AnimalModel = sequelize.define<PetInstance>("AnimalModel", {
@@ -67,6 +68,10 @@ export const AnimalModel = sequelize.define<PetInstance>("AnimalModel", {
 
     adoption_id: {
         type: DataTypes.NUMBER
+    },
+
+    obito: {
+        type: DataTypes.STRING
     }
 },{
     tableName: 'animals',

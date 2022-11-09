@@ -1,8 +1,6 @@
 import { Request, Response } from 'express'
-import moment from 'moment';
 import { MedicalRecordsModel } from '../models/MedicalRecordsModel';
 import { AnimalModel } from '../models/PetModel';
-import { StockModel } from '../models/StockModel';
 import { VetModel } from '../models/VetModel';
 import { VetsMedicalRecordsModel } from '../models/VetsMedicalRecordsModel';
 
@@ -68,7 +66,6 @@ export const medicalRecordCreate = async (req: Request, res: Response) => {
     try {
         const { dtCad, user, status, obs, animalId, vetRespId, vetRespName, animalName } = req.body
 
-        console.log(animalName)
         const createMR = await MedicalRecordsModel.create({
             animals_id: animalId,
             user: user,
@@ -101,7 +98,6 @@ export const medicalRecordUpdate = async (req: Request, res: Response) => {
     try {
         const { status, last_change, idVets, listItens, eventsList, statusMr } = req.body
 
-        console.log('AQUI: ',statusMr)
         const update = await MedicalRecordsModel.update({
             status, last_change, events: eventsList, itens: listItens, statusMR: statusMr
         }, {

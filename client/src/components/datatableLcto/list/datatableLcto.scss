@@ -11,6 +11,18 @@
         border-bottom: 2px solid #095543;
         text-align: center;
 
+        .dateLcto--list-title,
+        .amountLcto--list-title,
+        .nfLcto--list-title,
+        .idLcto--list-title,
+        .userLcto--list-title{
+            flex: 0.5;
+        }
+
+        .sourceLcto--list-title,
+        .providerLcto--list-title{
+            flex: 1;
+        }
 
         .userLcto--list-title{
             margin-right: 200px;
@@ -34,34 +46,30 @@
     border-bottom: 1px solid rgb(181, 179, 179);
     padding: 10px;
     text-align: center;
-    margin-right: 5px;
 
     &:hover{
         background-color: #f0f2f1;
     }
 
-    .idLcto,
-    .nfLcto{
-        flex: 0.7;
-    }
-
     .amountLcto,
     .sourceLcto,
-    .userLcto{
-        flex: .94;
+    .userLcto,
+    .dateLcto,
+    .nfLcto{
+        flex: 0.5;
     }
 
-    .providerLcto{
+    .idLcto{
+        flex: 0.1;
+    }
+
+    .providerLcto,
+    .sourceLcto{
         flex: 1;
-        margin-left: 20px;
     }
 
     .userLcto{
         margin-right: 60px;
-    }
-
-    .dateLcto{
-        flex: 1;
     }
 
     .icon{

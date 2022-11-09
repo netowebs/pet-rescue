@@ -25,6 +25,8 @@ export const NavBar = () => {
                             "Listagem de Animais" ||
                             pathName === '/adopted' &&
                             "Listagem de Animais Adotados" ||
+                            pathName === '/death' &&
+                            "Listagem de Óbitos de Animais" ||
                             pathName === '/pets' &&
                             "Listagem de Animais" ||
                             pathName === `/pets/${id}` &&
@@ -36,6 +38,8 @@ export const NavBar = () => {
                             "Listagem de Fichas Médicas Abertas" ||
                             pathName === '/medical-closed' &&
                             "Listagem de Fichas Médicas Baixadas" ||
+                            pathName === `/medical-records/${id}` &&
+                            `Ficha Médica do Animal ${id}` ||
 
                             pathName === '/financial/new' &&
                             "Novo Lançamento Financeiro" ||
