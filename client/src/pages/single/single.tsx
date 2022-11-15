@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { AdoptionSingle } from '../../components/datatableAdoptions/single/AdoptionSingle'
 import { BankSingle } from '../../components/datatableBank/single/BankSingle'
+import { CollaboratorsSingle } from '../../components/datatableCollaborators/single/CollaboratorsSingle'
 import { LctoSingle } from '../../components/datatableLcto/single/LctoSingle'
 import { LctoSingleFinancial } from '../../components/datatableLctoFinancial/single/LctoSingleFinancial'
 import { MedicalRecordSingle } from '../../components/datatableMedicalRecords/single/MedicalRecordsSingle'
@@ -40,7 +41,9 @@ export const Single = () => {
                         params.slug === 'bank' &&
                         <BankSingle /> ||
                         params.slug === 'adoptions' &&
-                        <AdoptionSingle />
+                        <AdoptionSingle /> ||
+                        params.slug === 'collaborators' &&
+                        <CollaboratorsSingle />
                     }
                 </>
             </div>

@@ -1,5 +1,4 @@
-import { BelongsToManyAddAssociationMixin } from 'sequelize'
-import {Model, DataTypes} from 'sequelize'
+import { BelongsToManyAddAssociationMixin, Model, DataTypes } from 'sequelize'
 import {sequelize} from '../instances/mysql'
 
 import {AnimalModel} from './PetModel'

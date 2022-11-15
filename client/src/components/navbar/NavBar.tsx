@@ -1,14 +1,19 @@
 import './navbar.scss'
 
 import { useEffect, useState } from 'react';
+import moment from 'moment';
 
 export const NavBar = () => {
     const [id, setId] = useState(Number)
-    const pathName = window.location.pathname
+    const [path, setPath] = useState(String)
 
     useEffect(() => {
-        setId(parseInt(pathName.split(/\D+/).join(""), 10))
-    },[id])
+        const handlePath = () => {
+            setPath(window.location.pathname)
+            setId(parseInt(path.split(/\D+/).join(""), 10))
+        }
+        handlePath()
+    },[id, path ,window.location.pathname])
 
     return (
         <div className="navbar">
@@ -16,88 +21,98 @@ export const NavBar = () => {
                 {
                     <span className='texto'>
                         {
-                            pathName === '/' &&
+                            path === '/home' &&
                             "Dashboard" ||
 
-                            pathName === '/pets/new' &&
+                            path === '/pets/new' &&
                             "Novo Cadastro de Animal" ||
-                            pathName === '/pets' &&
+                            path === '/pets' &&
                             "Listagem de Animais" ||
-                            pathName === '/adopted' &&
+                            path === '/adopted' &&
                             "Listagem de Animais Adotados" ||
-                            pathName === '/death' &&
+                            path === '/death' &&
                             "Listagem de Óbitos de Animais" ||
-                            pathName === '/pets' &&
+                            path === '/pets' &&
                             "Listagem de Animais" ||
-                            pathName === `/pets/${id}` &&
+                            path === `/pets/${id}` &&
                             `Cadastro do Animal ${id}` ||
                             
-                            pathName === '/medical-records/new' &&
+                            path === '/medical-records/new' &&
                             "Nova Ficha Médica" ||
-                            pathName === '/medical-records' &&
+                            path === '/medical-records' &&
                             "Listagem de Fichas Médicas Abertas" ||
-                            pathName === '/medical-closed' &&
+                            path === '/medical-closed' &&
                             "Listagem de Fichas Médicas Baixadas" ||
-                            pathName === `/medical-records/${id}` &&
-                            `Ficha Médica do Animal ${id}` ||
+                            path === `/medical-records/${id}` &&
+                            `Ficha Médica ${id}` ||
 
-                            pathName === '/financial/new' &&
+                            path === '/financial/new' &&
                             "Novo Lançamento Financeiro" ||
-                            pathName === '/financial' &&
+                            path === '/financial' &&
                             "Listagem de Lançamentos Financeiros" ||
-                            pathName === `/financial/${id}` &&
+                            path === `/financial/${id}` &&
                             `Lançamento financeiro ${id}` ||
 
-                            pathName === '/cadAdmin' &&
+                            path === '/cadAdmin' &&
                             "Cadastros Administrativos" ||
 
-                            pathName === '/vets/new' &&
+                            path === '/vets/new' &&
                             "Novo Cadastro de Veterinário(a)" ||
-                            pathName === '/vets' &&
+                            path === '/vets' &&
                             "Listagem de Veterinários" ||
-                            pathName === '/medical-closed' &&
+                            path === '/medical-closed' &&
                             "Listagem de Fichas Médicas Baixadas" ||
-                            pathName === `/vet/${id}` &&
+                            path === `/vet/${id}` &&
                             `Cadastro do Veterinário(a) ${id}` ||
 
-                            pathName === '/bank/new' &&
+                            path === '/bank/new' &&
                             "Novo Cadastro de Banco" ||
-                            pathName === '/bank' &&
+                            path === '/bank' &&
                             "Listagem de Bancos" ||
-                            pathName === `/bank/${id}` &&
+                            path === `/bank/${id}` &&
                             `Cadastro do Banco ${id}` ||
 
-                            pathName === '/tutors/new' &&
+                            path === '/tutors/new' &&
                             "Novo Cadastro de Tutor(a)" ||
-                            pathName === '/tutors' &&
+                            path === '/tutors' &&
                             "Listagem de Tutores" ||
-                            pathName === `/tutor/${id}` &&
+                            path === `/tutor/${id}` &&
                             `Cadastro do Tutor(a) ${id}` ||
 
-                            pathName === '/stock/new' &&
+                            path === '/stock/new' &&
                             "Novo Cadastro de Produto" ||
-                            pathName === '/stock' &&
+                            path === '/stock' &&
                             "Listagem de Estoque" ||
-                            pathName === `/stock/${id}` &&
+                            path === `/stock/${id}` &&
                             `Cadastro do Produto ${id}` ||
+                            path === `/lowStock` &&
+                            'Listagem de Estoque Baixo' ||
 
-                            pathName === '/lctos' &&
+                            path === '/lctos' &&
                             "Listagem de Lançamentos de Estoque" ||
-                            pathName === '/lctos/new' &&
+                            path === '/lctos/new' &&
                             "Novo Lançamento de Estoque" ||
-                            pathName === `/stockUpdate/${id}` &&
+                            path === `/stockUpdate/${id}` &&
                             `Dados do lançamento ${id}` ||
 
-                            pathName === '/adoptions' &&
+                            path === '/adoptions' &&
                             "Listagem de Adoções" ||
-                            pathName === '/adoptions/new' &&
+                            path === '/adoptions/new' &&
                             "Novo Adoção" ||
-                            pathName === `/adoptions/${id}` &&
-                            `Dados da Adoção ${id}`
-                            
+                            path === `/adoptions/${id}` &&
+                            `Dados da Adoção ${id}` ||
+
+                            path === '/collaborators/new' &&
+                            "Novo Cadastro Funcionário(a)" ||
+                            path === '/collaborators' &&
+                            "Listagem de Funcionários" ||
+                            path === `/collaborators/${id}` &&
+                            `Cadastro do Funcionário(a) ${id}` ||
+
+                            path === '/feed/new' &&
+                            `Alimentação do dia ${moment().format('DD/MM/YYYY')}`
                         }
                     </span>
-
                 }
             </div>
         </div>

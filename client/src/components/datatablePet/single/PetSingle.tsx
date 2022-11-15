@@ -9,6 +9,8 @@ import './petsingle.scss'
 import swal from 'sweetalert'
 import { ModalSectionApartment } from '../../buttons/modalSectionApartment/ModalSectionApartment';
 import { DatatableApartment } from '../../datatableApartment/DatatableApartment';
+import { Stock } from '../../../types/typeStock';
+import { stock } from '../../../api/apiStock';
 
 type AptModel = {
     id: number,
@@ -38,6 +40,9 @@ export const PetSingle = () => {
     const [note, setNote] = useState(String)
     const [apartmentId, setApartmentId] = useState(Number)
 
+    const [listFood, setListFood] = useState<Stock>()
+    const [iptFood, setIptFood] = useState('')
+
     //UseState Section and Apartment
     const [aptModel, setAptModel] = useState<AptModel>(inititi)
     const [sectModel, setSectModel] = useState<AptModel>(inititi)
@@ -46,11 +51,20 @@ export const PetSingle = () => {
     const [selectedApartment, setSelectedApartment] = useState(String(aptModel?.id))
     const { apts } = useApartments({ sectId: selectedSection })
 
+
+    const getFood = async (sku: string) => {
+        const json = await stock.getProductSku(sku)
+        if (json) {
+            setListFood(json.data)
+        }
+    }
+
     useEffect(() => {
         if (params.Id) {
             const loadPetDetail = async (id: string) => {
                 let res = await pet.getPet(id)
                 if (res.success) {
+                    console.log(res.data)
                     let json2 = await apartment.getApartment(res.data.apartment_id)
                     let json3 = await secctt.getSection(json2.section_id)
                     setIdCad(("000000" + res.data.id).slice(-6))
@@ -68,6 +82,7 @@ export const PetSingle = () => {
                     setCoat(res.data.coat)
                     setNote(res.data.note)
                     setAptModel(json2)
+                    setSectModel(json3)
                     setApartmentId(res.data.apartment_id)
                     setSelectedSection(json3.id)
                     setSelectedApartment(json2.id)
@@ -94,7 +109,7 @@ export const PetSingle = () => {
     }
 
     const handleUpdate = async () => {
-        const data: any = { idCad, dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, apartmentId }
+        const data: any = { idCad, dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, apartmentId, iptFood }
 
 
         if (selectedApartment == '') {
@@ -318,52 +333,79 @@ export const PetSingle = () => {
                         </div>
                     </div>
                 </fieldset>
-                <fieldset className='field-botton'>
-                    <legend>Hospedagem</legend>
-                    <div className="bottonBar">
-                        <div className="bottonBar-interno">
-                            <div className="boxSection">
-                                <label htmlFor="ipt-section">Seção</label><br />
-                                <select
-                                    value={selectedSection}
-                                    onChange={handleSectionUpdate}
-                                >
-                                    <option disabled></option>
-                                    {sections.map((item, index) => (
-                                        <option
-                                            key={index}
-                                            value={item.id}
-                                        >
-                                            {item.name}
-                                        </option>
-                                    ))}
-                                </select>
+                <div className="fieldsets">
+                    <fieldset className='field-botton'>
+                        <legend>Hospedagem</legend>
+                        <div className="bottonBar">
+                            <div className="bottonBar-interno">
+                                <div className="boxSection">
+                                    <label htmlFor="ipt-section">Seção</label><br />
+                                    <select
+                                        defaultValue={sectModel?.name}
+                                        onChange={handleSectionUpdate}
+                                    >
+                                        <option disabled></option>
+                                        {sections.map((item, index) => (
+                                            <option
+                                                key={index}
+                                                value={item.id}
+                                            >
+                                                {item.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="boxApartment">
+                                    <label htmlFor="ipt-apartment">Apartment</label><br />
+                                    <select
+                                        value={aptModel?.name}
+                                        onChange={handleApartmentUpdate}
+                                    >
+                                        <option disabled></option>
+                                        {apts.map((item, index) => (
+                                            <option
+                                                key={index}
+                                                value={item.id}
+                                            >
+                                                {item.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
-                            <div className="boxApartment">
-                                <label htmlFor="ipt-apartment">Apartmento</label><br />
-                                <select
-                                    value={selectedApartment}
-                                    onChange={handleApartmentUpdate}
-                                >
-                                    <option>Selecione</option>
-                                    {apts.map((item, index) => (
-                                        <option
-                                            key={index}
-                                            value={item.id}
-                                        >
-                                            {item.name}
-                                        </option>
-                                    ))}
-                                </select>
+                            <div className="modalBox">
+                                <ModalSectionApartment
+                                    Comp={<DatatableApartment />}
+                                />
                             </div>
                         </div>
-                        <div className="modalBox">
-                            <ModalSectionApartment
-                                Comp={<DatatableApartment />}
-                            />
+                    </fieldset>
+                    <fieldset className='field-food'>
+                        <legend>Consumo Ração</legend>
+                        <div className="bottonBar">
+                            <div className="bottonBar-interno">
+                                <div className="boxIdFood">
+                                    <label htmlFor="ipt-idFood">SKU</label><br />
+                                    <input
+                                        type="text"
+                                        className='ipt-idFood'
+                                        onChange={(e) => setIptFood(e.target.value)}
+                                        onBlur={() => getFood(iptFood)}
+                                    />
+                                </div>
+                                <div className="boxDescriptionFood">
+                                    <label htmlFor="ipt-descriptionFood">Descrição</label><br />
+                                    <input
+                                        type="text"
+                                        className='ipt-descriptionFood'
+                                        value={listFood?.description}
+                                        disabled
+                                    />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </fieldset>
+                    </fieldset>
+                </div>
             </div>
         </div>
     )

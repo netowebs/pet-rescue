@@ -19,7 +19,7 @@ type Prop = {
     setSearch: React.Dispatch<React.SetStateAction<string>>
 }
 
-type LctoFinancial ={
+export type LctoFinancial ={
     Bank: any
     id: number,
     id_bank: string,

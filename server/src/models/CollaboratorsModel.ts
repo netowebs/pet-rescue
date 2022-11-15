@@ -16,6 +16,13 @@ export interface CollaboratorsInstance extends Model {
     city: string
     uf: string,
     date_cad: Date
+    password: string,
+    nivel: number
+    username: string
+    dtAdimission: Date
+    cargo: string
+    setor: string
+    ativo: number
 
 }
 
@@ -64,6 +71,34 @@ export const CollaboratorsModel = sequelize.define<CollaboratorsInstance>("Colla
     },
     date_cad: {
         type: DataTypes.DATE
+    },
+
+    password: {
+        type: DataTypes.STRING
+    },
+
+    nivel: {
+        type: DataTypes.NUMBER
+    },
+
+    username: {
+        type: DataTypes.STRING
+    },
+
+    dtAdmission: {
+        type: DataTypes.DATE
+    },
+
+    cargo: {
+        type: DataTypes.STRING
+    },
+
+    setor: {
+        type: DataTypes.STRING
+    },
+
+    ativo: {
+        type: DataTypes.NUMBER
     }
 },
 {

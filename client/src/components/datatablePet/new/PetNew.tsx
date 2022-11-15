@@ -1,5 +1,3 @@
-//import PrintIcon from '@mui/icons-material/Print';
-import { MenuItem } from '@mui/material';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -12,6 +10,8 @@ import './petnew.scss'
 import { DatatableApartment } from '../../datatableApartment/DatatableApartment';
 import swal from 'sweetalert'
 import { ModalSectionApartment } from '../../buttons/modalSectionApartment/ModalSectionApartment';
+import { Stock } from '../../../types/typeStock';
+import { stock } from '../../../api/apiStock';
 
 type AptModel = {
     id: number,
@@ -41,6 +41,10 @@ export const PetNew = () => {
     const [note, setNote] = useState(String)
     const [apartmentId, setApartmentId] = useState(Number)
 
+    const [listFood, setListFood] = useState<Stock>()
+    const [iptFood, setIptFood] = useState('')
+    const [idFood, setIdFood] = useState(Number)
+
     //UseState Section and Apartment
     const [aptModel, setAptModel] = useState<AptModel>(inititi)
     const [sectModel, setSectModel] = useState<AptModel>(inititi)
@@ -59,17 +63,25 @@ export const PetNew = () => {
         setApartmentId(parseInt(e.target.value))
     }
 
+    const getFood = async (sku: string) => {
+        const json = await stock.getProductSku(sku)
+        if (json) {
+            setListFood(json.data)
+            setIdFood(json.data.id)
+        }
+    }
+
     useEffect(() => {
         setDtCad(moment().format('DD/MM/YYYY'))
     }, [dtCad])
 
     useEffect(() => {
-        
+
     }, [apts, sections])
 
     //Function Create
     const handleCreate = async () => {
-        const data: any = { dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, apartmentId }
+        const data: any = { dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, apartmentId, idFood}
 
         if (dtRescue == '' || name == '' || species == '' || age == '' || temperament == '' || adptionStatus === '' || food == '' || color == '' || coat == '' || size == '' || apartmentId == null || selectedSection == '' || sex == '') {
             alert('Existem campos vazios')
@@ -264,9 +276,9 @@ export const PetNew = () => {
                             </div>
                             <div className="boxInfo">
                                 <label htmlFor="ipt-info">Observações</label><br />
-                                <textarea 
+                                <textarea
                                     className='ipt-info'
-                                    name="ipt-info" 
+                                    name="ipt-info"
                                     id="ipt-info"
                                     onChange={
                                         (e) => setNote(e.target.value)}
@@ -276,52 +288,80 @@ export const PetNew = () => {
                         </div>
                     </div>
                 </fieldset>
-                <fieldset className='field-botton'>
-                    <legend>Hospedagem</legend>
-                    <div className="bottonBar">
-                        <div className="bottonBar-interno">
-                            <div className="boxSection">
-                                <label htmlFor="ipt-section">Seção</label><br />
-                                <select
-                                    defaultValue={''}
-                                    onChange={handleSectionUpdate}
-                                >
-                                    <option disabled></option>
-                                    {sections.map((item, index) => (
-                                        <option
-                                            key={index}
-                                            value={item.id}
-                                        >
-                                            {item.name}
-                                        </option>
-                                    ))}
-                                </select>
+                <div className="fieldsets">
+                    <fieldset className='field-botton'>
+                        <legend>Hospedagem</legend>
+                        <div className="bottonBar">
+                            <div className="bottonBar-interno">
+                                <div className="boxSection">
+                                    <label htmlFor="ipt-section">Seção</label><br />
+                                    <select
+                                        defaultValue={''}
+                                        onChange={handleSectionUpdate}
+                                    >
+                                        <option disabled></option>
+                                        {sections.map((item, index) => (
+                                            <option
+                                                key={index}
+                                                value={item.id}
+                                            >
+                                                {item.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="boxApartment">
+                                    <label htmlFor="ipt-apartment">Apartment</label><br />
+                                    <select
+                                        defaultValue={''}
+                                        onChange={handleApartmentUpdate}
+                                    >
+                                        <option disabled></option>
+                                        {apts.map((item, index) => (
+                                            <option
+                                                key={index}
+                                                value={item.id}
+                                            >
+                                                {item.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
-                            <div className="boxApartment">
-                                <label htmlFor="ipt-apartment">Apartment</label><br />
-                                <select
-                                    defaultValue={''}
-                                    onChange={handleApartmentUpdate}
-                                >
-                                    <option disabled></option>
-                                    {apts.map((item, index) => (
-                                        <option
-                                            key={index}
-                                            value={item.id}
-                                        >
-                                            {item.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="modalBox">
-                                <ModalSectionApartment 
-                                    Comp={<DatatableApartment />} 
+                            <div className="modalBox">
+                                <ModalSectionApartment
+                                    Comp={<DatatableApartment />}
                                 />
+                            </div>
                         </div>
-                    </div>
-                </fieldset>
+                    </fieldset>
+                    <fieldset className='field-food'>
+                        <legend>Consumo Ração</legend>
+                        <div className="bottonBar">
+                            <div className="bottonBar-interno">
+                                <div className="boxIdFood">
+                                    <label htmlFor="ipt-idFood">SKU</label><br />
+                                    <input
+                                        type="text"
+                                        className='ipt-idFood'
+                                        onChange={(e) => setIptFood(e.target.value)}
+                                        onBlur={() => getFood(iptFood)}
+                                    />
+                                </div>
+                                <div className="boxDescriptionFood">
+                                    <label htmlFor="ipt-descriptionFood">Descrição</label><br />
+                                    <input
+                                        type="text"
+                                        className='ipt-descriptionFood'
+                                        value={listFood?.description}
+                                        disabled
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
             </div>
         </div>
     )

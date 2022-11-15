@@ -1,11 +1,7 @@
 import { Request, Response } from 'express'
-import moment from 'moment';
-import { Op } from 'sequelize';
 import { BankLctoModel } from '../models/BankLctoModel';
 import { BankModel } from '../models/BankModel';
 import { RowsBankLctoModel } from '../models/RowsBankLctoModel';
-import { StockModel } from '../models/StockModel';
-import { StockUpdateModel } from '../models/StockUpdateModel';
 
 export const lctoBankList = async (req: Request, res: Response) => {
     try {

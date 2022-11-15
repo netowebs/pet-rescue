@@ -1,6 +1,5 @@
-//import PrintIcon from '@mui/icons-material/Print';
 import moment from 'moment';
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import './lctonew.scss'
 import swal from 'sweetalert'
@@ -9,7 +8,7 @@ import { stockUpdate } from '../../../api/apiUpdateStock';
 import { bank } from '../../../api/apiBank';
 import { Bank } from '../../../types/typeBank';
 
-type ArrProduct = {
+export type ArrProduct = {
     idProduct: number,
     sku: string,
     description: string,

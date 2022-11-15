@@ -22,6 +22,7 @@ export const StockNew = () => {
     const [description, setDescription] = useState(String)
     const [validity, setValidity] = useState(String)
     const [qtd, setQtd] = useState(String)
+    const [qtdMin, setQtdMin] = useState(String)
     const [brand, setBrand] = useState(String)
     const [category, setCategory] = useState(String)
     const [obs, setObs] = useState(String)
@@ -42,9 +43,9 @@ export const StockNew = () => {
             setQtd('0')
         }
 
-        const data: any = { sku, description, validity, qtd, brand, category, obs, location, cost, unit }
+        const data: any = { sku, description, validity, qtd, brand, category, obs, location, cost, unit, qtdMin }
 
-        if (description == '' || validity == '' || qtd == '' || sku == '' || brand == '' || category === '' || location === ''  || unit === '') {
+        if (description == '' || validity == '' || qtd == '' || sku == '' || brand == '' || category === '' || location === ''  || unit === '' && qtdMin !== '') {
             alert('Existem campos vazios')
         } else {
             const res = await stock.createProduct(data)
@@ -136,6 +137,16 @@ export const StockNew = () => {
                                     type="text"
                                     onChange={
                                         (e) => setQtd(e.target.value)
+                                    }
+                                />
+                            </div>
+                            <div className="boxQtdMin">
+                                <label htmlFor="ipt-qtdMin">Qtd. Minima</label><br />
+                                <input
+                                    className='ipt-qtd'
+                                    type="text"
+                                    onChange={
+                                        (e) => setQtdMin(e.target.value)
                                     }
                                 />
                             </div>

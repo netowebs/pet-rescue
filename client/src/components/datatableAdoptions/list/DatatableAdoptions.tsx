@@ -27,7 +27,6 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
         const loadingList = async () => {
             try {
                 let json = await adoption.getAllAdoption()
-                console.log(json)
                 if (json) {
                     setLoadList(json)
                 }

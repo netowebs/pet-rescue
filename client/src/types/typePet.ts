@@ -1,4 +1,4 @@
-import { Apartment } from "./typeApartment"
+import { Stock } from "./typeStock"
 
 export type Pet ={
     id: number,
@@ -12,6 +12,7 @@ export type Pet ={
     temperament: string,
     status: string,
     food: number,
+    qtd_food: number
     color: string,
     coat: string,
     note: string,
@@ -24,4 +25,7 @@ export type Pet ={
             name:string,
         }
     }
+    stockModel: Stock
+    obito?: string
+    lastFeed: string
 }

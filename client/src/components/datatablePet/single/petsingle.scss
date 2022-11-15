@@ -210,49 +210,121 @@
 
         }
 
-        .field-botton {
+        .fieldsets{
+            display: flex;
 
+            .ipt-idFood,
+            .ipt-descriptionFood {
+                height: 30px;
+                font-size: 15px;
+                font-weight: bold;
+                width: 200px;
+                text-align: right;
+                outline: none;
+                border: 1px solid #b9bdba;
+                padding: 10px;
+                text-transform: uppercase;
+            }
 
-            .bottonBar {
-                width: 100%;
-                height: 100%;
-                display: flex;
+            .boxIdFood{
+                margin-left: 10px;
+                margin-right: 20px;
+            }
 
-                .bottonBar-interno {
-                    display: flex;
+            .ipt-idFood{
+                width: 100px;
+            }
+
+            .ipt-descriptionFood{
+                width: 450px;
+            }
+
+            .field-botton {
+                flex: 1;
+                margin-right: 10px;
+    
+                .bottonBar {
                     width: 100%;
-                    flex-wrap: wrap;
-                    flex: 1;
-
-                    label {
-                        font-size: 15px;
-                        color: #16a685;
-                        font-weight: bold;
-                    }
-
-                    select {
-                        height: 30px;
-                        font-size: 15px;
-                        font-weight: bold;
-                        width: 200px;
-                        text-align: right;
-                        outline: none;
-                        border: 1px solid #b9bdba;
-                        text-transform: uppercase;
-                    }
-
-                    .boxSection,
-                    .boxApartment {
-                        margin-right: 20px;
-                        padding: 10px;
-                        
+                    height: 100%;
+                    display: flex;
+    
+                    .bottonBar-interno {
+                        display: flex;
+                        width: 100%;
+                        flex-wrap: wrap;
+                        flex: 2;
+                        align-self: center;
+    
+                        label {
+                            font-size: 15px;
+                            color: #16a685;
+                            font-weight: bold;
+                        }
+    
+                        select {
+                            height: 30px;
+                            font-size: 15px;
+                            font-weight: bold;
+                            width: 150px;
+                            text-align: right;
+                            outline: none;
+                            border: 1px solid #b9bdba;
+                            text-transform: uppercase;
+                        }
+    
+                        .boxSection,
+                        .boxApartment {
+                            margin-right: 20px;
+                            padding: 10px;
+                        }
                     }
                     .modalBox{
                         padding-right: 10px;
-                        flex: 1.5;
-                    }              
+                        align-self: center;
+                        display: flex;
+                        flex: 1;
+                    }
                 }
-                
+            }
+            .field-food {
+                flex: 1;
+    
+                .bottonBar {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+    
+                    .bottonBar-interno {
+                        display: flex;
+                        width: 100%;
+                        flex-wrap: wrap;
+                        flex: 2;
+                        align-self: center;
+    
+                        label {
+                            font-size: 15px;
+                            color: #16a685;
+                            font-weight: bold;
+                        }
+    
+                        select {
+                            height: 30px;
+                            font-size: 15px;
+                            font-weight: bold;
+                            width: 120px;
+                            text-align: right;
+                            outline: none;
+                            border: 1px solid #b9bdba;
+                            text-transform: uppercase;
+                        }
+    
+                        .boxSection,
+                        .boxApartment {
+                            margin-right: 20px;
+                            padding: 10px;
+                        }
+                    }
+                }
             }
         }
 

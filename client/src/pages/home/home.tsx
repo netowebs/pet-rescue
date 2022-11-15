@@ -4,6 +4,7 @@ import { Widgets } from '../../components/widgets/Widgets'
 import './home.scss'
 
 export const Home = () => {
+
     return(
         <div className='home'>
             <SideBar />

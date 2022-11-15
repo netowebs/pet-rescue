@@ -23,6 +23,7 @@ export const StockSingle = () => {
     const [description, setDescription] = useState(String)
     const [validity, setValidity] = useState(String)
     const [qtd, setQtd] = useState(String)
+    const [qtdMin, setQtdMin] = useState(String)
     const [brand, setBrand] = useState(Number)
     const [category, setCategory] = useState(Number)
     const [obs, setObs] = useState(String)
@@ -64,7 +65,7 @@ export const StockSingle = () => {
 
     const handleUpdate = async () => {
 
-        const data: any = { idCad, sku, description, validity, qtd, brand, category, obs, location, cost, unit }
+        const data: any = { idCad, sku, description, validity, qtd, brand, category, obs, location, cost, unit, qtdMin }
 
         const res = await stock.updateProduct(data)
         if (res.success) {
@@ -163,6 +164,17 @@ export const StockSingle = () => {
                                     defaultValue={qtd}
                                     onChange={
                                         (e) => setQtd(e.target.value)
+                                    }
+                                />
+                            </div>
+                            <div className="boxQtdMin">
+                                <label htmlFor="ipt-qtdMin">Qtd. Minima</label><br />
+                                <input
+                                    className='ipt-qtdMin'
+                                    type="text"
+                                    defaultValue={qtdMin}
+                                    onChange={
+                                        (e) => setQtdMin(e.target.value)
                                     }
                                 />
                             </div>

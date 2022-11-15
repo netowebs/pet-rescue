@@ -1,6 +1,10 @@
 import { Request, Response } from 'express'
 import moment from 'moment';
+import * as bcrypt from 'bcrypt'
+import dotenv from 'dotenv'
 import { CollaboratorsModel } from '../models/CollaboratorsModel';
+
+dotenv.config()
 
 export const collabList = async (req: Request, res: Response) => {
     try {
@@ -13,40 +17,43 @@ export const collabList = async (req: Request, res: Response) => {
 
 export const collabDetail = async (req: Request, res: Response) => {
     try {
-        let detail = await CollaboratorsModel.findOne({ where: { id: req.params.idCollab }})
-        .then((data) => {
-            if(data?.id){
-                return { success: true, data: data}
-            }else{
-                return{success: false}
-            }
-        })
-        .catch(error => {
-            return { success: false, message: error.message }
-        })
+        let detail = await CollaboratorsModel.findOne({ where: { id: req.params.idCollab } })
+            .then((data) => {
+                if (data?.id) {
+                    return { success: true, data: data }
+                } else {
+                    return { success: false }
+                }
+            })
+            .catch(error => {
+                return { success: false, message: error.message }
+            })
         res.json(detail)
     } catch (error) {
         console.log(error)
     }
 }
+
 export const collabCreate = async (req: Request, res: Response) => {
     try {
-        const { name, cpf, rg, nasc, sex, phone, crmv, speciality, cep, street, num, complement, districtName, city, state, dtCad } = req.body
+        const { name, cpf, rg, nasc, sex, phone, cep, street, num, complement, districtName, city, state, password, nivel, username, dtAdmission, cargo, setor, ativo, loadPhoto } = req.body
 
+        const passwordHash = await bcrypt.hash(password, 8)
         const convertDate = (dateString: string) => {
             return new Date(moment(dateString).format('YYYY-MM-DD'))
         }
 
         let create = await CollaboratorsModel.create({
-            name, cpf, rg, date_birth: convertDate(nasc), sex, phone, crmv, speciality, cep, address: street, address_num: num, complement, district: districtName, city, uf: state, date_cad: dtCad
+            name, cpf, rg, address: street, complement, address_num: num, district: districtName, cep, city, uf: state, date_birth: convertDate(nasc), sex, phone, password: passwordHash, nivel, username, cargo, setor, dtAdmission: convertDate(dtAdmission), ativo, photo: loadPhoto
         })
-        .then(() => {
-            return { success: true, message: 'Cadastro Concluido com Sucesso' }
-        })
-        .catch(error => {
-            return { success: false, message: error.message }
-        })
+            .then(() => {
+                return { success: true, message: 'Cadastro Concluido com Sucesso' }
+            })
+            .catch(error => {
+                return { success: false, message: error.message }
+            })
         res.json(create)
+
     } catch (error) {
         console.log(error)
     }
@@ -69,40 +76,49 @@ export const collabDelete = async (req: Request, res: Response) => {
     }
 }
 
+
 export const collabUpdate = async (req: Request, res: Response) => {
+    
     try {
-        const { name, cpf, rg, nasc, sex, phone, crmv, speciality, cep, street, num, complement, district, city, state, dtCad } = req.body
-        const update = await CollaboratorsModel.update({
-            name: name,
-            cpf: cpf,
-            rg: rg,
-            nasc: nasc,
-            sex: sex,
-            phone: phone,
-            crmv: crmv,
-            speciality: speciality,
-            cep: cep,
-            street: street,
-            num: num,
-            complement: complement,
-            district: district,
-            city: city,
-            state: state,
-            date_cad: dtCad
-        }, {
-            where: { id: req.body.idCad }
-        })
-            .then(() => {
-                return { success: true, message: 'Atualizado com Sucesso' }
-            })
-            .catch(error => {
-                return { success: false, message: error.message }
-            })
-        res.json(update)
-    } catch (error) {
+        const convertDate = (dateString: string) => {
+            return new Date(moment(dateString).format('YYYY-MM-DD'))
+        }
+        const { name, cpf, rg, nasc, sex, phone, cep, street, num, complement, districtName, city, state, password, nivel, username, dtAdmission, cargo, setor, ativo} = req.body
+
+            console.log('Dentro do Collab: ',req.file)
+
+            if (password) {
+                
+                let passwordHash = await bcrypt.hash(password, 8)
+                const update = await CollaboratorsModel.update({
+                    name, cpf, rg, address: street, complement, address_num: num, district: districtName, cep, city, uf: state, date_birth: convertDate(nasc), sex, phone, password: passwordHash, nivel, username, cargo, setor, dtAdmission: convertDate(dtAdmission), ativo
+                }, {
+                    where: { id: req.body.idCad }
+                })
+                    .then(() => {
+                        return { success: true, message: 'Atualizado com Sucesso' }
+                    })
+                    .catch((error) => {
+                        return { success: false, message: error.message }
+                    })
+                res.json(update)
+            } else {
+                const update = await CollaboratorsModel.update({
+                    name, cpf, rg, address: street, complement, address_num: num, district: districtName, cep, city, uf: state, date_birth: convertDate(nasc), sex, phone, nivel, username, cargo, setor, dtAdmission: convertDate(dtAdmission), ativo}, {
+                    where: { id: req.body.idCad }
+                })
+                    .then(() => {
+                        return { success: true, message: 'Atualizado com Sucesso' }
+                    })
+                    .catch((error) => {
+                        return { success: false, message: error.message }
+                    })
+                res.json(update) 
+        }
+
+    }catch (error) {
         const resp = { success: false, message: error }
         res.json(resp)
         console.log(error)
-
     }
 }

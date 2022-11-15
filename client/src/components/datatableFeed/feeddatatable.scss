@@ -1,0 +1,241 @@
+.container--medicalRecord-single {
+    display: flex;
+    width: 100%;
+
+    .formDetail {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .topBar {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            border: 1px solid #e3e6e4;
+            margin-bottom: 10px;
+
+            .topBar-interno {
+                display: flex;
+                padding: 10px;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                justify-content: space-around;
+
+                .topBar-inputs {
+                    display: flex;
+                    width: 100%;
+                    justify-content: flex-start;
+
+                    input {
+                        height: 30px;
+                        font-size: 20px;
+                        font-weight: bold;
+                        width: 200px;
+                        text-align: right;
+                        background-color: #edf0ee;
+                        outline: none;
+                        border: none;
+                        padding: 10px;
+                        text-transform: uppercase;
+
+                        &:disabled {
+                            color: #ad2a2a;
+                        }
+                    }
+
+                    .boxId {
+                        width: 150px;
+
+                        .ipt-id{
+                            width: 100%;
+                        }
+                    }
+
+                    .boxUser {
+                        width: 200px;
+                        margin-right: 20px;
+
+                        .ipt-user {
+                            width: 200px;
+                        }
+                    }
+
+                    label {
+                        font-size: 15px;
+                        color: #16a685;
+                        font-weight: bold;
+                    }
+
+                    .boxId,
+                    .boxDtCad {
+                        margin-right: 20px;
+                    }
+
+                }
+
+                select {
+                    height: 30px;
+                    font-size: 15px;
+                    font-weight: bold;
+                    width: 200px;
+                    text-align: right;
+                    outline: 0;
+                    border: 1px solid #b9bdba;
+                }
+
+                .topBar-Btn {
+                    display: flex;
+
+                    .btnBaixar,
+                    .btnSalvar,
+                    .btnCancelar,
+                    .btnExcluir {
+                        width: 100px;
+                        padding: 5px;
+                        margin: 10px;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-weight: bold;
+                        color: white;
+                        border-radius: 3px;
+                        height: 35px;
+                        font-size: 17px;
+                        cursor: pointer;
+                    }
+
+                    .btnBaixar {
+                        background-color: #4c67e0;
+                        border: 1px solid #8499f5;
+
+                        &:hover {
+                            background-color: #8499f5;
+                        }
+                    }
+
+                    .btnSalvar {
+                        background-color: #16a685;
+                        border: 1px solid #3ae0ba;
+
+                        &:hover {
+                            background-color: #3ae0ba;
+                        }
+                    }
+
+                    .btnCancelar {
+                        background-color: #b89b2a;
+                        border: 1px solid #f0d569;
+
+                        &:hover {
+                            background-color: #f0d569;
+
+                        }
+                    }
+
+                    .btnExcluir {
+                        background-color: #ad2a2a;
+                        border: 1px solid #ed5f5f;
+
+                        &:hover {
+                            background-color: #ed5f5f;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        fieldSet {
+            border: 1px solid #e3e6e4;
+            margin-bottom: 10px;
+            height: 550px;
+
+            legend {
+                margin-left: 30px;
+                font-family: Arial, Helvetica, sans-serif;
+                margin-bottom: 10px;
+                font-size: 13px;
+                padding: 0px 10px 0px 10px;
+                text-decoration: underline;
+                color: #16a685;
+
+                .obgt {
+                    margin-left: 10px;
+                    color: #ad2a2a;
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .middleBarFeed {
+            width: 100%;
+
+            .middleBar-internoFeed {
+                width: 100%;
+
+                .titleBar--listPets{
+                    align-items: center;
+                    display: flex;
+                    justify-content: space-around;
+                    width: 100%;
+                    height: 50px;
+                    background-color: #3ae0ba;
+                    color: white;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-weight: 700;
+                    border-bottom: 2px solid #095543;
+                    text-align: center;
+
+                    .titleIdAnimal,
+                    .titleStockId,
+                    .titleQtdFood{
+                        flex: 1;
+                    }
+
+                    .titleNamePet,
+                    .titleStockSku{
+                        flex: 1.5;
+                    }
+
+                    .titleStockDescription{
+                        flex: 3;
+                    }
+                }
+                .containerListPets{
+                    width: 100%;
+
+                    .listPets{
+                        display: flex;
+                        justify-content: space-around;   
+                        align-items: center;
+                        border-bottom: 1px solid rgb(181, 179, 179);
+                        padding: 10px;
+                        text-align: center;
+                    
+                        &:hover{
+                            background-color: #f0f2f1;
+                        }
+
+                        .petID,
+                        .stockId,
+                        .petQtdFood{
+                            flex: 1;
+                        }
+
+                        .stockSku,
+                        .petName{
+                            flex: 1.5;
+                        }
+
+                        .stockDescription{
+                            flex: 3;
+                            text-align: center;
+                            text-justify: inter-word;
+                        }
+                    
+                    }
+
+                }
+            }
+        }
+    }
+}

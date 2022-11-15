@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom'
 import { AdoptionNew } from '../../components/datatableAdoptions/new/AdoptionNew'
 import { BankNew } from '../../components/datatableBank/new/BankNew'
+import { CollaboratorsNew } from '../../components/datatableCollaborators/new/CollaboratorsNew'
+import { Feed } from '../../components/datatableFeed/FeedDatatable'
 import { LctoNew } from '../../components/datatableLcto/new/LctoNew'
 import { LctoNewFinancial } from '../../components/datatableLctoFinancial/new/LctoNewFinancial'
 import { MedicalRecordNew } from '../../components/datatableMedicalRecords/new/MedicalRecordsNew'
@@ -40,7 +42,11 @@ export const New = () => {
                         params.slug === 'financial' &&
                         <LctoNewFinancial /> ||
                         params.slug === 'adoptions' &&
-                        <AdoptionNew />
+                        <AdoptionNew /> ||
+                        params.slug === 'collaborators' &&
+                        <CollaboratorsNew /> ||
+                        params.slug === 'feed' &&
+                        <Feed />
                     }
                 </>
             </div>

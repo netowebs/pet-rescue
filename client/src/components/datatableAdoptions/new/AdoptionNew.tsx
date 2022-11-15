@@ -1,18 +1,20 @@
-//import PrintIcon from '@mui/icons-material/Print';
 import moment from 'moment';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './adoptionnew.scss'
 import swal from 'sweetalert'
 import { pet } from '../../../api/api';
 import { tutor } from '../../../api/apiTutors';
 import { adoption } from '../../../api/apiAdoption';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
 export const AdoptionNew = () => {
 
+    const auth = useContext(AuthContext)
+
     //Dados do lançamento
     const [dtCad, setDtCad] = useState(String)
-    const [user, setUser] = useState(String)
+    const [user, setUser] = useState(auth.user?.username.toUpperCase())
     const [obs, setObs] = useState(String)
 
     //Dados do animal
@@ -81,7 +83,7 @@ export const AdoptionNew = () => {
         if(animalStatus === 'INDISPONIVEL'){
             alert('Esse animal não está disponível para adoção, verifique se existe ficha médica aberta')
         }else{
-            if (user.trim() !== '' && animalId !== null && tutorId !== null) {
+            if (user?.trim() !== '' && animalId !== null && tutorId !== null) {
                 const res = await adoption.createAdoption(data)
                 if (res.success) {
                     swal(res.message, " ", "success")
@@ -114,9 +116,8 @@ export const AdoptionNew = () => {
                                     className='ipt-user'
                                     type="text"
                                     name='user'
-                                    onChange={
-                                        (e) => setUser(e.target.value)
-                                    }
+                                    defaultValue={user}
+                                    disabled
                                 />
                             </div>
                             <div className="boxDtCad">

@@ -1,12 +1,20 @@
 import { Request, Response } from 'express'
 import moment from 'moment';
-import { AdoptionModel } from '../models/AdoptionModel';
 import { ApartmentModel } from '../models/ApartmentModel';
 import { AnimalModel } from '../models/PetModel'
+import { StockModel } from '../models/StockModel';
 
 export const petList = async (req: Request, res: Response) => {
+
     try {
-        let list = await AnimalModel.findAll({ include: ApartmentModel });
+        let list = await AnimalModel.findAll({ include: [
+            {
+                model: ApartmentModel
+            },
+            {
+                model: StockModel
+            }
+        ] });
         res.send(list)
     } catch (error) {
         console.log(error)
@@ -15,7 +23,15 @@ export const petList = async (req: Request, res: Response) => {
 
 export const petDetail = async (req: Request, res: Response) => {
     try {
-        let detail = await AnimalModel.findOne({ where: { id: req.params.idPet }, include: ApartmentModel })
+        let detail = await AnimalModel.findOne({ where: { id: req.params.idPet }, 
+            include: [
+                {
+                    model:  ApartmentModel
+                },
+                {
+                    model: StockModel
+                }
+            ] })
         .then((data) => {
             if(data?.id){
                 return { success: true, data: data}
@@ -35,7 +51,7 @@ export const petDetail = async (req: Request, res: Response) => {
 
 export const petUpdate = async (req: Request, res: Response) => {
     try {
-        const { name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, apartmentId } = req.body
+        const { name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, apartmentId, idFood } = req.body
         const update = await AnimalModel.update({
             name: name,
             species: species,
@@ -48,7 +64,8 @@ export const petUpdate = async (req: Request, res: Response) => {
             qtd_food: food,
             color: color,
             coat_size: coat,
-            apartment_id: apartmentId
+            apartment_id: apartmentId,
+            id_stock: idFood
         }, {
             where: { id: req.body.idCad }
         })
@@ -69,7 +86,7 @@ export const petUpdate = async (req: Request, res: Response) => {
 
 export const petCreate = async (req: Request, res: Response) => {
     try {
-        const { dtRescue, name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, apartmentId } = req.body
+        const { dtRescue, name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, apartmentId, idFood } = req.body
         const convertDate = (dateString: string) => {
             return new Date(moment(dateString).format('YYYY-MM-DD'))
         }
@@ -86,7 +103,8 @@ export const petCreate = async (req: Request, res: Response) => {
             qtd_food: food,
             color: color,
             coat_size: coat,
-            apartment_id: apartmentId
+            apartment_id: apartmentId,
+            id_stock: idFood
         })
         .then(()=>{
             return { success: true, message: 'Cadastro Concluido com Sucesso' }

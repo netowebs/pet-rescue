@@ -1,4 +1,3 @@
-//import PrintIcon from '@mui/icons-material/Print';
 import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -15,7 +14,6 @@ export const AdoptionSingle = () => {
     //Dados do lançamento
     const [dtCad, setDtCad] = useState(String)
     const [id, setId] = useState(String)
-    const [status, setStatus] = useState(String)
     const [obs, setObs] = useState(String)
     const [user, setUser] = useState(String)
 
@@ -270,6 +268,7 @@ export const AdoptionSingle = () => {
                                         name="ipt-obs"
                                         id="ipt-obs"
                                         onChange={(e) => setObs(e.target.value)}
+                                        defaultValue={obs}
                                         disabled
                                     >
                                     </textarea>

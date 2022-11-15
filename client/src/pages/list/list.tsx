@@ -6,7 +6,6 @@ import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { DatatablePets } from '../../components/datatablePet/list/DatatablePets';
-import { pdfListPet } from '../../components/relatorios/pdfPets/listPet/pdfListPet'
 import { DatatableVets } from '../../components/datatableVet/list/DatatableVet';
 import { DatatableTutors } from '../../components/datatableTutors/list/DatatableTutors';
 import { DatatableStock } from '../../components/datatableStock/list/DatatableStock';
@@ -18,6 +17,8 @@ import { DatatableLctoFinancial } from '../../components/datatableLctoFinancial/
 import { DatatableAdoptions } from '../../components/datatableAdoptions/list/DatatableAdoptions';
 import { DatatablePetsAdopteds } from '../../components/datatablePet/adopteds/DatatablePetsAdopteds';
 import { DatatablePetsDeath } from '../../components/datatablePet/death/DatatablePetsDeath';
+import { DatatableCollaborators } from '../../components/datatableCollaborators/list/DatatableCollaborators';
+import { DatatableStockLow } from '../../components/datatableStock/listLow/DatatableStockLow';
 
 export const List = () => {
 
@@ -37,7 +38,7 @@ export const List = () => {
                     <div className="buttonBar">
 
                         {
-                            params.slug !== 'medical-closed' && params.slug !== 'adopted' && params.slug !== 'death' ? <Link className='btnNew' to={`/${params.slug !== 'medical-closed' ? params.slug : 'medical-records'}/new`}>
+                            params.slug !== 'medical-closed' && params.slug !== 'adopted' && params.slug !== 'death' && params.slug !== 'lowStock' ? <Link className='btnNew' to={`/${params.slug !== 'medical-closed' ? params.slug : 'medical-records'}/new`}>
                                 <input className='button' type="submit" value="Novo +" />
                             </Link> : null 
                         }
@@ -98,6 +99,18 @@ export const List = () => {
                                 <input className='button' type="submit" value="Disponiveis" />
                             </Link>
                         }
+                        {
+                            params.slug === 'stock' &&
+                            <Link className='btnLowStock' to={`/lowStock`}>
+                                <input className='button' type="submit" value="Estoque Baixo" />
+                            </Link>
+                        }
+                        {
+                            params.slug === 'lowStock' &&
+                            <Link className='btnLowStock' to={`/stock`}>
+                                <input className='button' type="submit" value="Estoque" />
+                            </Link>
+                        }
                     </div>
                     <div className="searchBar">
                         <span>Listagem de
@@ -127,7 +140,11 @@ export const List = () => {
                                         params.slug === 'adopted' &&
                                         'Animais Adotados' ||
                                         params.slug === 'death' &&
-                                        'Óbitos de Animais'
+                                        'Óbitos de Animais' ||
+                                        params.slug === 'collaborators' &&
+                                        'Funcionários' ||
+                                        params.slug === 'lowStock' &&
+                                        'Estoque Baixo'
                                     }
                                 </span>
                             }
@@ -167,7 +184,11 @@ export const List = () => {
                             params.slug === 'adopted' &&
                             <DatatablePetsAdopteds search={search} setSearch={setSearch} /> ||
                             params.slug === 'death' &&
-                            <DatatablePetsDeath search={search} setSearch={setSearch} />
+                            <DatatablePetsDeath search={search} setSearch={setSearch} /> ||
+                            params.slug === 'collaborators' &&
+                            <DatatableCollaborators search={search} setSearch={setSearch} /> ||
+                            params.slug === 'lowStock' &&
+                            <DatatableStockLow search={search} setSearch={setSearch} />
                         }
                     </div>
                 </div>

@@ -167,7 +167,17 @@ export const DatatableMedicalClosed= ({ search, setSearch }: Prop) => {
                                 .map((item, index) => (
                                     <div key={index} className='listMedicalRecords'>
                                         <div className="idMR">{("000000" + item.id).slice(-6)}</div>
-                                        <div className="statusMR" >{item.status?.toUpperCase()}</div>
+                                        <div className="statusMR"
+                                            style={
+                                                item.status === 'saudavel' ? { backgroundColor: '#16a685', color: 'white' } :
+                                                item.status === 'observacao' ? { backgroundColor: '#f0d569' } :
+                                                item.status === 'critico' ? { backgroundColor: '#ad2a2a', color: 'white' } :
+                                                item.status === 'obito' ? { backgroundColor: '#abb8b7', color: 'white' } :
+                                                { backgroundColor: 'white', color: 'black' }
+                                            }
+                                        >
+                                            {item.status?.toUpperCase()}
+                                        </div>
                                         <div className="vetMR" >{item.vet_name}</div>
                                         <div className="animalMR" >{item.animal_name.replace(/[\\"]/g, '')}</div>
                                         <div className="lastMR" >{moment(item.last_change).format('DD/MM/YYYY')}</div>

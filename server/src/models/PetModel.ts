@@ -1,6 +1,7 @@
 import {Model, DataTypes} from 'sequelize'
 import {sequelize} from '../instances/mysql'
 import { ApartmentModel } from './ApartmentModel'
+import { StockModel } from './StockModel'
 
 export interface PetInstance extends Model {
     id: number,
@@ -18,6 +19,7 @@ export interface PetInstance extends Model {
     coat_size: string,
     adoption_id: number,
     obito: string
+    sku_product: string
 }
 
 export const AnimalModel = sequelize.define<PetInstance>("AnimalModel", {
@@ -72,6 +74,14 @@ export const AnimalModel = sequelize.define<PetInstance>("AnimalModel", {
 
     obito: {
         type: DataTypes.STRING
+    },
+
+    sku_product: {
+        type: DataTypes.STRING
+    },
+
+    lastFeed: {
+        type: DataTypes.DATE
     }
 },{
     tableName: 'animals',
@@ -82,4 +92,13 @@ export const AnimalModel = sequelize.define<PetInstance>("AnimalModel", {
 AnimalModel.belongsTo(ApartmentModel,{
     constraints: true,
     foreignKey: 'apartment_id'
+})
+
+AnimalModel.belongsTo(StockModel,{
+    foreignKey: 'id_stock',
+    constraints: true,
+})
+
+StockModel.hasOne(AnimalModel,{
+    foreignKey: 'id_stock'
 })

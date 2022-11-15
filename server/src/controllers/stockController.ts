@@ -51,7 +51,7 @@ export const productDetailSku = async (req: Request, res: Response) => {
 
 export const productCreate = async (req: Request, res: Response) => {
     try {
-        const { description, sku, qtd, validity, brand, category, location, cost, unit, obs, dtCad } = req.body
+        const { description, sku, qtd, validity, brand, category, location, cost, unit, obs, dtCad, qtdMin } = req.body
 
         const convertCost = (costString: string) => {
             return parseFloat(costString.replace(/[R$]/g, '').replace(/[',']/, '.'))
@@ -65,6 +65,7 @@ export const productCreate = async (req: Request, res: Response) => {
             description: description,
             sku: sku,
             qtd: qtd,
+            qtdMin,
             validity: convertDate(validity),
             brands_id: brand,
             categories_id: category,
@@ -105,7 +106,7 @@ export const productDelete = async (req: Request, res: Response) => {
 
 export const productUpdate = async (req: Request, res: Response) => {
     try {
-        const { description, sku, qtd, validity, brand, category, location, cost, unit, obs, dtCad } = req.body
+        const { description, sku, qtd, validity, brand, category, location, cost, unit, obs, dtCad, qtdMin } = req.body
         
         const convertCost = (costString: string) => {
             return parseFloat(costString.replace(/[R$]/g, '').replace(/[',']/, '.'))
@@ -119,6 +120,7 @@ export const productUpdate = async (req: Request, res: Response) => {
             description: description,
             sku: sku,
             qtd: qtd,
+            qtdMin,
             validity: convertDate(validity),
             brands_id: brand,
             categories_id: category,

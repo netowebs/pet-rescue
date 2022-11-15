@@ -1,4 +1,5 @@
 import { useRoutes } from "react-router-dom"
+import { RequireAuth } from "../contexts/Auth/RequireAuth"
 import { Admin } from "../pages/admin/admin"
 import { Home } from "../pages/home/home"
 import { List } from "../pages/list/list"
@@ -10,14 +11,14 @@ export const MainRoutes = () => {
     return(
         useRoutes([
             //Rotas Principais
-            {path:'/', element:<Home />},
-            {path:'/login', element:<Login />},
+            {path:'/', element:<Login />},
+            {path:'/home', element:<RequireAuth><Home /></RequireAuth>},
             //Rotas Genéricas
-            {path:'/:slug', element:<List />},
-            {path:'/:slug/:Id', element:<Single />},
-            {path:'/:slug/new', element:<New />},
+            {path:'/:slug', element:<RequireAuth><List /></RequireAuth>},
+            {path:'/:slug/:Id', element:<RequireAuth><Single /></RequireAuth>},
+            {path:'/:slug/new', element:<RequireAuth><New /></RequireAuth>},
             {path:"*", element:'Error'},
-            {path:'/cadAdmin', element: <Admin />}
+            {path:'/cadAdmin', element: <RequireAuth><Admin /></RequireAuth>}
             
         ])
     )

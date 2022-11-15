@@ -3,6 +3,7 @@ import './boxWidgets.scss'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {TopBox, BottomBox} from './StyledBox';
 import { ReactNode } from 'react';
+import {Link} from 'react-router-dom'
 
 type PropBox = {
     style:{
@@ -10,16 +11,18 @@ type PropBox = {
         bgBottom: string;
     },
     top:{
-        numInfo: number;
+        numInfo: string;
         txtInfo: string;
         bgImg: ReactNode;
     }
     bottom: {
-        txtLink: string;
+        txt: any;
+        link: string
     }
 }
 
 export const BoxWidgets = ({style, top, bottom}: PropBox) => {
+
     return(
         <div className="box-widgets" >
             <TopBox
@@ -40,7 +43,9 @@ export const BoxWidgets = ({style, top, bottom}: PropBox) => {
             >
                 <div className="boxBottom">
                     <div className="txtBottomBox">
-                        <span>Acessar {bottom.txtLink}</span>
+                        <Link to={bottom.link} style={{textDecoration: 'none', color: 'white'}}>
+                            <span>Acessar {bottom.txt}</span>
+                        </Link>
                     </div>
                     <div className="iconBottomBox">
                         <ArrowForwardIcon className='icon'/>

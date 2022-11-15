@@ -1,0 +1,79 @@
+.titleBar--ListMRDashboard {
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 30px;
+    background-color: #3ae0ba;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    border-bottom: 2px solid #095543;
+    text-align: center;
+
+    .idMR--list-title{
+        flex: 1;
+    }
+    .statusMR--list-title{
+        flex: 1;
+    }
+
+    .vetMR--list-title{
+        flex: 1.5;
+    }
+
+    .petMR--list-title{
+        flex: 0.9;
+    }
+
+    .lastChangeMR--list-title{
+        flex: 1.5;
+    }
+
+    .downArrow {
+        font-size: 15px;
+        color: #efff00;
+    }
+
+    .upArrow {
+        font-size: 15px;
+        color: #efff00;
+    }
+}
+
+.listMedicalRecordsDashboard {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid rgb(181, 179, 179);
+    padding: 10px;
+    text-align: center;
+    margin-right: 5px;
+    font-size: 15px;
+
+    &:hover {
+        background-color: #f0f2f1;
+    }
+
+    .idMR {
+        flex: 1;
+    }
+
+    .statusMR {
+        flex: 1;
+    }
+
+    .vetMR {
+        flex: 1.5;
+    }
+
+    .animalMR {
+        flex: 1;
+    }
+
+    .lastMR {
+        flex: 1.4;
+
+    }
+}

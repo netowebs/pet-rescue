@@ -1,7 +1,6 @@
-import { BelongsToCreateAssociationMixin, BelongsToManyCreateAssociationMixin, BelongsToManySetAssociationsMixin, BelongsToSetAssociationMixin } from 'sequelize'
-import {Model, DataTypes, BelongsToManyAddAssociationsMixin, BelongsTo} from 'sequelize'
+import { BelongsToCreateAssociationMixin, Model, DataTypes} from 'sequelize'
 import {sequelize} from '../instances/mysql'
-import { BankInstance, BankModel } from './BankModel'
+import {BankModel} from './BankModel'
 import { RowsBankLctoInstance, RowsBankLctoModel } from './RowsBankLctoModel'
 
 export interface BankLctoInstance extends Model {
@@ -57,7 +56,7 @@ export const BankLctoModel = sequelize.define<BankLctoInstance>("BankLctoModel",
     timestamps: false
 })
 
-BankLctoModel.belongsTo(BankModel,{ //Mudei de belongsto para hasone
+BankLctoModel.belongsTo(BankModel,{
     foreignKey: 'id_bank',
     constraints: true
 })
