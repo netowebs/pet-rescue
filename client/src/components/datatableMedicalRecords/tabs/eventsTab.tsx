@@ -107,8 +107,7 @@ export const EventsTab = ({ list, vetList, vetResp, setList, user, statusMr }: P
                 }
             </div>
             <table className='eventsList'>
-                <thead>
-                    <div className='divThead'>
+                <thead className='divThead'>
                         <tr className='trHeadEvents'>
                             <th style={{ flex: '0.7' }}>Data</th>
                             <th style={{ flex: '0.5' }}>Hora</th>
@@ -116,10 +115,8 @@ export const EventsTab = ({ list, vetList, vetResp, setList, user, statusMr }: P
                             <th style={{ flex: '1.5' }}>Veterinário</th>
                             <th style={{ flex: '1' }}>Usuário</th>
                         </tr>
-                    </div>
                 </thead>
-                <tbody>
-                    <div className='divScroll' style={{ overflowY: 'scroll', height: '213px' }}>
+                <tbody className='divScroll' style={{ overflowY: 'scroll', height: '213px' }}>
                         {
                             list.map((item, index) => (
                                 <tr className='tableRow' key={index}>
@@ -181,7 +178,6 @@ export const EventsTab = ({ list, vetList, vetResp, setList, user, statusMr }: P
 
                             ))
                         }
-                    </div>
                 </tbody>
             </table>
         </div>

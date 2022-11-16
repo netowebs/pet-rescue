@@ -272,6 +272,8 @@
                             border-collapse: collapse;
                             width: 100%;
                             margin-top: 10px;
+                            display: flex;
+                            flex-direction: column;
 
                             .divThead {
                                 background-color: #16a685;

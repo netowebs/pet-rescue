@@ -42,10 +42,10 @@ export const LctoSingleFinancial = () => {
     const [value, setValue] = useState(String)
 
     useEffect(() => {
-        if(params.Id){
+        if (params.Id) {
             const loadLcto = async (id: string) => {
                 let json = await lctoFinancial.getLcto(id)
-                if(json.success){
+                if (json.success) {
                     setTotCredito(json.data.totCredito)
                     setTotDebito(json.data.totDebito)
                     setIdBankDb(json.data.id_bank)
@@ -61,27 +61,27 @@ export const LctoSingleFinancial = () => {
             }
             loadLcto(params.Id)
         }
-        
-    },[])
+
+    }, [])
 
     //Array tabela pivo
     const [arrLctos, setArrLctos] = useState<ArrPivoFinancial[]>([])
 
     const getLctos = async (id: number) => {
-        let newArr =[...arrLctos]
+        let newArr = [...arrLctos]
         let json = await rowsLctoFinancial.getLcto(id)
         json.data.map((item: any) => {
-            newArr = [...newArr, {idBank: item.id_bank, description: item.description, type: item.ttype, value: ('R$'+item.vvalue.toString())}]
+            newArr = [...newArr, { idBank: item.id_bank, description: item.description, type: item.ttype, value: ('R$' + item.vvalue.toString()) }]
         })
         setArrLctos(newArr)
     }
 
     const addLcto = (description: string, type: string) => {
         const valueFloat = parseFloat(value.replace(/[R$]/g, '').replace(/[',']/, '.'))
-        if(type.trim() === 'credito'){
-            setTotCredito(totCredito+valueFloat)
-        }else{
-            setTotDebito(totDebito+valueFloat)
+        if (type.trim() === 'credito') {
+            setTotCredito(totCredito + valueFloat)
+        } else {
+            setTotDebito(totDebito + valueFloat)
         }
         let pivoAux = ([...arrLctos, { idBank, description, type, value }])
         setArrLctos(pivoAux)
@@ -91,10 +91,10 @@ export const LctoSingleFinancial = () => {
 
     const delLcto = (idx: number, value: string, type: string) => {
         const valueFloat = parseFloat(value.replace(/[R$]/g, '').replace(/[',']/, '.'))
-        if(type.trim() === 'credito'){
-            setTotCredito(totCredito-valueFloat)
-        }else{
-            setTotDebito(totDebito-valueFloat)
+        if (type.trim() === 'credito') {
+            setTotCredito(totCredito - valueFloat)
+        } else {
+            setTotDebito(totDebito - valueFloat)
         }
         let newArr = [...arrLctos]
         newArr.splice(idx, 1)
@@ -102,7 +102,6 @@ export const LctoSingleFinancial = () => {
     }
 
     const handleCreate = async () => {
-        //const valueFloat = parseFloat(value.replace(/[R$]/g, '').replace(/[',']/, '.'))
         let id = parseInt(idCad)
         console.log(idCad)
         const data: any = { arrLctos, user, dtCad, idBank, nameBank, agency, account, id, totCredito, totDebito, idBankDb }
@@ -117,7 +116,7 @@ export const LctoSingleFinancial = () => {
                         })
                     })
                     .then(() => {
-                        //window.location.href = '/financial'
+                        window.location.href = '/financial'
                     })
             } else {
                 swal("Error !", "" + JSON.stringify(res.message), "error")
@@ -160,7 +159,7 @@ export const LctoSingleFinancial = () => {
                                 <input
                                     className='ipt-idLcto'
                                     type="text"
-                                    value={idCad}
+                                    defaultValue={idCad}
                                 />
                             </div>
                         </div>
@@ -256,59 +255,54 @@ export const LctoSingleFinancial = () => {
                                         </button>
                                     </div>
                                     <table className='lctoFinancial'>
-                                        <thead>
-                                            <div className='divThead'>
+                                        <thead className='divThead'>
                                                 <tr className='trHeadFinancialNew'>
                                                     <th style={{ flex: '3.85' }}>Descrição</th>
                                                     <th style={{ flex: '1' }}>Tipo</th>
                                                     <th style={{ flex: '1.5' }}>Valor</th>
                                                 </tr>
-                                            </div>
                                         </thead>
-                                        <tbody>
-                                            <div className='divScroll' style={{ overflowY: 'scroll', height: '213px' }}>
-                                                {
-                                                    arrLctos.map((item, index) => (
-                                                        <tr className='tableRow' key={index}>
-                                                            <td>
-                                                                <input
-                                                                    className='tbDescription-new'
-                                                                    type="text"
-                                                                    value={item.description}
-                                                                    disabled
-                                                                />
-                                                            </td>
-                                                            <td>
-                                                                <input
-                                                                    className='tbType-new'
-                                                                    type="text"
-                                                                    value={item.type}
-                                                                    disabled
-                                                                />
-                                                            </td>
-                                                            <td>
-                                                                <input
-                                                                    className='tbValue-new'
-                                                                    type="text"
-                                                                    value={item.value}
-                                                                    disabled
-                                                                />
-                                                            </td>
-                                                            <td>
-                                                                <input
-                                                                    className='btnDel-new'
-                                                                    type="button"
-                                                                    value="X"
-                                                                    onClick={() => delLcto(index, item.value, item.type)}
-                                                                />
-                                                            </td>
-                                                        </tr>
-                                                    ))
-                                                }
-                                            </div>
+                                        <tbody className='divScroll' style={{ overflowY: 'scroll', height: '213px' }}>
+                                            {
+                                                arrLctos.map((item, index) => (
+                                                    <tr className='tableRow' key={index}>
+                                                        <td>
+                                                            <input
+                                                                className='tbDescription-new'
+                                                                type="text"
+                                                                value={item.description}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                className='tbType-new'
+                                                                type="text"
+                                                                value={item.type}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                className='tbValue-new'
+                                                                type="text"
+                                                                value={item.value}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                className='btnDel-new'
+                                                                type="button"
+                                                                value="X"
+                                                                onClick={() => delLcto(index, item.value, item.type)}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            }
                                         </tbody>
                                     </table>
-
                                 </div>
                             </fieldset>
                         </div>

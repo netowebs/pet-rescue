@@ -1,5 +1,4 @@
-//import PrintIcon from '@mui/icons-material/Print';
-import { MenuItem } from '@mui/material';
+
 import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -31,7 +30,6 @@ export const TutorSingle = () => {
     useEffect(() => {
         if (params.Id) {
             const loadTutor = async (id: string) => {
-                console.log('teste')
                 let res = await tutor.getTutor(id)
                 if (res.success) {
                     setIdCad(("000000" + res.data.id).slice(-6))

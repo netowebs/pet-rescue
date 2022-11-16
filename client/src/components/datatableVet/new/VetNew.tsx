@@ -1,5 +1,4 @@
-//import PrintIcon from '@mui/icons-material/Print';
-import { MenuItem } from '@mui/material';
+
 import moment from 'moment';
 import {useState, useEffect} from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -250,6 +249,7 @@ export const VetNew = () => {
                                         name="" 
                                         id=""
                                         value={state}
+                                        onChange={(e) => setState(e.target.value)}
                                     >
                                         <option value=""></option>
                                         <option value="AC">ACRE</option>
@@ -280,13 +280,6 @@ export const VetNew = () => {
                                         <option value="SE">SERGIPE</option>
                                         <option value="TO">TOCANTINS</option>
                                     </select>
-
-                                    {/* <input 
-                                        type="text"
-                                        value={state}
-                                        className='ipt-uf'
-                                        onChange={(e) => setState(e.target.value)}
-                                    /> */}
                                 </div>
                             </fieldset>
                         </div>

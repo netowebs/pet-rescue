@@ -266,6 +266,7 @@ export const CollaboratorsNew = () => {
                                         name=""
                                         id=""
                                         value={state}
+                                        onChange={(e) => setState(e.target.value)}
                                     >
                                         <option value=""></option>
                                         <option value="AC">ACRE</option>
@@ -296,13 +297,6 @@ export const CollaboratorsNew = () => {
                                         <option value="SE">SERGIPE</option>
                                         <option value="TO">TOCANTINS</option>
                                     </select>
-
-                                    {/* <input 
-                                        type="text"
-                                        value={state}
-                                        className='ipt-uf'
-                                        onChange={(e) => setState(e.target.value)}
-                                    /> */}
                                 </div>
                             </fieldset>
                             <fieldset className='fieldset--contrato'>
@@ -360,7 +354,7 @@ export const CollaboratorsNew = () => {
                                     <input
                                         type="text"
                                         className='ipt-username'
-                                        value={username}
+                                        defaultValue={username}
                                     />
                                 </div>
                                 <div className="boxPassword">

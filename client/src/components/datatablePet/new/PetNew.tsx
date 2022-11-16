@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { apartment, pet, sections as secctt } from '../../../api/api';
+import { apartment, pet, sections as sectApi } from '../../../api/api';
 import { useApartments } from '../../hooks/useApartment';
 import { useSection } from '../../hooks/useSection';
 import { Modal } from '../../modal/Modal';
@@ -12,6 +12,8 @@ import swal from 'sweetalert'
 import { ModalSectionApartment } from '../../buttons/modalSectionApartment/ModalSectionApartment';
 import { Stock } from '../../../types/typeStock';
 import { stock } from '../../../api/apiStock';
+import { Section } from '../../../types/typeSection';
+import { Apartment } from '../../../types/typeApartment';
 
 type AptModel = {
     id: number,
@@ -41,51 +43,64 @@ export const PetNew = () => {
     const [note, setNote] = useState(String)
     const [apartmentId, setApartmentId] = useState(Number)
 
-    const [listFood, setListFood] = useState<Stock>()
-    const [iptFood, setIptFood] = useState('')
+    //UseState Food
     const [idFood, setIdFood] = useState(Number)
+    const [skuFood, setSkuFood] = useState(String)
+    const [descriptionFood, setDescriptionFood] = useState(String)
 
     //UseState Section and Apartment
-    const [aptModel, setAptModel] = useState<AptModel>(inititi)
-    const [sectModel, setSectModel] = useState<AptModel>(inititi)
-    const { sections } = useSection()
-    const [selectedSection, setSelectedSection] = useState(String(sectModel?.id))
-    const [selectedApartment, setSelectedApartment] = useState(String(aptModel?.id))
-    const { apts } = useApartments({ sectId: selectedSection })
+    const [sections, setSections] = useState<Section[]>([])
+    const [apartments, setApartments] = useState<Apartment[]>([])
+    const [idApartment, setIdApartment] = useState(Number)
+    const [idSection, setIdSection] = useState(String)
 
-    //Functions Section and Apartment
-    const handleSectionUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedSection(e.target.value)
-    }
+    useEffect(() => {
+        const getAptos = async (idSection: string) => {
+            let json = await apartment.getApartmentBySection(idSection)
+            if (json) {
+                setApartments(json)
+            }
+        }
 
-    const handleApartmentUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedApartment(e.target.value)
-        setApartmentId(parseInt(e.target.value))
-    }
+        const getSections = async () => {
+            let json = await sectApi.getAllSections()
+            if (json) {
+                setSections(json)
+            }
+        }
 
-    const getFood = async (sku: string) => {
-        const json = await stock.getProductSku(sku)
+        getAptos(idSection)
+        getSections()
+    }, [idSection])
+
+
+    const getFoodSku = async (skuFood: string) => {
+        const json = await stock.getProductSku(skuFood)
         if (json) {
-            setListFood(json.data)
             setIdFood(json.data.id)
+            setDescriptionFood(json.data.description)
         }
     }
+
+    const getFoodId = async (idFood: number) => {
+        const json = await stock.getProduct(idFood.toString())
+        if (json) {
+            setSkuFood(json.data.sku)
+            setIdFood(json.data.id)
+            setDescriptionFood(json.data.description)
+        }
+    }
+
 
     useEffect(() => {
         setDtCad(moment().format('DD/MM/YYYY'))
     }, [dtCad])
 
-    useEffect(() => {
-
-    }, [apts, sections])
-
     //Function Create
     const handleCreate = async () => {
         const data: any = { dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, apartmentId, idFood}
 
-        if (dtRescue == '' || name == '' || species == '' || age == '' || temperament == '' || adptionStatus === '' || food == '' || color == '' || coat == '' || size == '' || apartmentId == null || selectedSection == '' || sex == '') {
-            alert('Existem campos vazios')
-        } else {
+        if (name.trim() !== '' && species.trim() !== '' && size.trim() !== '' && age.trim() !== '' && temperament.trim() !== '' && adptionStatus.trim() !== '' && food !== '' && color.trim() !== '' && coat!== '' && sex !== '' && idApartment !== null && idFood !== null) {
             const res = await pet.createPet(data)
             if (res.success) {
                 swal(res.message, " ", "success")
@@ -95,6 +110,8 @@ export const PetNew = () => {
             } else {
                 swal("Error !", "" + JSON.stringify(res.message), "error")
             }
+        } else {
+            alert('Existem campos vazios')
         }
     }
 
@@ -296,35 +313,33 @@ export const PetNew = () => {
                                 <div className="boxSection">
                                     <label htmlFor="ipt-section">Seção</label><br />
                                     <select
-                                        defaultValue={''}
-                                        onChange={handleSectionUpdate}
+                                        name=""
+                                        id=""
+                                        onChange={(e) => setIdSection(e.target.value)}
+                                        value={idSection}
                                     >
-                                        <option disabled></option>
-                                        {sections.map((item, index) => (
-                                            <option
-                                                key={index}
-                                                value={item.id}
-                                            >
-                                                {item.name}
-                                            </option>
-                                        ))}
+                                        <option value={''}>Selecione...</option>
+                                        {
+                                            sections.map((item, index) => (
+                                                <option key={index} value={item.id}>{item.name}</option>
+                                            ))
+                                        }
                                     </select>
                                 </div>
                                 <div className="boxApartment">
                                     <label htmlFor="ipt-apartment">Apartment</label><br />
                                     <select
-                                        defaultValue={''}
-                                        onChange={handleApartmentUpdate}
+                                        name=""
+                                        id=""
+                                        value={idApartment}
+                                        onChange={(e) => setIdApartment(parseInt(e.target.value))}
                                     >
-                                        <option disabled></option>
-                                        {apts.map((item, index) => (
-                                            <option
-                                                key={index}
-                                                value={item.id}
-                                            >
-                                                {item.name}
-                                            </option>
-                                        ))}
+                                        <option value={''}>Selecione...</option>
+                                        {
+                                            apartments.map((item, index) => (
+                                                <option key={index} value={item.id}>{item.name}</option>
+                                            ))
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -339,13 +354,14 @@ export const PetNew = () => {
                         <legend>Consumo Ração</legend>
                         <div className="bottonBar">
                             <div className="bottonBar-interno">
-                                <div className="boxIdFood">
+                            <div className="boxIdFood">
                                     <label htmlFor="ipt-idFood">SKU</label><br />
                                     <input
                                         type="text"
                                         className='ipt-idFood'
-                                        onChange={(e) => setIptFood(e.target.value)}
-                                        onBlur={() => getFood(iptFood)}
+                                        onChange={(e) => setSkuFood(e.target.value)}
+                                        onBlur={() => getFoodSku(skuFood)}
+                                        defaultValue={skuFood}
                                     />
                                 </div>
                                 <div className="boxDescriptionFood">
@@ -353,8 +369,8 @@ export const PetNew = () => {
                                     <input
                                         type="text"
                                         className='ipt-descriptionFood'
-                                        value={listFood?.description}
                                         disabled
+                                        defaultValue={descriptionFood}
                                     />
                                 </div>
                             </div>

@@ -1,9 +1,9 @@
 import moment from 'moment';
-import React, { useState, useEffect, SetStateAction } from 'react';
+import React, { useState, useEffect } from 'react';
 import { stock } from '../../../api/apiStock';
 import { ItensList } from '../../../types/typeItensList';
 import { VetList } from '../../../types/typeVetList';
-import { Pivo, UpdateStock } from '../single/MedicalRecordsSingle';
+import { UpdateStock } from '../single/MedicalRecordsSingle';
 import './itenstab.scss'
 
 
@@ -77,7 +77,6 @@ export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdPro
                 let newIds = ([...newArr.map(item => item.id)])
                 setIdProducts(newIds)
                 setQtdMedical([...qtdMedical, qtdProduct])
-                console.log('qtd old: ', oldQtdd)
 
             } else {
                 alert('Quantidade não pode ser Zero')
@@ -94,25 +93,25 @@ export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdPro
                 alert('Não temos essa quantidade em estoque')
             } else {
                 let idx = qtdStock.map(item => item.sku).indexOf(id)
-                if(idx > -1){
+                if (idx > -1) {
                     let qtd = qtdStock[idx].qtd
-                    let novaQtd = qtd+qtdProduct
-                    let newOldQtd = (oldQtdd-novaQtd)
+                    let novaQtd = qtd + qtdProduct
+                    let newOldQtd = (oldQtdd - novaQtd)
                     let sku = qtdStock[idx].sku
                     let newArr = [...qtdStock]
-                    if(newOldQtd < 0 ){
+                    if (newOldQtd < 0) {
                         alert('Não temos essa quantidade em estoque 2')
-                    }else{
+                    } else {
                         newArr.splice(idx, 1)
-                        newArr= [...newArr, {sku, qtd:novaQtd, id: idProd, newOld: newOldQtd}]
+                        newArr = [...newArr, { sku, qtd: novaQtd, id: idProd, newOld: newOldQtd }]
                         setQtdStock([...newArr])
                         auxAddProduct()
                     }
-                }else{
-                    setQtdStock([...qtdStock, {sku: skuProduct, qtd: qtdProduct, id: idProd, newOld: (oldQtdd-qtdProduct)}])
+                } else {
+                    setQtdStock([...qtdStock, { sku: skuProduct, qtd: qtdProduct, id: idProd, newOld: (oldQtdd - qtdProduct) }])
                     auxAddProduct()
                 }
-                
+
             }
         } else {
             alert('Informe o Código do Produto')
@@ -145,10 +144,6 @@ export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdPro
     useEffect(() => {
         setIdProducts([...list.map(item => item.id)])
     }, [])
-
-    useEffect(()=> {
-        console.log(qtdStock)
-    },[qtdStock])
 
     return (
         <div className="itensTab">
@@ -188,14 +183,13 @@ export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdPro
                             <option disabled>Selecione...</option>
                             {
                                 vetList.map((item, index) => (
-                                    <>
+                                    <React.Fragment key={index}>
                                         <option
-                                            key={index}
                                             value={item.name}
                                         >
                                             {item.name}
                                         </option>
-                                    </>
+                                    </React.Fragment>
                                 ))
                             }
                         </select>
@@ -209,7 +203,6 @@ export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdPro
                         <input
                             type="text"
                             className='ipt-dateProduct'
-                            value={''}
                             defaultValue={moment().format('YYYY-MM-DD')}
                             disabled
                             hidden
@@ -224,87 +217,83 @@ export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdPro
                 }
             </div>
             <table className='itensList'>
-                <thead>
-                    <div className='divThead'>
-                        <tr className='trHeadItens'>
-                            <th style={{ flex: '0.7' }}>SKU</th>
-                            <th style={{ flex: '1.75' }}>Descrição</th>
-                            <th style={{ flex: '0.4' }}>Qtd.</th>
-                            <th style={{ flex: '1.7' }}>Veterinário</th>
-                            <th style={{ flex: '0.5' }}>Usuário</th>
-                            <th style={{ flex: '0.7' }}>Data</th>
-                        </tr>
-                    </div>
-
+                <thead className='divThead'>
+                    <tr className='trHeadItens'>
+                        <th style={{ flex: '0.7' }}>SKU</th>
+                        <th style={{ flex: '1.75' }}>Descrição</th>
+                        <th style={{ flex: '0.4' }}>Qtd.</th>
+                        <th style={{ flex: '1.7' }}>Veterinário</th>
+                        <th style={{ flex: '0.5' }}>Usuário</th>
+                        <th style={{ flex: '0.7' }}>Data</th>
+                    </tr>
                 </thead>
-                <tbody>
-                    <div className='divScroll' style={{ overflowY: 'scroll', height: '213px' }}>
-                        {
-                            list.map((item: any, index) => (
-                                <tr key={index} className='tableRow'>
+                <tbody className='divScroll' style={{ overflowY: 'scroll', height: '213px' }}>
+                    {list.length > 0 &&
+                        list.map((item: any, index) => (
+                           <tr className='tableRow' key={index}>
+                                <td>
+                                    <input
+                                        className='tbSku-product'
+                                        type="text"
+                                        value={item.sku?.toUpperCase()}
+                                        disabled
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        className='tbDescription-product'
+                                        type="text"
+                                        value={item.description?.toUpperCase()}
+                                        disabled
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        className='tbQtd-product'
+                                        type="number"
+                                        value={item?.itensMedicalRecordsModel.qtd?.toString()}
+                                        disabled
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        className='tbVet-product'
+                                        type="text"
+                                        value={item?.itensMedicalRecordsModel.name_vet?.toUpperCase()}
+                                        disabled
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        className='tbUser-product'
+                                        type="text"
+                                        value={item?.itensMedicalRecordsModel.user?.toUpperCase()}
+                                        disabled
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        className='tbDate-product'
+                                        type="text"
+                                        value={moment(item?.itensMedicalRecordsModel.date).format('DD-MM-YYYY')}
+                                        disabled
+                                    />
+                                </td>
+                                {
+                                    statusMr !== 1 &&
                                     <td>
                                         <input
-                                            className='tbSku-product'
-                                            type="text"
-                                            value={item.sku?.toUpperCase()}
-                                            disabled
+                                            className='btnDel-item'
+                                            type="button"
+                                            value="X"
+                                            onClick={() => delProduct(index)}
                                         />
                                     </td>
-                                    <td>
-                                        <input
-                                            className='tbDescription-product'
-                                            type="text"
-                                            value={item.description?.toUpperCase()}
-                                            disabled
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            className='tbQtd-product'
-                                            type="number"
-                                            value={item?.itensMedicalRecordsModel.qtd?.toString()}
-                                            disabled
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            className='tbVet-product'
-                                            type="text"
-                                            value={item?.itensMedicalRecordsModel.name_vet?.toUpperCase()}
-                                            disabled
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            className='tbUser-product'
-                                            type="text"
-                                            value={item?.itensMedicalRecordsModel.user?.toUpperCase()}
-                                            disabled
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            className='tbDate-product'
-                                            type="text"
-                                            value={moment(item?.itensMedicalRecordsModel.date).format('DD-MM-YYYY')}
-                                            disabled
-                                        />
-                                    </td>
-                                    {
-                                        statusMr !== 1 &&
-                                        <td>
-                                            <input
-                                                className='btnDel-item'
-                                                type="button"
-                                                defaultValue="X"
-                                                onClick={() => delProduct(index)}
-                                            />
-                                        </td>
-                                    }
-                                </tr>
-                            ))
-                        }
-                    </div>
+                                }
+                            </tr>
+                        ))
+                    }
+
                 </tbody>
             </table>
         </div>

@@ -26,7 +26,6 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
         try {
             let json = await stockUpdate.getAllUpdates();
             setLoadList(json.data);
-            console.log(json.data)
         } catch (error) {
             console.log(error);
         }

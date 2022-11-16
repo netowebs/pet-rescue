@@ -17,7 +17,7 @@ export const Chart = () => {
   useEffect(() => {
     const getList = async () => {
       let json = await lctoFinancial.getAllLcto()
-      if (json.success) {
+      if (json) {
         setListLcto(json.data)
       }
     }

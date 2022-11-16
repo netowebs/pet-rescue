@@ -1,15 +1,23 @@
+//import PrintIcon from '@mui/icons-material/Print';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { apartment, pet, sections as sectApi } from '../../../api/api';
+import { apartment, pet, sections as secctt } from '../../../api/api';
+import { useApartments } from '../../hooks/useApartment';
+import { useSection } from '../../hooks/useSection';
 import './petsingle.scss'
 import swal from 'sweetalert'
 import { ModalSectionApartment } from '../../buttons/modalSectionApartment/ModalSectionApartment';
 import { DatatableApartment } from '../../datatableApartment/DatatableApartment';
+import { Stock } from '../../../types/typeStock';
 import { stock } from '../../../api/apiStock';
-import { Apartment } from '../../../types/typeApartment';
-import { Section } from '../../../types/typeSection';
 
+type AptModel = {
+    id: number,
+    name: string
+}
+
+let inititi: AptModel
 
 export const PetSingle = () => {
 
@@ -30,52 +38,24 @@ export const PetSingle = () => {
     const [color, setColor] = useState(String)
     const [coat, setCoat] = useState(String)
     const [note, setNote] = useState(String)
+    const [apartmentId, setApartmentId] = useState(Number)
 
-    //UseState Food
-    const [idFood, setIdFood] = useState(Number)
-    const [skuFood, setSkuFood] = useState(String)
-    const [descriptionFood, setDescriptionFood] = useState(String)
+    const [listFood, setListFood] = useState<Stock>()
+    const [iptFood, setIptFood] = useState('')
 
     //UseState Section and Apartment
-    const [sections, setSections] = useState<Section[]>([])
-    const [apartments, setApartments] = useState<Apartment[]>([])
-    const [idApartment, setIdApartment] = useState(Number)
-    const [idSection, setIdSection] = useState(String)
-
-    useEffect(() => {
-        const getAptos = async (idSection: string) => {
-            let json = await apartment.getApartmentBySection(idSection)
-            if (json) {
-                setApartments(json)
-            }
-        }
-
-        const getSections = async () => {
-            let json = await sectApi.getAllSections()
-            if (json) {
-                setSections(json)
-            }
-        }
-
-        getAptos(idSection)
-        getSections()
-    }, [idSection])
+    const [aptModel, setAptModel] = useState<AptModel>(inititi)
+    const [sectModel, setSectModel] = useState<AptModel>(inititi)
+    const { sections } = useSection()
+    const [selectedSection, setSelectedSection] = useState(String(sectModel?.id))
+    const [selectedApartment, setSelectedApartment] = useState(String(aptModel?.id))
+    const { apts } = useApartments({ sectId: selectedSection })
 
 
-    const getFoodSku = async (skuFood: string) => {
-        const json = await stock.getProductSku(skuFood)
+    const getFood = async (sku: string) => {
+        const json = await stock.getProductSku(sku)
         if (json) {
-            setIdFood(json.data.id)
-            setDescriptionFood(json.data.description)
-        }
-    }
-
-    const getFoodId = async (idFood: number) => {
-        const json = await stock.getProduct(idFood.toString())
-        if (json) {
-            setSkuFood(json.data.sku)
-            setIdFood(json.data.id)
-            setDescriptionFood(json.data.description)
+            setListFood(json.data)
         }
     }
 
@@ -84,6 +64,9 @@ export const PetSingle = () => {
             const loadPetDetail = async (id: string) => {
                 let res = await pet.getPet(id)
                 if (res.success) {
+                    console.log(res.data)
+                    let json2 = await apartment.getApartment(res.data.apartment_id)
+                    let json3 = await secctt.getSection(json2.section_id)
                     setIdCad(("000000" + res.data.id).slice(-6))
                     setDtRescue(res.data.date_rescue)
                     setDtCad(moment(res.data.date_cad).format('DD/MM/YYYY'))
@@ -98,9 +81,11 @@ export const PetSingle = () => {
                     setColor(res.data.color)
                     setCoat(res.data.coat)
                     setNote(res.data.note)
-                    getFoodId(res.data.id_stock)
-                    setIdSection(res.data.ApartmentModel.section_id)
-                    setIdApartment(res.data.apartment_id)
+                    setAptModel(json2)
+                    setSectModel(json3)
+                    setApartmentId(res.data.apartment_id)
+                    setSelectedSection(json3.id)
+                    setSelectedApartment(json2.id)
                 } else {
                     swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
                         .then(() => {
@@ -113,25 +98,34 @@ export const PetSingle = () => {
         }
     }, [])
 
-    //Function Create
-    const handleUpdate = async () => {
-        const data: any = { idCad, dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, idApartment, idFood }
+    const handleApartmentUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedApartment(e.target.value)
+        setApartmentId(parseInt(e.target.value))
+    }
 
-        if (name.trim() !== '' && species.trim() !== '' && size.trim() !== '' && age.trim() !== '' && temperament.trim() !== '' && adptionStatus.trim() !== '' && food !== '' && color.trim() !== '' && coat!== '' && sex !== '' && idApartment !== null && idFood !== null) {
+    const handleSectionUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedSection(e.target.value)
+        setSelectedApartment('')
+    }
+
+    const handleUpdate = async () => {
+        const data: any = { idCad, dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, apartmentId, iptFood }
+
+
+        if (selectedApartment == '') {
+            alert('Selecione o Apartamento')
+        } else {
             const res = await pet.updatePet(data)
             if (res.success) {
-                swal(res.message, " ", "success")
+                swal(res.message, " ", "success",)
                     .then(() => {
                         window.location.href = '/pets'
                     })
             } else {
                 swal("Error !", "" + JSON.stringify(res.message), "error")
             }
-        } else {
-            alert('Existem campos vazios')
         }
     }
-
 
     const handleDelete = async () => {
         if (idCad) {
@@ -347,32 +341,35 @@ export const PetSingle = () => {
                                 <div className="boxSection">
                                     <label htmlFor="ipt-section">Seção</label><br />
                                     <select
-                                        name=""
-                                        id=""
-                                        onChange={(e) => setIdSection(e.target.value)}
-                                        value={idSection}
+                                        defaultValue={sectModel?.name}
+                                        onChange={handleSectionUpdate}
                                     >
-                                        {
-                                            sections.map((item, index) => (
-                                                <option key={index} value={item.id}>{item.name}</option>
-                                            ))
-                                        }
+                                        <option disabled></option>
+                                        {sections.map((item, index) => (
+                                            <option
+                                                key={index}
+                                                value={item.id}
+                                            >
+                                                {item.name}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="boxApartment">
                                     <label htmlFor="ipt-apartment">Apartment</label><br />
                                     <select
-                                        name=""
-                                        id=""
-                                        value={idApartment}
-                                        onChange={(e) => setIdApartment(parseInt(e.target.value))}
+                                        value={aptModel?.name}
+                                        onChange={handleApartmentUpdate}
                                     >
-                                        <option value={''}>Selecione...</option>
-                                        {
-                                            apartments.map((item, index) => (
-                                                <option key={index} value={item.id}>{item.name}</option>
-                                            ))
-                                        }
+                                        <option disabled></option>
+                                        {apts.map((item, index) => (
+                                            <option
+                                                key={index}
+                                                value={item.id}
+                                            >
+                                                {item.name}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
@@ -392,9 +389,8 @@ export const PetSingle = () => {
                                     <input
                                         type="text"
                                         className='ipt-idFood'
-                                        onChange={(e) => setSkuFood(e.target.value)}
-                                        onBlur={() => getFoodSku(skuFood)}
-                                        defaultValue={skuFood}
+                                        onChange={(e) => setIptFood(e.target.value)}
+                                        onBlur={() => getFood(iptFood)}
                                     />
                                 </div>
                                 <div className="boxDescriptionFood">
@@ -402,8 +398,8 @@ export const PetSingle = () => {
                                     <input
                                         type="text"
                                         className='ipt-descriptionFood'
+                                        value={listFood?.description}
                                         disabled
-                                        defaultValue={descriptionFood}
                                     />
                                 </div>
                             </div>

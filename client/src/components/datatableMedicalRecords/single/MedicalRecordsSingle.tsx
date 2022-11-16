@@ -122,7 +122,6 @@ export const MedicalRecordSingle = () => {
             const loadMedical = async (id: string) => {
                 let res = await medicalRecords.getMedicalRecord(id)
                 if (res.success) {
-                    let path = res.data.ItenFicha
                     setId(("000000" + res.data.id).slice(-6))
                     setDtCad(moment(res.data.date).format('DD/MM/YYYY'))
                     setStatus(res.data.status)
@@ -142,11 +141,6 @@ export const MedicalRecordSingle = () => {
                     }
                     if (res.data.itens !== null) {
                         setlistItens(res.data.itens)
-                        if (listItens) {
-                            listItens.forEach((item, index) => {
-                                console.log('Aqui', item?.qtdProduct)
-                            })
-                        }
                     }
                     if (res.data.events !== null) {
                         setEventsList(res.data.events)
@@ -196,10 +190,6 @@ export const MedicalRecordSingle = () => {
             setTxtBtnBaixar('Reabrir')
         }
     }
-
-    useEffect(() => {
-        console.log('Status: ', statusMr)
-    }, [statusMr])
 
     return (
         <div className='container--medicalRecord-single'>

@@ -18,12 +18,6 @@ export const BankNew = () => {
     const [account, setAccount] = useState(String)
     const [balance, setBalance] = useState(Number)
 
-    useEffect(()=>{
-        console.log(bankName)
-        console.log(bankId)
-    },[bankId])
-
-
     const getBank = async (bank_id: number) => {
         try {
             let json = await banks.getApiBank(bank_id)

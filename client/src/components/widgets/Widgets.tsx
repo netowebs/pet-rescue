@@ -20,7 +20,7 @@ export const Widgets = () => {
     const [petAdopted, setPetAdopted] = useState(Number)
 
     const getLowStock = async () => {
-        let newArr 
+        let newArr = []
         let json = await stock.getAllProducts()
         if(json){
             newArr = json.filter((item: { lowStock: number; }) => item.lowStock === 1)
@@ -44,8 +44,8 @@ export const Widgets = () => {
     }
 
     const getPets = async () => {
-        let newArrAdopted
-        let newArrAvailable
+        let newArrAdopted = []
+        let newArrAvailable = []
         let json = await pet.getAllPets()
         if(json){
             newArrAdopted = json.filter((item: { adoption_id: null; }) => item.adoption_id !== null)

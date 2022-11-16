@@ -1,26 +1,15 @@
-//import PrintIcon from '@mui/icons-material/Print';
-import { MenuItem } from '@mui/material';
 import moment from 'moment';
 import {useState, useEffect} from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './tutornew.scss'
 import swal from 'sweetalert'
 import { viaCep } from '../../../api/apiViaCep';
 import { tutor } from '../../../api/apiTutors';
 
-type AptModel = {
-    id: number,
-    name: string
-}
-
-let inititi: AptModel
 
 export const TutorNew = () => {
 
-    const params = useParams()
-
     //UseState Inputs
-    const [idCad, setIdCad] = useState(String)
     const [dtCad, setDtCad] = useState(String)
     const [name, setName] = useState(String)
     const [phone, setPhone] = useState(String)
@@ -54,7 +43,7 @@ export const TutorNew = () => {
     const handleCreate = async () => {
         const data: any = { name, cpf, rg, nasc, sex, phone, cep, street, num, complement, districtName, city, state}
 
-        if (name == '' || cpf == '' || rg == '' || nasc == '' || sex == '' || phone === ''  || cep == '' || street == '' || num == null || districtName == '' || city == '' || state == '') {
+        if (name == '' && cpf == '' && rg == '' && nasc == '' && sex == '' && phone === ''  && cep == '' && street == '' && num == null && districtName == '' && city == '' && state == '') {
             alert('Existem campos vazios')
         } else {
             const res = await tutor.createTutor(data)
@@ -230,6 +219,9 @@ export const TutorNew = () => {
                                         name="" 
                                         id=""
                                         value={state}
+                                        onChange={
+                                            (e) => setState(e.target.value)
+                                        }
                                     >
                                         <option value=""></option>
                                         <option value="AC">ACRE</option>

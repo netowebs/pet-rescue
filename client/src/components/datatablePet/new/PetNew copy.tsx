@@ -1,21 +1,30 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { apartment, pet, sections as sectApi } from '../../../api/api';
-import './petsingle.scss'
+import { apartment, pet, sections as secctt } from '../../../api/api';
+import { useApartments } from '../../hooks/useApartment';
+import { useSection } from '../../hooks/useSection';
+import { Modal } from '../../modal/Modal';
+import { Pet } from '../../../types/typePet';
+import './petnew.scss'
+import { DatatableApartment } from '../../datatableApartment/DatatableApartment';
 import swal from 'sweetalert'
 import { ModalSectionApartment } from '../../buttons/modalSectionApartment/ModalSectionApartment';
-import { DatatableApartment } from '../../datatableApartment/DatatableApartment';
+import { Stock } from '../../../types/typeStock';
 import { stock } from '../../../api/apiStock';
-import { Apartment } from '../../../types/typeApartment';
-import { Section } from '../../../types/typeSection';
 
+type AptModel = {
+    id: number,
+    name: string
+}
 
-export const PetSingle = () => {
+let inititi: AptModel
+
+export const PetNew = () => {
 
     const params = useParams()
 
-    //UseState Iputs
+    //UseState Inputs
     const [idCad, setIdCad] = useState(String)
     const [name, setName] = useState(String)
     const [dtRescue, setDtRescue] = useState(String)
@@ -23,119 +32,61 @@ export const PetSingle = () => {
     const [species, setSpecies] = useState(String)
     const [size, setSize] = useState(String)
     const [age, setAge] = useState(String)
-    const [sex, setSex] = useState(String)
     const [temperament, setTemperament] = useState(String)
     const [adptionStatus, setAdoptionStatus] = useState(String)
     const [food, setFood] = useState(String)
     const [color, setColor] = useState(String)
     const [coat, setCoat] = useState(String)
+    const [sex, setSex] = useState(String)
     const [note, setNote] = useState(String)
+    const [apartmentId, setApartmentId] = useState(Number)
 
-    //UseState Food
+    const [listFood, setListFood] = useState<Stock>()
+    const [iptFood, setIptFood] = useState('')
     const [idFood, setIdFood] = useState(Number)
-    const [skuFood, setSkuFood] = useState(String)
-    const [descriptionFood, setDescriptionFood] = useState(String)
 
     //UseState Section and Apartment
-    const [sections, setSections] = useState<Section[]>([])
-    const [apartments, setApartments] = useState<Apartment[]>([])
-    const [idApartment, setIdApartment] = useState(Number)
-    const [idSection, setIdSection] = useState(String)
+    const [aptModel, setAptModel] = useState<AptModel>(inititi)
+    const [sectModel, setSectModel] = useState<AptModel>(inititi)
+    const { sections } = useSection()
+    const [selectedSection, setSelectedSection] = useState(String(sectModel?.id))
+    const [selectedApartment, setSelectedApartment] = useState(String(aptModel?.id))
+    const { apts } = useApartments({ sectId: selectedSection })
 
-    useEffect(() => {
-        const getAptos = async (idSection: string) => {
-            let json = await apartment.getApartmentBySection(idSection)
-            if (json) {
-                setApartments(json)
-            }
-        }
-
-        const getSections = async () => {
-            let json = await sectApi.getAllSections()
-            if (json) {
-                setSections(json)
-            }
-        }
-
-        getAptos(idSection)
-        getSections()
-    }, [idSection])
-
-
-    const getFoodSku = async (skuFood: string) => {
-        const json = await stock.getProductSku(skuFood)
-        if (json) {
-            setIdFood(json.data.id)
-            setDescriptionFood(json.data.description)
-        }
+    //Functions Section and Apartment
+    const handleSectionUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedSection(e.target.value)
     }
 
-    const getFoodId = async (idFood: number) => {
-        const json = await stock.getProduct(idFood.toString())
+    const handleApartmentUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedApartment(e.target.value)
+        setApartmentId(parseInt(e.target.value))
+    }
+
+    const getFood = async (sku: string) => {
+        const json = await stock.getProductSku(sku)
         if (json) {
-            setSkuFood(json.data.sku)
+            setListFood(json.data)
             setIdFood(json.data.id)
-            setDescriptionFood(json.data.description)
         }
     }
 
     useEffect(() => {
-        if (params.Id) {
-            const loadPetDetail = async (id: string) => {
-                let res = await pet.getPet(id)
-                if (res.success) {
-                    setIdCad(("000000" + res.data.id).slice(-6))
-                    setDtRescue(res.data.date_rescue)
-                    setDtCad(moment(res.data.date_cad).format('DD/MM/YYYY'))
-                    setName(res.data.name)
-                    setSpecies(res.data.species)
-                    setAge(res.data.age_approx)
-                    setSex(res.data.sex)
-                    setTemperament(res.data.temperament)
-                    setSize(res.data.size)
-                    setAdoptionStatus(res.data.status)
-                    setFood(res.data.qtd_food)
-                    setColor(res.data.color)
-                    setCoat(res.data.coat)
-                    setNote(res.data.note)
-                    getFoodId(res.data.id_stock)
-                    setIdSection(res.data.ApartmentModel.section_id)
-                    setIdApartment(res.data.apartment_id)
-                } else {
-                    swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
-                        .then(() => {
-                            window.location.href = '/pets'
-                        })
-                }
+        setDtCad(moment().format('DD/MM/YYYY'))
+    }, [dtCad])
 
-            }
-            loadPetDetail(params.Id)
-        }
-    }, [])
+    useEffect(() => {
+
+    }, [apts, sections])
 
     //Function Create
-    const handleUpdate = async () => {
-        const data: any = { idCad, dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, idApartment, idFood }
+    const handleCreate = async () => {
+        const data: any = { dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, apartmentId, idFood}
 
-        if (name.trim() !== '' && species.trim() !== '' && size.trim() !== '' && age.trim() !== '' && temperament.trim() !== '' && adptionStatus.trim() !== '' && food !== '' && color.trim() !== '' && coat!== '' && sex !== '' && idApartment !== null && idFood !== null) {
-            const res = await pet.updatePet(data)
-            if (res.success) {
-                swal(res.message, " ", "success")
-                    .then(() => {
-                        window.location.href = '/pets'
-                    })
-            } else {
-                swal("Error !", "" + JSON.stringify(res.message), "error")
-            }
-        } else {
+        if (dtRescue == '' || name == '' || species == '' || age == '' || temperament == '' || adptionStatus === '' || food == '' || color == '' || coat == '' || size == '' || apartmentId == null || selectedSection == '' || sex == '') {
             alert('Existem campos vazios')
-        }
-    }
-
-
-    const handleDelete = async () => {
-        if (idCad) {
-            const res = await pet.deletePet(idCad)
+        } else {
+            const res = await pet.createPet(data)
             if (res.success) {
                 swal(res.message, " ", "success")
                     .then(() => {
@@ -148,7 +99,7 @@ export const PetSingle = () => {
     }
 
     return (
-        <div className='container--pet-single'>
+        <div className='container--pet-new'>
             <div className='formDetail'>
                 <div className="topBar">
                     <div className="topBar-interno">
@@ -158,16 +109,15 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-id'
                                     type="text"
-                                    defaultValue={idCad}
                                     disabled
                                 />
                             </div>
                             <div className="boxDtCad">
-                                <label htmlFor="ipt-dtRescue">Data Cadastro</label><br />
+                                <label htmlFor="ipt-dtCad">Data Cadastro</label><br />
                                 <input
-                                    className='ipt-dtRescue'
-                                    type="text"
                                     defaultValue={dtCad}
+                                    className='ipt-dtCad'
+                                    type="text"
                                     disabled
                                 />
                             </div>
@@ -176,17 +126,17 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-dtRescue'
                                     type="date"
-                                    defaultValue={dtRescue}
+                                    onChange={(e) =>
+                                        setDtRescue(e.target.value)}
                                     max={moment().format('YYYY-MM-DD')}
                                 />
                             </div>
                         </div>
                         <div className="topBar-Btn">
-                            <input type="submit" value="Salvar" className='btnSalvar' onClick={() => handleUpdate()} />
+                            <input type="submit" value="Salvar" className='btnSalvar' onClick={() => handleCreate()} />
                             <Link to={'/pets'}>
                                 <input type="button" value="Cancelar" className='btnCancelar' />
                             </Link>
-                            <input type="button" value="Excluir" className='btnExcluir' onClick={() => handleDelete()} />
                         </div>
                     </div>
                 </div>
@@ -202,7 +152,6 @@ export const PetSingle = () => {
                                     className='ipt-name'
                                     type="text"
                                     name='nome'
-                                    defaultValue={name}
                                     onChange={
                                         (e) => setName(e.target.value)
                                     }
@@ -212,7 +161,6 @@ export const PetSingle = () => {
                                 <label htmlFor="ipt-species">Espécie</label><br />
                                 <input className='ipt-species' type="text"
                                     name='species'
-                                    defaultValue={species}
                                     onChange={
                                         (e) => setSpecies(e.target.value)
                                     }
@@ -225,11 +173,12 @@ export const PetSingle = () => {
                                     className='ipt-size'
                                     name="size"
                                     id="size"
-                                    value={size}
+                                    defaultValue={'Selecione...'}
                                     onChange={
                                         (e) => setSize(e.target.value)
                                     }
                                 >
+                                    <option disabled>Selecione...</option>
                                     <option value="PEQUENO">PEQUENO</option>
                                     <option value="MEDIO">MÉDIO</option>
                                     <option value="GRANDE">GRANDE</option>
@@ -240,8 +189,7 @@ export const PetSingle = () => {
                                 <label htmlFor="ipt-age">Idade Aprox.</label><br />
                                 <input
                                     className='ipt-age'
-                                    type="text"
-                                    defaultValue={age}
+                                    type="number"
                                     onChange={
                                         (e) => setAge(e.target.value)
                                     }
@@ -252,7 +200,6 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-temperament'
                                     type="text"
-                                    defaultValue={temperament}
                                     onChange={
                                         (e) => setTemperament(e.target.value)
                                     }
@@ -264,11 +211,12 @@ export const PetSingle = () => {
                                     className='ipt-status'
                                     name="status"
                                     id="status"
-                                    value={adptionStatus}
+                                    defaultValue={'Selecione...'}
                                     onChange={
                                         (e) => setAdoptionStatus(e.target.value)
                                     }
                                 >
+                                    <option disabled>Selecione...</option>
                                     <option value="INDISPONIVEL">INDISPONÍVEL</option>
                                     <option value="DISPONIVEL">DISPONÍVEL</option>
                                 </select>
@@ -278,7 +226,6 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-food'
                                     type="text"
-                                    defaultValue={food}
                                     onChange={
                                         (e) => setFood(e.target.value)
                                     }
@@ -289,7 +236,6 @@ export const PetSingle = () => {
                                 <input
                                     className='ipt-color'
                                     type="text"
-                                    defaultValue={color}
                                     onChange={
                                         (e) => setColor(e.target.value)
                                     }
@@ -301,11 +247,12 @@ export const PetSingle = () => {
                                     className='ipt-coat'
                                     name="coat"
                                     id="coat"
-                                    value={coat}
+                                    defaultValue={'Selecione...'}
                                     onChange={
                                         (e) => setCoat(e.target.value)
                                     }
                                 >
+                                    <option disabled>Selecione...</option>
                                     <option value="CURTO">CURTO</option>
                                     <option value="MEDIO">MÉDIO</option>
                                     <option value="LONGO">LONGO</option>
@@ -317,20 +264,22 @@ export const PetSingle = () => {
                                     className='ipt-sex'
                                     name="sex"
                                     id="sex"
-                                    value={sex}
+                                    defaultValue={'Selecione...'}
                                     onChange={
                                         (e) => setSex(e.target.value)
                                     }
                                 >
+                                    <option disabled>Selecione...</option>
                                     <option value="MACHO">MACHO</option>
                                     <option value="FEMEA">FEMEA</option>
                                 </select>
                             </div>
                             <div className="boxInfo">
                                 <label htmlFor="ipt-info">Observações</label><br />
-                                <textarea className='ipt-info'
-                                    name="ipt-info" id="ipt-info"
-                                    defaultValue={note}
+                                <textarea
+                                    className='ipt-info'
+                                    name="ipt-info"
+                                    id="ipt-info"
                                     onChange={
                                         (e) => setNote(e.target.value)}
                                 >
@@ -347,32 +296,35 @@ export const PetSingle = () => {
                                 <div className="boxSection">
                                     <label htmlFor="ipt-section">Seção</label><br />
                                     <select
-                                        name=""
-                                        id=""
-                                        onChange={(e) => setIdSection(e.target.value)}
-                                        value={idSection}
+                                        defaultValue={''}
+                                        onChange={handleSectionUpdate}
                                     >
-                                        {
-                                            sections.map((item, index) => (
-                                                <option key={index} value={item.id}>{item.name}</option>
-                                            ))
-                                        }
+                                        <option disabled></option>
+                                        {sections.map((item, index) => (
+                                            <option
+                                                key={index}
+                                                value={item.id}
+                                            >
+                                                {item.name}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="boxApartment">
                                     <label htmlFor="ipt-apartment">Apartment</label><br />
                                     <select
-                                        name=""
-                                        id=""
-                                        value={idApartment}
-                                        onChange={(e) => setIdApartment(parseInt(e.target.value))}
+                                        defaultValue={''}
+                                        onChange={handleApartmentUpdate}
                                     >
-                                        <option value={''}>Selecione...</option>
-                                        {
-                                            apartments.map((item, index) => (
-                                                <option key={index} value={item.id}>{item.name}</option>
-                                            ))
-                                        }
+                                        <option disabled></option>
+                                        {apts.map((item, index) => (
+                                            <option
+                                                key={index}
+                                                value={item.id}
+                                            >
+                                                {item.name}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
@@ -392,9 +344,8 @@ export const PetSingle = () => {
                                     <input
                                         type="text"
                                         className='ipt-idFood'
-                                        onChange={(e) => setSkuFood(e.target.value)}
-                                        onBlur={() => getFoodSku(skuFood)}
-                                        defaultValue={skuFood}
+                                        onChange={(e) => setIptFood(e.target.value)}
+                                        onBlur={() => getFood(iptFood)}
                                     />
                                 </div>
                                 <div className="boxDescriptionFood">
@@ -402,14 +353,15 @@ export const PetSingle = () => {
                                     <input
                                         type="text"
                                         className='ipt-descriptionFood'
+                                        value={listFood?.description}
                                         disabled
-                                        defaultValue={descriptionFood}
                                     />
                                 </div>
                             </div>
                         </div>
                     </fieldset>
                 </div>
+
             </div>
         </div>
     )

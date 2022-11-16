@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './collaboratorssingle.scss'
 import swal from 'sweetalert'
@@ -7,10 +7,13 @@ import { viaCep } from '../../../api/apiViaCep';
 import { collab } from '../../../api/apiCollab';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
 export const CollaboratorsSingle = () => {
 
     const params = useParams()
+
+    const auth = useContext(AuthContext)
 
     const [idCad, setIdCad] = useState(String)
     const [dtCad, setDtCad] = useState(String)
@@ -39,17 +42,11 @@ export const CollaboratorsSingle = () => {
     const [photo, setPhoto] = useState<FileList>()
 
     const handlePhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {files} = event.target
-        if(files && files.length > 0 ){
+        const { files } = event.target
+        if (files && files.length > 0) {
             setPhoto(files)
         }
     }
-
-    useEffect(() => {
-        if(photo){
-            console.log(photo[0])
-        }
-    },[photo])
 
     const togglePass = () => {
         setShowPassword(!showPassword)
@@ -120,14 +117,18 @@ export const CollaboratorsSingle = () => {
 
         let data: any = {}
 
-        const formData = new FormData()
-        if(photo){
-            formData.append('image',photo[0], `${username.replace(/\s/g,'')}.jpg`)
+        if(ativo === 0){
+            setUsername('')
         }
-        
+
+        const formData = new FormData()
+        if (photo) {
+            formData.append('image', photo[0], `${username.replace(/\s/g, '')}.jpg`)
+        }
+
         if (password.trim() === '') {
-            data = { idCad, name, cpf, rg, nasc, sex, phone, cep, street, num, complement, district, city, state, nivel, username, dtAdmission, cargo, setor, ativo, formData}
-        } else { 
+            data = { idCad, name, cpf, rg, nasc, sex, phone, cep, street, num, complement, district, city, state, nivel, username, dtAdmission, cargo, setor, ativo, formData }
+        } else {
             data = { idCad, name, cpf, rg, nasc, sex, phone, cep, street, num, complement, district, city, state, password, nivel, username, dtAdmission, cargo, setor, ativo, formData }
         }
 
@@ -169,7 +170,7 @@ export const CollaboratorsSingle = () => {
                             </div>
                             <div className="boxPhoto">
                                 <label htmlFor="ipt-photo">Carregar Foto</label><br />
-                                <input 
+                                <input
                                     type="file"
                                     accept='image/*'
                                     formEncType='multipart/form-data'
@@ -388,35 +389,42 @@ export const CollaboratorsSingle = () => {
                                     />
                                 </div>
                                 <div className="boxAtivo">
-                                    <div className="sim">
-                                        <label htmlFor="ativo">Ativo:</label>
-                                        <input
-                                            type="radio"
-                                            name='ativo'
-                                            className='ipt-ativo'
-                                            defaultChecked
-                                            onChange={() => setAtivo(1)}
-                                        />
-                                    </div>
-                                    <div className="nao">
-                                        <label htmlFor="ativo">Inativo:</label>
-                                        <input
-                                            type="radio"
-                                            name='ativo'
-                                            className='ipt-inativo'
-                                            onChange={() => setAtivo(0)}
-                                        />
-                                    </div>
+                                    {
+                                        auth.user?.id === parseInt(idCad) &&
+                                        <>
+                                            <div className="sim">
+                                                <label htmlFor="ativo">Ativo:</label>
+                                                <input
+                                                    type="radio"
+                                                    name='ativo'
+                                                    className='ipt-ativo'
+                                                    defaultChecked
+                                                    onChange={() => setAtivo(1)}
+                                                />
+                                            </div>
+                                            <div className="nao">
+                                                <label htmlFor="ativo">Inativo:</label>
+                                                <input
+                                                    type="radio"
+                                                    name='ativo'
+                                                    className='ipt-inativo'
+                                                    onChange={() => setAtivo(0)}
+                                                />
+                                            </div>
+                                        </>
+                                    }
                                 </div>
                             </fieldset>
-                            <fieldset className='fieldset--acesso'>
+                            {
+                                ativo === 1 &&
+                                <fieldset className='fieldset--acesso'>
                                 <legend>Acesso</legend>
                                 <div className="boxUsername">
                                     <label htmlFor="ipt-username">Usuário</label><br />
                                     <input
                                         type="text"
                                         className='ipt-username'
-                                        value={username}
+                                        defaultValue={username}
                                     />
                                 </div>
                                 <div className="boxPassword">
@@ -458,6 +466,7 @@ export const CollaboratorsSingle = () => {
                                     </div>
                                 </div>
                             </fieldset>
+                            }
                         </div>
                     </div>
                 </fieldset>

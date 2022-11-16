@@ -9,22 +9,22 @@ export interface Apartment  {
 }
 
 type Prop = {
-    sectId: string
+    newSection: number
 }
 
-export const useApartments = ({sectId}:Prop) => {
+export const useApartments = ({newSection}:Prop) => {
     const [apts, setApts] = useState<Apartment[]>([])
     useEffect(() =>{
-        if(sectId){
+        if(newSection){
             const loadApartments = async () => {
-                const res = await apartment.getApartmentBySection(sectId)
+                const res = await apartment.getApartmentBySection(newSection.toString())
                 setApts(res)
             }
             loadApartments()
         }else{
             return;
         }
-    },[sectId])
+    },[newSection])
 
     return{
         apts

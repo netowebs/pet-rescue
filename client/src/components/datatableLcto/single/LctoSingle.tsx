@@ -1,5 +1,3 @@
-//import PrintIcon from '@mui/icons-material/Print';
-import { MenuItem } from '@mui/material';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -40,9 +38,6 @@ export const LctoSingle = () => {
     const [bankId, setBankId] = useState(Number)
     const [bankName, setBankName] = useState(String)
 
-    //Array tabela pivo
-    const [arrProduct, setArrProduct] = useState<number[]>([])
-
     //Dados do produto para get e set no array que é iterado para exibir na tela e enviado ao backend
     const [idProduct, setIdProduct] = useState(Number)
     const [sku, setSku] = useState('')
@@ -53,9 +48,6 @@ export const LctoSingle = () => {
     const [qtdUpdate, setQtdUpdate] = useState<number[]>([])
     const [validity, setValidity] = useState(String)
     const [productsLcto, setProductsLcto] = useState<ArrProduct[]>([])
-    const [somaQtd, setSomaQtd] = useState(Number)
-    const [somaValue, setSomaValue] = useState(Number)
-    const [costTot, setCostTot] = useState(String)
 
     //get header lcto
     useEffect(() => {
@@ -63,7 +55,6 @@ export const LctoSingle = () => {
             const loadUpdate = async (id: string) => {
                 let res = await stockUpdate.getUpdate(id)
                 if (res.success) {
-                    console.log(res.data)
                     setId(("000000" + res.data.id).slice(-6))
                     setDtCad(moment(res.data.dtCad).format('DD/MM/YYYY'))
                     setNf(res.data.nf)
@@ -75,7 +66,7 @@ export const LctoSingle = () => {
                     setWithdraw(res.data.withdraw)
                     setProductsLcto(res.data.Stock)
                     setBankId(res.data.id_bank)
-                    setBankName(res.data.BankModel.name_bank)
+                    setBankName(res.data.BankModel?.name_bank)
                 } else {
                     swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
                         .then(() => {

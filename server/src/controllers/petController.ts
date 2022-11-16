@@ -51,7 +51,8 @@ export const petDetail = async (req: Request, res: Response) => {
 
 export const petUpdate = async (req: Request, res: Response) => {
     try {
-        const { name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, apartmentId, idFood } = req.body
+        const { name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, idApartment, idFood } = req.body
+
         const update = await AnimalModel.update({
             name: name,
             species: species,
@@ -64,7 +65,7 @@ export const petUpdate = async (req: Request, res: Response) => {
             qtd_food: food,
             color: color,
             coat_size: coat,
-            apartment_id: apartmentId,
+            apartment_id: idApartment,
             id_stock: idFood
         }, {
             where: { id: req.body.idCad }
@@ -86,7 +87,7 @@ export const petUpdate = async (req: Request, res: Response) => {
 
 export const petCreate = async (req: Request, res: Response) => {
     try {
-        const { dtRescue, name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, apartmentId, idFood } = req.body
+        const { dtRescue, name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, idApartment, idFood } = req.body
         const convertDate = (dateString: string) => {
             return new Date(moment(dateString).format('YYYY-MM-DD'))
         }
@@ -103,7 +104,7 @@ export const petCreate = async (req: Request, res: Response) => {
             qtd_food: food,
             color: color,
             coat_size: coat,
-            apartment_id: apartmentId,
+            apartment_id: idApartment,
             id_stock: idFood
         })
         .then(()=>{

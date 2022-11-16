@@ -1,13 +1,9 @@
-//import PrintIcon from '@mui/icons-material/Print';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './banksingle.scss'
-import swal from 'sweetalert'
 import { bank } from '../../../api/apiBank';
-import { Bank } from '../../../types/typeBank';
 import { lctoFinancial } from '../../../api/apiLctoFinancial';
-import { rowsLctoFinancial } from '../../../api/apiRowsLcto';
 
 type ArrPivoFinancial = {
     id: number
@@ -77,7 +73,7 @@ export const BankSingle = () => {
             setArrLctos(newArr)
         }
         loadList(String(params.Id))
-    },[arrAux.length])    
+    }, [arrAux.length])
 
     return (
         <div className='container--financial-new'>
@@ -110,7 +106,7 @@ export const BankSingle = () => {
                                 <input
                                     type="text"
                                     className='ipt-balance'
-                                    value={'R$' + `${(balance)}`}
+                                    defaultValue={'R$' + `${(balance)}`}
                                     style={balance > 0 ? { backgroundColor: '#16a685', color: 'white' } : balance < 0 ? { backgroundColor: '#ad2a2a', color: 'white' } : { backgroundColor: '#b89b2a' }}
                                 />
                             </div>
@@ -171,80 +167,76 @@ export const BankSingle = () => {
                                 <legend>Lançamentos Financeiros</legend>
                                 <div className="boxAddItens">
                                     <table className='lctoFinancial'>
-                                        <thead>
-                                            <div className='divThead'>
-                                                <tr className='trHeadFinancialNew'>
-                                                    <th style={{ flex: '0.8' }}>Lançamento</th>
-                                                    <th style={{ flex: '0.9' }}>Data</th>
-                                                    <th style={{ flex: '0.8' }}>Hora</th>
-                                                    <th style={{ flex: '0.8' }}>Total Crédito</th>
-                                                    <th style={{ flex: '1' }}>Total Débito</th>
-                                                </tr>
-                                            </div>
+                                        <thead className='divThead'>
+                                            <tr className='trHeadFinancialNew'>
+                                                <th style={{ flex: '0.8' }}>Lançamento</th>
+                                                <th style={{ flex: '0.9' }}>Data</th>
+                                                <th style={{ flex: '0.8' }}>Hora</th>
+                                                <th style={{ flex: '0.8' }}>Total Crédito</th>
+                                                <th style={{ flex: '1' }}>Total Débito</th>
+                                            </tr>
                                         </thead>
-                                        <tbody>
-                                            <div className='divScroll' style={{ overflowY: 'scroll', height: '370px' }}>
-                                                {
-                                                    arrLctos.map((item, index) => (
-                                                        <tr className='tableRow' key={index}>
-                                                            <td>
+                                        <tbody className='divScroll' style={{ overflowY: 'scroll', height: '370px' }}>
+                                            {
+                                                arrLctos.map((item, index) => (
+                                                    <tr className='tableRow' key={index}>
+                                                        <td>
+                                                            <input
+                                                                style={{ width: '238px' }}
+                                                                className='tbDate-new'
+                                                                type="text"
+                                                                defaultValue={item.idLcto}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                style={{ width: '238px' }}
+                                                                className='tbDate-new'
+                                                                type="text"
+                                                                defaultValue={item.date}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                style={{ width: '238px' }}
+                                                                className='tbDate-new'
+                                                                type="text"
+                                                                defaultValue={item.time}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                style={{ width: '238px' }}
+                                                                className='tbDescription-lcto'
+                                                                type="text"
+                                                                defaultValue={item.totCredito}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                style={{ width: '238px' }}
+                                                                className='tbType-new'
+                                                                type="text"
+                                                                defaultValue={item.totDebito}
+                                                                disabled
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Link className="link" to={`/financial/${item.idLcto}`}>
                                                                 <input
-                                                                    style={{ width: '238px' }}
-                                                                    className='tbDate-new'
-                                                                    type="text"
-                                                                    defaultValue={item.idLcto}
-                                                                    disabled
+                                                                    className='btnDel-new'
+                                                                    type="button"
+                                                                    value="="
                                                                 />
-                                                            </td>
-                                                            <td>
-                                                                <input
-                                                                    style={{ width: '238px' }}
-                                                                    className='tbDate-new'
-                                                                    type="text"
-                                                                    defaultValue={item.date}
-                                                                    disabled
-                                                                />
-                                                            </td>
-                                                            <td>
-                                                                <input
-                                                                    style={{ width: '238px' }}
-                                                                    className='tbDate-new'
-                                                                    type="text"
-                                                                    defaultValue={item.time}
-                                                                    disabled
-                                                                />
-                                                            </td>
-                                                            <td>
-                                                                <input
-                                                                    style={{ width: '238px' }}
-                                                                    className='tbDescription-lcto'
-                                                                    type="text"
-                                                                    defaultValue={item.totCredito}
-                                                                    disabled
-                                                                />
-                                                            </td>
-                                                            <td>
-                                                                <input
-                                                                    style={{ width: '238px' }}
-                                                                    className='tbType-new'
-                                                                    type="text"
-                                                                    defaultValue={item.totDebito}
-                                                                    disabled
-                                                                />
-                                                            </td>
-                                                            <td>
-                                                                <Link className="link" to={`/financial/${item.idLcto}`}>
-                                                                    <input
-                                                                        className='btnDel-new'
-                                                                        type="button"
-                                                                        value="="
-                                                                    />
-                                                                </Link>
-                                                            </td>
-                                                        </tr>
-                                                    ))
-                                                }
-                                            </div>
+                                                            </Link>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            }
                                         </tbody>
                                     </table>
 
