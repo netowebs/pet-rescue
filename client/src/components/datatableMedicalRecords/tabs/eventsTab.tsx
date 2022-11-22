@@ -1,5 +1,6 @@
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 import { EventsList } from '../../../types/typeEventsList';
 import { VetList } from '../../../types/typeVetList';
 import './eventstab.scss'
@@ -17,12 +18,14 @@ type Prop = {
 
 export const EventsTab = ({ list, vetList, vetResp, setList, user, statusMr }: Prop) => {
 
+    const auth = useContext(AuthContext)
+
     const [date, setDate] = useState(String)
     const [hour, setHour] = useState(String)
     const [event, setEvent] = useState(String)
 
     const [vetEvent, setVetEvent] = useState(vetResp.name)
-    const [userEvent, setUserEvent] = useState(user)
+    const [userEvent, setUserEvent] = useState(auth.user?.username!)
 
     const defaultInput = () => {
         setDate('')

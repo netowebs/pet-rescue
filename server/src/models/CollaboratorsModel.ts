@@ -23,6 +23,7 @@ export interface CollaboratorsInstance extends Model {
     cargo: string
     setor: string
     ativo: number
+    user: string
 
 }
 
@@ -99,6 +100,10 @@ export const CollaboratorsModel = sequelize.define<CollaboratorsInstance>("Colla
 
     ativo: {
         type: DataTypes.NUMBER
+    },
+
+    user: {
+        type: DataTypes.STRING
     }
 },
 {

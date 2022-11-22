@@ -31,6 +31,7 @@ export const StockSingle = () => {
     const [cost, setCost] = useState(String)
     const [tempCost, setTempCost] = useState(String)
     const [unit, setUnit] = useState(String)
+    const [user, setUser] = useState(String)
     const { categories } = useCategoryProduct()
     const { brands } = useBrandProduct()
 
@@ -45,6 +46,7 @@ export const StockSingle = () => {
                     setDescription(res.data.description)
                     setValidity(res.data.validity)
                     setQtd(res.data.qtd)
+                    setQtdMin(res.data.qtdMin)
                     setBrand(res.data.brands_id)
                     setCategory(res.data.categories_id)
                     setObs(res.data.obs)
@@ -52,6 +54,7 @@ export const StockSingle = () => {
                     setCost('R$ '+res.data.cost)
                     setTempCost('R$ '+res.data.cost)
                     setUnit(res.data.unit)
+                    setUser(res.data.user)
                 } else {
                     swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
                         .then(() => {
@@ -102,6 +105,15 @@ export const StockSingle = () => {
                                 <input
                                     defaultValue={dtCad}
                                     className='ipt-dtCad'
+                                    type="text"
+                                    disabled
+                                />
+                            </div>
+                            <div className="boxUser">
+                                <label htmlFor="ipt-user">Usuário</label><br />
+                                <input
+                                    defaultValue={user}
+                                    className='ipt-user'
                                     type="text"
                                     disabled
                                 />

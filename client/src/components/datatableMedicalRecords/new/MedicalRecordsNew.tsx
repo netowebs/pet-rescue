@@ -1,17 +1,20 @@
 import moment from 'moment';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './medicalrecordsnew.scss'
 import swal from 'sweetalert'
 import { vet } from '../../../api/apiVet';
 import { pet } from '../../../api/api';
 import { medicalRecords } from '../../../api/apiMedicalRecords';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
 export const MedicalRecordNew = () => {
 
+    const auth = useContext(AuthContext)
+
     //Dados do lançamento
     const [dtCad, setDtCad] = useState(String)
-    const [user, setUser] = useState(String)
+    const [user, setUser] = useState(auth.user?.username)
     const [status, setStatus] = useState(String)
     const [obs, setObs] = useState(String)
 
@@ -83,9 +86,8 @@ export const MedicalRecordNew = () => {
 
         const data: any = { dtCad, user, status, obs, animalId, vetRespId, vetRespName, animalName }
 
-        if (user.trim() !== '' && status.trim() !== '' && animalId !== null && vetRespId !== null) {
+        if (status.trim() !== '' && animalId !== null && vetRespId !== null) {
             const res = await medicalRecords.createMedicalRecord(data)
-            console.log(res.message)
             if (res.success) {
                 swal(res.message, " ", "success")
                     .then(() => {
@@ -116,9 +118,8 @@ export const MedicalRecordNew = () => {
                                     className='ipt-user'
                                     type="text"
                                     name='user'
-                                    onChange={
-                                        (e) => setUser(e.target.value)
-                                    }
+                                    defaultValue={user}
+                                    disabled
                                 />
                             </div>
                             <div className="boxDtCad">

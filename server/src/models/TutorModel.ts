@@ -16,6 +16,7 @@ export interface TutorInstance extends Model {
     cep: string
     city: string
     uf: string
+    date_cad: Date
 
 }
 
@@ -61,6 +62,9 @@ export const TutorModel = sequelize.define<TutorInstance>("TutorModel",{
     },
     uf: {
         type: DataTypes.STRING
+    },
+    date_cad: {
+        type: DataTypes.DATE
     }
 },
 {

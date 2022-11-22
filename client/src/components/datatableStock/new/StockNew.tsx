@@ -1,8 +1,6 @@
-//import PrintIcon from '@mui/icons-material/Print';
-import { MenuItem } from '@mui/material';
 import moment from 'moment';
-import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import './stocknew.scss'
 import swal from 'sweetalert'
 import { stock } from '../../../api/apiStock';
@@ -12,8 +10,11 @@ import { ModalCategoryProduct } from '../../buttons/modalCategoryProduct/ModalCa
 import { DatatableCategoryProduct } from '../../datatableCategoryProduct/DatatableCategoryProduct';
 import { ModalBrandProduct } from '../../buttons/modalBrandProduct/ModalBrandProduct';
 import { DatatableBrandProduct } from '../../datatableBrandProduct/DatatableBrandProduct';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
 export const StockNew = () => {
+
+    const auth = useContext(AuthContext)
 
     //UseState Inputs
     const [idCad, setIdCad] = useState(String)
@@ -29,6 +30,7 @@ export const StockNew = () => {
     const [location, setLocation] = useState(String)
     const [cost, setCost] = useState(String)
     const [unit, setUnit] = useState(String)
+    const [user, setUser] = useState(auth.user?.username)
 
     const { categories } = useCategoryProduct()
     const { brands } = useBrandProduct()
@@ -66,11 +68,12 @@ export const StockNew = () => {
                 <div className="topBar">
                     <div className="topBar-interno">
                         <div className="topBar-inputs">
-                            <div className="boxId">
-                                <label htmlFor="ipt-id">Código</label><br />
+                            <div className="boxUser">
+                                <label htmlFor="ipt-id">Usuário</label><br />
                                 <input
-                                    className='ipt-id'
+                                    className='ipt-user'
                                     type="text"
+                                    defaultValue={user}
                                     disabled
                                 />
                             </div>

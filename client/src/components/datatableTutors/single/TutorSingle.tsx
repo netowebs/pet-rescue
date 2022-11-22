@@ -33,7 +33,7 @@ export const TutorSingle = () => {
                 let res = await tutor.getTutor(id)
                 if (res.success) {
                     setIdCad(("000000" + res.data.id).slice(-6))
-                    setDtCad(moment(res.data.dtCad).format('DD/MM/YYYY'))
+                    setDtCad(moment(res.data.date_cad).format('DD/MM/YYYY'))
                     setName(res.data.name)
                     setCpf(res.data.cpf)
                     setRg(res.data.rg)

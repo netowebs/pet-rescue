@@ -60,7 +60,20 @@ export const DatatableMedicalRecords = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (('000000'+val.id).slice(-6).toString().includes(search)) ||
+                    (val.id.toString().includes(search)) ||
+                    (val.vet_name.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.status.includes(search.toLocaleLowerCase())) ||
+                    (val.animal_name.toLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (moment(val.last_change).format('DD/MM/YYYY').toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
             renderList={(list) => (
                 <>
@@ -153,17 +166,7 @@ export const DatatableMedicalRecords = ({ search, setSearch }: Prop) => {
                     </div>
                     <div className="container">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.vet_name.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.status.includes(search.toLocaleLowerCase())) ||
-                                    (val.animal_name.includes(search.toLocaleLowerCase()))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
                                     <div key={index} className='listMedicalRecords'>
                                         <div className="idMR">{("000000" + item.id).slice(-6)}</div>

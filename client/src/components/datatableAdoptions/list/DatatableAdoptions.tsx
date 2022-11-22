@@ -8,8 +8,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { sortAndToggle } from '../../sortList/SortListMedicalRecord'
-import { MedicalRecord } from "../../../types/typeMedicalRecord";
+import { sortAndToggle } from '../../sortList/SortListAdoption'
 import { adoption } from "../../../api/apiAdoption";
 import { Adoption } from "../../../types/typeAdoption";
 
@@ -57,7 +56,20 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (('000000'+val.id).slice(-6).toString().includes(search)) ||
+                    (val.id.toString().includes(search)) ||
+                    (val.AnimalModel?.name.toLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.user.toLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.TutorModel?.name.toLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (moment(val.date).format('DD/MM/YYYY').toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
             renderList={(list) => (
                 <>
@@ -81,40 +93,6 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
                         </div>
                         <div
                             className="petAdoption--list-title"
-                            onClick={() => handleSort("status")}
-                        >
-                            {
-                                sort === 'status' ?
-                                    toggle &&
-                                    <ArrowDownwardIcon
-                                        className="downArrow"
-                                    /> ||
-                                    <ArrowUpwardIcon
-                                        className="upArrow"
-                                    />
-                                    : null
-                            }
-                            <span>Animal</span>
-                        </div>
-                        <div
-                            className="tutorAdoption--list-title"
-                            onClick={() => handleSort("vet")}
-                        >
-                            {
-                                sort === 'vet' ?
-                                    toggle &&
-                                    <ArrowDownwardIcon
-                                        className="downArrow"
-                                    /> ||
-                                    <ArrowUpwardIcon
-                                        className="upArrow"
-                                    />
-                                    : null
-                            }
-                            <span>Tutor</span>
-                        </div>
-                        <div
-                            className="dateAdoption--list-title"
                             onClick={() => handleSort("pet")}
                         >
                             {
@@ -128,14 +106,48 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
                                     />
                                     : null
                             }
+                            <span>Animal</span>
+                        </div>
+                        <div
+                            className="tutorAdoption--list-title"
+                            onClick={() => handleSort("tutor")}
+                        >
+                            {
+                                sort === 'tutor' ?
+                                    toggle &&
+                                    <ArrowDownwardIcon
+                                        className="downArrow"
+                                    /> ||
+                                    <ArrowUpwardIcon
+                                        className="upArrow"
+                                    />
+                                    : null
+                            }
+                            <span>Tutor</span>
+                        </div>
+                        <div
+                            className="dateAdoption--list-title"
+                            onClick={() => handleSort("dtAdoption")}
+                        >
+                            {
+                                sort === 'dtAdoption' ?
+                                    toggle &&
+                                    <ArrowDownwardIcon
+                                        className="downArrow"
+                                    /> ||
+                                    <ArrowUpwardIcon
+                                        className="upArrow"
+                                    />
+                                    : null
+                            }
                             <span>Data Adoção</span>
                         </div>
                         <div
                             className="userAdoption--list-title"
-                            onClick={() => handleSort("last")}
+                            onClick={() => handleSort("user")}
                         >
                             {
-                                sort === 'last' ?
+                                sort === 'user' ?
                                     toggle &&
                                     <ArrowDownwardIcon
                                         className="downArrow"
@@ -150,16 +162,7 @@ export const DatatableAdoptions = ({ search, setSearch }: Prop) => {
                     </div>
                     <div className="container">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.AnimalModel.name.includes(search.toLocaleLowerCase())) ||
-                                    (val.TutorModel.name.includes(search.toLocaleLowerCase()))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
                                     <div key={index} className='listMedicalRecords'>
                                         <div className="idAdoption">{("000000" + item.id).slice(-6)}</div>

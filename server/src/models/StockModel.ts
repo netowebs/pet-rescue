@@ -17,7 +17,8 @@ export interface StockInstace extends Model{
     obs: string,
     date_cad: Date,
     lowStock: number,
-    qtdMin: number
+    qtdMin: number,
+    user: string
 }
 
 export const StockModel = sequelize.define<StockInstace>("stockModel",{
@@ -61,6 +62,10 @@ export const StockModel = sequelize.define<StockInstace>("stockModel",{
 
     qtdMin: {
         type: DataTypes.NUMBER
+    },
+
+    user: {
+        type: DataTypes.STRING
     }
 
 },

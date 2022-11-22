@@ -1,21 +1,18 @@
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import './collaboratorsnew.scss'
 import swal from 'sweetalert'
 import { viaCep } from '../../../api/apiViaCep';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { collab } from '../../../api/apiCollab';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
-type AptModel = {
-    id: number,
-    name: string
-}
 
 export const CollaboratorsNew = () => {
 
-    const params = useParams()
+    const auth = useContext(AuthContext)
 
     //UseState Inputs
     const [dtCad, setDtCad] = useState(String)
@@ -32,6 +29,7 @@ export const CollaboratorsNew = () => {
     const [cargo, setCargo] = useState(String)
     const [setor, setSetor] = useState(String)
     const [ativo, setAtivo] = useState(1)
+    const [user, setUser] = useState(auth.user?.username)
 
     const [showPassword, setShowPassword] = useState(false)
 
@@ -64,7 +62,7 @@ export const CollaboratorsNew = () => {
         }
         if (ativo === 1) {
             handleUsername()
-        }else{
+        } else {
             setUsername('')
         }
     })
@@ -75,11 +73,11 @@ export const CollaboratorsNew = () => {
 
     //Function Create
     const handleCreate = async () => {
-        const data: any = { name, cpf, rg, nasc, sex, phone, cep, street, num, complement, districtName, city, state, password, nivel, username, dtAdmission, cargo, setor, ativo }
+        const data: any = { name, cpf, rg, nasc, sex, phone, cep, street, num, complement, districtName, city, state, password, nivel, username, dtAdmission, cargo, setor, ativo, user }
 
         if (name.trim() === '' && cpf.trim() === '' && rg.trim() === '' && nasc.trim() === '' && sex.trim() === '' && phone.trim() === '' && cep.trim() === '' && street.trim() === '' && num === null && complement.trim() === '' && districtName.trim() === '' && city.trim() === '' && state.trim() === '') {
             alert('Existem campos vazios')
-        } else{
+        } else {
             const res = await collab.createCollab(data)
             if (res.success) {
                 swal(res.message, " ", "success")
@@ -98,11 +96,12 @@ export const CollaboratorsNew = () => {
                 <div className="topBar">
                     <div className="topBar-interno">
                         <div className="topBar-inputs">
-                            <div className="boxId">
-                                <label htmlFor="ipt-id">Código</label><br />
+                            <div className="boxUser">
+                                <label htmlFor="ipt-user">Usuário</label><br />
                                 <input
-                                    className='ipt-id'
+                                    className='ipt-user'
                                     type="text"
+                                    defaultValue={user}
                                     disabled
                                 />
                             </div>
@@ -179,9 +178,9 @@ export const CollaboratorsNew = () => {
                             </div>
                             <div className="boxSex">
                                 <label htmlFor="ipt-sex">Sexo</label><br />
-                                <select 
+                                <select
                                     className='ipt-sex'
-                                    name="sex" 
+                                    name="sex"
                                     id="sex"
                                     value={sex}
                                     onChange={
@@ -326,75 +325,90 @@ export const CollaboratorsNew = () => {
                                     />
                                 </div>
                                 <div className="boxAtivo">
-                                    <div className="sim">
-                                        <label htmlFor="ativo">Ativo:</label>
-                                        <input
-                                            type="radio"
-                                            name='ativo'
-                                            className='ipt-ativo'
-                                            defaultChecked
-                                            onChange={() => setAtivo(1)}
-                                        />
-                                    </div>
-                                    <div className="nao">
-                                        <label htmlFor="ativo">Inativo:</label>
-                                        <input
-                                            type="radio"
-                                            name='ativo'
-                                            className='ipt-inativo'
-                                            onChange={() => setAtivo(0)}
-                                        />
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset className='fieldset--acesso'>
-                                <legend>Acesso</legend>
-                                <div className="boxUsername">
-                                    <label htmlFor="ipt-username">Usuário</label><br />
-                                    <input
-                                        type="text"
-                                        className='ipt-username'
-                                        defaultValue={username}
-                                    />
-                                </div>
-                                <div className="boxPassword">
-                                    <label htmlFor="ipt-password">Senha</label><br />
-                                    <input
-                                        type={showPassword ? 'text' : 'password'}
-                                        className='ipt-password'
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
-                                </div>
-                                <div className="btnPass">
                                     {
-                                        showPassword ? 
-                                        <VisibilityOffIcon onClick={togglePass}/> : 
-                                        <VisibilityIcon onClick={togglePass}/>
+                                        auth.user?.nivel === 1 ? (
+                                            <>
+                                                <div className="sim">
+                                                    <label htmlFor="ativo">Ativo:</label>
+                                                    <input
+                                                        type="radio"
+                                                        name='ativo'
+                                                        className='ipt-ativo'
+                                                        defaultChecked
+                                                        onChange={() => setAtivo(1)}
+                                                    />
+                                                </div>
+                                                <div className="nao">
+                                                    <label htmlFor="ativo">Inativo:</label>
+                                                    <input
+                                                        type="radio"
+                                                        name='ativo'
+                                                        className='ipt-inativo'
+                                                        onChange={() => setAtivo(0)}
+                                                    />
+                                                </div>
+                                            </>
+                                        ) :
+                                            null
                                     }
                                 </div>
-                                <div className="boxNivel">
-                                    <div className="adm">
-                                        <label htmlFor="nivel">Admin:</label>
-                                        <input
-                                            type="radio"
-                                            name='nivel'
-                                            className='ipt-adm'
-                                            onChange={() => setNivel(1)}
-                                        />
-                                    </div>
-                                    <div className="user">
-                                        <label htmlFor="nivel">Usuário:</label>
-                                        <input
-                                            type="radio"
-                                            name='nivel'
-                                            className='ipt-user'
-                                            onChange={() => setNivel(0)}
-                                            defaultChecked
-                                        />
-                                    </div>
-                                </div>
                             </fieldset>
+                            {
+                                auth.user?.nivel === 1 ?
+                                    (
+                                        <>
+                                            <fieldset className='fieldset--acesso'>
+                                                <legend>Acesso</legend>
+                                                <div className="boxUsername">
+                                                    <label htmlFor="ipt-username">Usuário</label><br />
+                                                    <input
+                                                        type="text"
+                                                        className='ipt-username'
+                                                        defaultValue={username}
+                                                    />
+                                                </div>
+                                                <div className="boxPassword">
+                                                    <label htmlFor="ipt-password">Senha</label><br />
+                                                    <input
+                                                        type={showPassword ? 'text' : 'password'}
+                                                        className='ipt-password'
+                                                        value={password}
+                                                        onChange={(e) => setPassword(e.target.value)}
+                                                    />
+                                                </div>
+                                                <div className="btnPass">
+                                                    {
+                                                        showPassword ?
+                                                            <VisibilityOffIcon onClick={togglePass} /> :
+                                                            <VisibilityIcon onClick={togglePass} />
+                                                    }
+                                                </div>
+                                                <div className="boxNivel">
+                                                    <div className="adm">
+                                                        <label htmlFor="nivel">Admin:</label>
+                                                        <input
+                                                            type="radio"
+                                                            name='nivel'
+                                                            className='ipt-adm'
+                                                            onChange={() => setNivel(1)}
+                                                        />
+                                                    </div>
+                                                    <div className="user">
+                                                        <label htmlFor="nivel">Usuário:</label>
+                                                        <input
+                                                            type="radio"
+                                                            name='nivel'
+                                                            className='ipt-user'
+                                                            onChange={() => setNivel(0)}
+                                                            defaultChecked
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </>
+                                    ) :
+                                    null
+                            }
                         </div>
                     </div>
                 </fieldset>

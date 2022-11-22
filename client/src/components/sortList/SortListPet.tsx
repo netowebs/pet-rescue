@@ -1,3 +1,5 @@
+import moment from "moment"
+
 export const sortAndToggle = (sort: string, a: any, b: any, toggle: boolean) => {
     switch (sort) {
         case 'name':
@@ -14,9 +16,9 @@ export const sortAndToggle = (sort: string, a: any, b: any, toggle: boolean) => 
             }
         case 'dtRescue':
             if (toggle) {
-                return a.date_rescue.localeCompare(b.date_rescue)
+                return moment(a.date_rescue).format('YYYY-MM-DD').localeCompare(moment(b.date_rescue).format('YYYY-MM-DD'))
             } else {
-                return b.date_rescue.localeCompare(a.date_rescue)
+                return moment(b.date_rescue).format('YYYY-MM-DD').localeCompare(moment(a.date_rescue).format('YYYY-MM-DD'))
             }
         case 'species':
             if (toggle) {

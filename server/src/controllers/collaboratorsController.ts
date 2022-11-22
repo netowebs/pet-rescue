@@ -36,7 +36,7 @@ export const collabDetail = async (req: Request, res: Response) => {
 
 export const collabCreate = async (req: Request, res: Response) => {
     try {
-        const { name, cpf, rg, nasc, sex, phone, cep, street, num, complement, districtName, city, state, password, nivel, username, dtAdmission, cargo, setor, ativo, loadPhoto } = req.body
+        const { name, cpf, rg, nasc, sex, phone, cep, street, num, complement, districtName, city, state, password, nivel, username, dtAdmission, cargo, setor, ativo, loadPhoto, user } = req.body
 
         const passwordHash = await bcrypt.hash(password, 8)
         const convertDate = (dateString: string) => {
@@ -44,7 +44,7 @@ export const collabCreate = async (req: Request, res: Response) => {
         }
 
         let create = await CollaboratorsModel.create({
-            name, cpf, rg, address: street, complement, address_num: num, district: districtName, cep, city, uf: state, date_birth: convertDate(nasc), sex, phone, password: passwordHash, nivel, username, cargo, setor, dtAdmission: convertDate(dtAdmission), ativo, photo: loadPhoto
+            name, cpf, rg, address: street, complement, address_num: num, district: districtName, cep, city, uf: state, date_birth: convertDate(nasc), sex, phone, password: passwordHash, nivel, username, cargo, setor, dtAdmission: convertDate(dtAdmission), ativo, photo: loadPhoto, user
         })
             .then(() => {
                 return { success: true, message: 'Cadastro Concluido com Sucesso' }
@@ -65,10 +65,10 @@ export const collabDelete = async (req: Request, res: Response) => {
             where: { id: req.params.idDel }
         })
             .then(() => {
-                return { success: true, message: 'Colaborador' }
+                return { success: true, message: 'Colaborador removido com sucesso' }
             })
             .catch(error => {
-                return { success: false, message: 'Antes de remover uma sessão, deves remover os apartamentos vinculados a ela, esse processo evita erros em cascata que podem prejudicar o correto funcionamento do sistema.', error }
+                return { success: false, message: error }
             })
         res.send(delSect)
     } catch (error) {

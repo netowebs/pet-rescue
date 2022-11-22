@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import moment from 'moment';
 import { MedicalRecordsModel } from '../models/MedicalRecordsModel';
 import { AnimalModel } from '../models/PetModel';
 import { VetModel } from '../models/VetModel';
@@ -64,17 +65,17 @@ export const medicalRecordDetail = async (req: Request, res: Response) => {
 export const medicalRecordCreate = async (req: Request, res: Response) => {
 
     try {
-        const { dtCad, user, status, obs, animalId, vetRespId, vetRespName, animalName } = req.body
+        const { user, status, obs, animalId, vetRespId, vetRespName, animalName } = req.body
 
         const createMR = await MedicalRecordsModel.create({
             animals_id: animalId,
             user: user,
             status: status,
             obs: obs,
-            last_change: dtCad,
             animal_name: animalName,
             vet_name: vetRespName,
-            statusMR: 0
+            statusMR: 0,
+            last_change: moment().format('YYYY-MM-DD') 
         })
             .then(async () => {
                 return { success: true, message: 'Cadastro Concluido com Sucesso' }

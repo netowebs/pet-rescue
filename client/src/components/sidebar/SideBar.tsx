@@ -12,18 +12,18 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import { useState, useContext} from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/Auth/AuthContex';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 
 
 
-export const SideBar = () => {    
-        
+export const SideBar = () => {
+
     const auth = useContext(AuthContext)
 
-    const url: string = `\\src\\images\\photosUsers\\${auth.user?.username.replace(/\s/g,'')}.jpg`
+    const url: string = `\\src\\images\\photosUsers\\${auth.user?.username.replace(/\s/g, '')}.jpg`
 
     const [showElement, setShowElement] = useState(auth.user?.nivel === 0 ? false : true);
 
@@ -51,7 +51,7 @@ export const SideBar = () => {
             <div className="userLogged">
                 <div className="userPhoto">
                     <img
-                        src= {url}
+                        src={url}
                         alt=""
                         className='avatar'>
                     </img>
@@ -104,16 +104,34 @@ export const SideBar = () => {
                                 <span>Alimentar</span>
                             </li>
                         </Link>
+                        <Link className='link' to={'/collaborators'}>
+                            <li>
+                                <HailIcon className='icon' />
+                                <span>Colaboradores</span>
+                            </li>
+                        </Link>
+                        <Link className='link' to={'/stock'}>
+                            <li>
+                                <ProductionQuantityLimitsIcon className='icon' />
+                                <span>Estoque</span>
+                            </li>
+                        </Link>
+                        <Link className='link' to={'/vets'}>
+                            <li>
+                                <MedicalInformationIcon className='icon' />
+                                <span>Veterinários</span>
+                            </li>
+                        </Link>
                     </ul>
                 </div>
 
                 {
-                    auth.user?.nivel === 1 ?(
-                    <div onClick={toggleElement} className="menu-name">
-                        <p className="title">Menus de Administração</p>
-                        {showElement ? <ArrowUpwardIcon className='icon-arrow' /> : <ArrowDownwardIcon className='icon-arrow' />}
-                    </div>)
-                    : false
+                    auth.user?.nivel === 1 ? (
+                        <div onClick={toggleElement} className="menu-name">
+                            <p className="title">Menus de Administração</p>
+                            {showElement ? <ArrowUpwardIcon className='icon-arrow' /> : <ArrowDownwardIcon className='icon-arrow' />}
+                        </div>)
+                        : false
                 }
                 {showElement ?
                     <div className="center-bottom">
@@ -128,24 +146,6 @@ export const SideBar = () => {
                                 <li>
                                     <AccountBalanceIcon className='icon' />
                                     <span>Cadastro de Contas</span>
-                                </li>
-                            </Link>
-                            <Link className='link' to={'/collaborators'}>
-                                <li>
-                                    <HailIcon className='icon' />
-                                    <span>Colaboradores</span>
-                                </li>
-                            </Link>
-                            <Link className='link' to={'/vets'}>
-                                <li>
-                                    <MedicalInformationIcon className='icon' />
-                                    <span>Veterinários</span>
-                                </li>
-                            </Link>
-                            <Link className='link' to={'/stock'}>
-                                <li>
-                                    <ProductionQuantityLimitsIcon className='icon' />
-                                    <span>Estoque</span>
                                 </li>
                             </Link>
                         </ul>

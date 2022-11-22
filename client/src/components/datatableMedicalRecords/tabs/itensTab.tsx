@@ -1,6 +1,7 @@
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { stock } from '../../../api/apiStock';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 import { ItensList } from '../../../types/typeItensList';
 import { VetList } from '../../../types/typeVetList';
 import { UpdateStock } from '../single/MedicalRecordsSingle';
@@ -27,6 +28,8 @@ type Prop = {
 
 export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdProducts, vetIdList, setVetIdList, user, statusMr, qtdMedical, qtdStock, setQtdMedical, setQtdStock }: Prop) => {
 
+    const auth = useContext(AuthContext)
+
     const [idProd, setIdProd] = useState(Number)
     const [skuProduct, setSkuProduct] = useState(String)
     const [descProduct, setDescProduct] = useState(String)
@@ -34,7 +37,7 @@ export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdPro
     const [oldQtdd, setOldQtdd] = useState(Number)
     const [vetProduct, setVetProduct] = useState(vetResp.name)
     const [vetIdProd, setVetIdProd] = useState(vetResp.id)
-    const [userProduct, setUserProduct] = useState(String)
+    const [userProduct, setUserProduct] = useState(auth.user?.username!)
     const [dateProduct, setDateProduct] = useState(Date)
 
     //Busca de produtos através do SKU
@@ -44,7 +47,6 @@ export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdPro
             setIdProd(json.data.id)
             setSkuProduct(json.data.sku)
             setDescProduct(json.data.description)
-            setUserProduct(user)
             setOldQtdd(json.data.qtd)
         } else if (skuProduct.trim() !== '') {
             alert('Produto Não Encontrado')
@@ -146,7 +148,7 @@ export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdPro
     }, [])
 
     return (
-        <div className="itensTab">
+        <div className="itensTabMedical">
             <div className="itensAdd">
                 {
                     statusMr !== 1 &&
@@ -216,15 +218,15 @@ export const ItensTab = ({ list, vetList, vetResp, setList, idProducts, setIdPro
                     </>
                 }
             </div>
-            <table className='itensList'>
+            <table className='itensListMedical'>
                 <thead className='divThead'>
                     <tr className='trHeadItens'>
-                        <th style={{ flex: '0.7' }}>SKU</th>
-                        <th style={{ flex: '1.75' }}>Descrição</th>
-                        <th style={{ flex: '0.4' }}>Qtd.</th>
-                        <th style={{ flex: '1.7' }}>Veterinário</th>
-                        <th style={{ flex: '0.5' }}>Usuário</th>
-                        <th style={{ flex: '0.7' }}>Data</th>
+                        <th style={{ flex: '0.8' }}>SKU</th>
+                        <th style={{ flex: '1.4' }}>Descrição</th>
+                        <th style={{ flex: '0.5' }}>Qtd.</th>
+                        <th style={{ flex: '1.5' }}>Veterinário</th>
+                        <th style={{ flex: '0.8' }}>Usuário</th>
+                        <th style={{ flex: '1' }}>Data</th>
                     </tr>
                 </thead>
                 <tbody className='divScroll' style={{ overflowY: 'scroll', height: '213px' }}>

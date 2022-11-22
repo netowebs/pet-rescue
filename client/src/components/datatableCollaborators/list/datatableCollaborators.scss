@@ -1,4 +1,4 @@
-.titleBar--ListTutor{
+.titleBar--ListCollab{
         align-items: center;
         display: flex;
         justify-content: space-around;
@@ -10,25 +10,29 @@
         font-weight: 700;
         border-bottom: 2px solid #095543;
 
-        .idTutor--list-title, 
-        .nameTutor--list-title, 
-        .addressTutor--list-title,
-        .phoneTutor--list-title, 
-        .cpfTutor--list-title,
-        .rgTutor--list-title{
+        span{
+            cursor: pointer;
+        }
+
+        .idCollab--list-title, 
+        .nameCollab--list-title, 
+        .addressCollab--list-title,
+        .phoneCollab--list-title, 
+        .cpfCollab--list-title,
+        .rgCollab--list-title{
             flex: 1;
             text-align: center;
         }
 
-        .cpfTutor--list-title{
+        .cpfCollab--list-title{
             flex: 0.5;
         }
 
-        .rgTutor--list-title{
+        .rgCollab--list-title{
             margin-right: 130px;
         }
 
-        .idTutor--list-title{
+        .idCollab--list-title{
             margin-left: 10px;
         }
 
@@ -43,7 +47,7 @@
         }
     }
 
-.listTutor{
+.listCollab{
     display: flex;
     justify-content: space-around;   
     align-items: center;
@@ -54,17 +58,17 @@
         background-color: #f0f2f1;
     }
 
-    .idTutor,
-    .nameTutor,
-    .addressTutor,
-    .cpfTutor,
-    .phoneTutor,
-    .rgTutor{
+    .idCollab,
+    .nameCollab,
+    .addressCollab,
+    .cpfCollab,
+    .phoneCollab,
+    .rgCollab{
         flex: 1;
         text-align: center;
     }
 
-    .cpfTutor{
+    .cpfCollab{
         flex: 0.5;
     }
 

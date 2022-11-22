@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './medicalrecordssingle.scss'
 import swal from 'sweetalert'
@@ -13,6 +13,7 @@ import { VetList } from '../../../types/typeVetList';
 import { EventsTab } from '../tabs/eventsTab';
 import { EventsList } from '../../../types/typeEventsList';
 import { stock } from '../../../api/apiStock';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
 export type Pivo = {
     qtd: number
@@ -30,6 +31,7 @@ export type UpdateStock = {
 export const MedicalRecordSingle = () => {
 
     const params = useParams()
+    const auth = useContext(AuthContext)
 
     //Dados do lançamento
     const [dtCad, setDtCad] = useState(String)
@@ -163,7 +165,7 @@ export const MedicalRecordSingle = () => {
 
     const handleCreate = async () => {
 
-        const data: any = { idMedicalRecord: id, status, lastChange, vetList, listItens, eventsList, idVets, idProducts, vetIdList, statusMr, stockQtd }
+        const data: any = { idMedicalRecord: id, status, vetList, listItens, eventsList, idVets, idProducts, vetIdList, statusMr, stockQtd }
         const res = await medicalRecords.updateMedicalRecord(data)
         if (res.success) {
             swal(res.message, " ", "success")

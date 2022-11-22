@@ -1,11 +1,11 @@
 import './boxLogo.scss';
-import logo from '../../../images/logo.png'
+//import logo from '../../../images/logo.png'
 
 export const BoxLogo = () => {
     return(
         <div className='box-logo'>
             <div className="img-logo">
-                <img src={logo} alt="" />
+                <img src={`logo`} alt="" />
             </div>
             <div className="txt-logo">
               <div className="txtPet">

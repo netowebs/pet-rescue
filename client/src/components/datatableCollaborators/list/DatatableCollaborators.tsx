@@ -7,7 +7,7 @@ import { PaginatedList } from "react-paginated-list";
 import { Link } from "react-router-dom";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { sortAndToggle } from '../../sortList/SortListTutor'
+import { sortAndToggle } from '../../sortList/SortListCollab'
 import { Collaborator } from "../../../types/typeCollaborator";
 import { collab } from "../../../api/apiCollab";
 
@@ -54,13 +54,26 @@ export const DatatableCollaborators = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (val.id.toString().includes(search)) ||
+                    (('000000'+val.id).slice(-6).toString().includes(search)) ||
+                    (val.name.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.phone.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.cpf.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.rg.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
             renderList={(list) => (
                 <>
-                    <div className="titleBar--ListTutor">
+                    <div className="titleBar--ListCollab">
                         <div
-                            className="idTutor--list-title"
+                            className="idCollab--list-title"
                             onClick={() => handleSort("id")}
                         >
                             {
@@ -77,7 +90,7 @@ export const DatatableCollaborators = ({ search, setSearch }: Prop) => {
                             <span>ID</span>
                         </div>
                         <div
-                            className="nameTutor--list-title"
+                            className="nameCollab--list-title"
                             onClick={() => handleSort("name")}
                         >
                             {
@@ -94,7 +107,7 @@ export const DatatableCollaborators = ({ search, setSearch }: Prop) => {
                             <span>Nome</span>
                         </div>
                         <div
-                            className="phoneTutor--list-title"
+                            className="phoneCollab--list-title"
                             onClick={() => handleSort("phone")}
                         >
                             {
@@ -108,10 +121,10 @@ export const DatatableCollaborators = ({ search, setSearch }: Prop) => {
                                     />
                                     : null
                             }
-                            <span>Phone</span>
+                            <span>Telefone</span>
                         </div>
                         <div
-                            className="cpfTutor--list-title"
+                            className="cpfCollab--list-title"
                             onClick={() => handleSort("cpf")}
                         >
                             {
@@ -128,7 +141,7 @@ export const DatatableCollaborators = ({ search, setSearch }: Prop) => {
                             <span>CPF</span>
                         </div>
                         <div
-                            className="rgTutor--list-title"
+                            className="rgCollab--list-title"
                             onClick={() => handleSort("rg")}
                         >
                             {
@@ -147,25 +160,15 @@ export const DatatableCollaborators = ({ search, setSearch }: Prop) => {
                     </div>
                     <div className="container">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.name.toLowerCase().includes(search.toLowerCase())) ||
-                                    (val.cpf.toLowerCase().includes(search.toLowerCase())) ||
-                                    (val.rg.toLowerCase().includes(search.toLowerCase()))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
-                                    <div key={index} className='listTutor'>
-                                        <div className="idTutor">{("000000" + item.id).slice(-6)}</div>
-                                        <div className="nameTutor">{item.name}</div>
-                                        <div className="phoneTutor">{item.phone}</div>
-                                        <div className="cpfTutor">{item.cpf}</div>
-                                        <div className="rgTutor">{item.rg}</div>
-                                        <div className="btnTutor">
+                                    <div key={index} className='listCollab'>
+                                        <div className="idCollab">{("000000" + item.id).slice(-6)}</div>
+                                        <div className="nameCollab">{item.name?.toUpperCase()}</div>
+                                        <div className="phoneCollab">{item.phone}</div>
+                                        <div className="cpfCollab">{item.cpf}</div>
+                                        <div className="rgCollab">{item.rg}</div>
+                                        <div className="btnCollab">
                                             <PictureAsPdfIcon className="icon pdf" />
                                             <Link className="link" to={`/collaborators/${item.id}`}>
                                                 <EditIcon className="icon edit" />

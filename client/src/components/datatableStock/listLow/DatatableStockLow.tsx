@@ -56,7 +56,21 @@ export const DatatableStockLow = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (val.description.normalize('NFKD').replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.description.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.sku.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.id.toString().includes(search)) ||
+                    (val.qtd.toString().includes(search)) ||
+                    (('000000'+val.id).slice(-6).toString().includes(search)) ||
+                    (moment(val.validity).format('DD/MM/YYYY').toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
             renderList={(list) => (
                 <>
@@ -149,17 +163,7 @@ export const DatatableStockLow = ({ search, setSearch }: Prop) => {
                     </div>
                     <div className="container--stock">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.description.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.sku.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
-                                    (val.id.toString().includes(search))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
                                     <div key={index} className='listProduct'>
                                         <div className="idProduct">{("000000" + item.id).slice(-6)}</div>

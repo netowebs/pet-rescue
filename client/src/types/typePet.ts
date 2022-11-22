@@ -8,7 +8,7 @@ export type Pet ={
     name: string,
     species: string,
     size: string,
-    age_approx: number,
+    age_approx: string,
     temperament: string,
     status: string,
     food: number,

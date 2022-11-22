@@ -97,15 +97,6 @@ export const DatatableCategoryProduct = () => {
                     Gravar Categoria
                 </button>
             </div>
-            {/* <div className="btnInsertCategory">
-                <input
-                    className="btnSaveCategory"
-                    type="button"
-                    value="Gravar Categoria"
-                    //style={{ width: '100%', height: '25px'}}
-                    onClick={() => handleCreate()}
-                />
-            </div> */}
             <div className="paginatedDiv--category">
                 <PaginatedList
                     list={listCategories}

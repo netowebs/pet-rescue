@@ -51,8 +51,17 @@
                     }
 
                     .boxId,
-                    .boxDtCad {
+                    .boxDtCad,
+                    .boxDtRescue{
                         margin-right: 20px;
+                    }
+
+                    .boxId{
+                        width: 130px;
+
+                        input{
+                            width: 100%;
+                        }
                     }
                 }
 
@@ -153,7 +162,8 @@
                 .boxStatuAdoptions,
                 .boxFood,
                 .boxColor,
-                .boxCoat {
+                .boxCoat,
+                .boxSex {
                     margin-right: 20px;
                 }
 

@@ -6,7 +6,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { PaginatedList } from "react-paginated-list";
 import { Link } from "react-router-dom";
-import moment from "moment";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { sortAndToggle } from '../../sortList/SortListVet'
@@ -55,7 +54,22 @@ export const DatatableVets = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (val.id.toString().includes(search)) ||
+                    (('000000'+val.id).slice(-6).toString().includes(search)) ||
+                    (val.name.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.crmv.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.speciality.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.phone.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.address.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.address.normalize('NFKD').replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().includes(search.toLowerCase()))
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
             renderList={(list) => (
                 <>
@@ -166,18 +180,7 @@ export const DatatableVets = ({ search, setSearch }: Prop) => {
                     </div>
                     <div className="container">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.name.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.crmv.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
-                                    (val.speciality.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
-                                    (val.phone.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
                                     <div key={index} className='listVet'>
                                         <div className="idVet">{("000000" + item.id).slice(-6)}</div>

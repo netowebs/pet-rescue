@@ -20,7 +20,8 @@ export interface VetInstance extends Model {
     cep: string
     city: string
     uf: string,
-    date_cad: Date
+    date_cad: Date,
+    user: string
 }
 
 export const VetModel = sequelize.define<VetInstance>("VetModel",{
@@ -74,6 +75,9 @@ export const VetModel = sequelize.define<VetInstance>("VetModel",{
     },
     date_cad: {
         type: DataTypes.DATE
+    },
+    user: {
+        type: DataTypes.STRING
     }
 },
 {

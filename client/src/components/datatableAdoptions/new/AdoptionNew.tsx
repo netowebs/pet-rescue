@@ -81,7 +81,7 @@ export const AdoptionNew = () => {
         const data: any = { animalId, tutorId, user }
 
         if(animalStatus === 'INDISPONIVEL'){
-            alert('Esse animal não está disponível para adoção, verifique se existe ficha médica aberta')
+            alert('ANIMAL INDISPONÍVEL')
         }else{
             if (user?.trim() !== '' && animalId !== null && tutorId !== null) {
                 const res = await adoption.createAdoption(data)

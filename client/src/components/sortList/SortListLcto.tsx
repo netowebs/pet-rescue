@@ -38,9 +38,9 @@ export const sortAndToggle = (sort: string, a: any, b: any, toggle: boolean) => 
             }
         case 'date':
             if (toggle) {
-                return a.date.toString().localeCompare(b.toString().date)
+                return a.date.toString().localeCompare(b.date.toString())
             } else {
-                return b.date.toString().localeCompare(a.toString().date)
+                return b.date.toString().localeCompare(a.date.toString())
             }
     }
 }

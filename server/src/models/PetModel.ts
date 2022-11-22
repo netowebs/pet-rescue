@@ -20,6 +20,9 @@ export interface PetInstance extends Model {
     adoption_id: number,
     obito: string
     sku_product: string
+    user: string
+    adoption_date: Date
+    obito_date: Date
 }
 
 export const AnimalModel = sequelize.define<PetInstance>("AnimalModel", {
@@ -76,13 +79,22 @@ export const AnimalModel = sequelize.define<PetInstance>("AnimalModel", {
         type: DataTypes.STRING
     },
 
-    sku_product: {
+    lastFeed: {
+        type: DataTypes.DATE
+    },
+
+    user: {
         type: DataTypes.STRING
     },
 
-    lastFeed: {
+    adoption_date: {
+        type: DataTypes.DATE
+    },
+
+    obito_date: {
         type: DataTypes.DATE
     }
+
 },{
     tableName: 'animals',
     timestamps: false
@@ -97,8 +109,4 @@ AnimalModel.belongsTo(ApartmentModel,{
 AnimalModel.belongsTo(StockModel,{
     foreignKey: 'id_stock',
     constraints: true,
-})
-
-StockModel.hasOne(AnimalModel,{
-    foreignKey: 'id_stock'
 })

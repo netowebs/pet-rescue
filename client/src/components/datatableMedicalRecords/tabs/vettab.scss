@@ -54,6 +54,7 @@
         .tableRow {
             justify-content: space-evenly;
             width: 100%;
+            overflow-y: auto;
 
             &:hover{
                 background-color: #f2f3f5;

@@ -1,11 +1,12 @@
 
 import moment from 'moment';
-import {useState, useEffect} from 'react';
-import { Link, useParams } from 'react-router-dom';
+import {useState, useEffect, useContext} from 'react';
+import { Link } from 'react-router-dom';
 import './vetnew.scss'
 import swal from 'sweetalert'
 import { viaCep } from '../../../api/apiViaCep';
 import { vet } from '../../../api/apiVet';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
 type AptModel = {
     id: number,
@@ -16,7 +17,9 @@ let inititi: AptModel
 
 export const VetNew = () => {
 
-    const params = useParams()
+    const auth = useContext(AuthContext)
+
+    const [user, setUser] = useState(auth.user?.username)
 
     //UseState Inputs
     const [idCad, setIdCad] = useState(String)
@@ -76,11 +79,12 @@ export const VetNew = () => {
                 <div className="topBar">
                     <div className="topBar-interno">
                         <div className="topBar-inputs">
-                            <div className="boxId">
-                                <label htmlFor="ipt-id">Código</label><br />
+                            <div className="boxUser">
+                                <label htmlFor="ipt-user">Usuário</label><br />
                                 <input
-                                    className='ipt-id'
+                                    className='ipt-user'
                                     type="text"
+                                    defaultValue={user}
                                     disabled
                                 />
                             </div>

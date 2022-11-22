@@ -54,11 +54,25 @@ export const DatatableTutors = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (val.id.toString().includes(search)) ||
+                    (('000000'+val.id).slice(-6).toString().includes(search)) ||
+                    (val.name.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.phone.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.address.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.cpf.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.rg.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
             renderList={(list) => (
                 <>
-                    <div className="titleBar--ListTutor">
+                    <div className="titleBar--ListTutors">
                         <div
                             className="idTutor--list-title"
                             onClick={() => handleSort("id")}
@@ -125,7 +139,7 @@ export const DatatableTutors = ({ search, setSearch }: Prop) => {
                                     />
                                     : null
                             }
-                            <span>Phone</span>
+                            <span>Telefone</span>
                         </div>
                         <div
                             className="cpfTutor--list-title"
@@ -162,20 +176,11 @@ export const DatatableTutors = ({ search, setSearch }: Prop) => {
                             <span>RG</span>
                         </div>
                     </div>
-                    <div className="container">
+                    <div className="container--tutorList">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.name.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.phone.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
-                                    <div key={index} className='listTutor'>
+                                    <div key={index} className='listTutors'>
                                         <div className="idTutor">{("000000" + item.id).slice(-6)}</div>
                                         <div className="nameTutor">{item.name.toUpperCase()}</div>
                                         <div className="addressTutor">{item.address.toUpperCase()}</div>

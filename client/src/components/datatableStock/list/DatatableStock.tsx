@@ -55,7 +55,21 @@ export const DatatableStock = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (val.description.normalize('NFKD').replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.description.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.sku.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.id.toString().includes(search)) ||
+                    (val.qtd.toString().includes(search)) ||
+                    (('000000'+val.id).slice(-6).toString().includes(search)) ||
+                    (moment(val.validity).format('DD/MM/YYYY').toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
             renderList={(list) => (
                 <>
@@ -148,24 +162,14 @@ export const DatatableStock = ({ search, setSearch }: Prop) => {
                     </div>
                     <div className="container--stock">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.description.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.sku.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
-                                    (val.id.toString().includes(search))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
                                     <div key={index} className='listProduct'>
                                         <div className="idProduct">{("000000" + item.id).slice(-6)}</div>
                                         <div className="skuProduct" >{item.sku?.toUpperCase()}</div>
                                         <div className="descriptionProduct" >{item.description?.toUpperCase().substring(0,25)}</div>
                                         <div className="validityProduct">{moment(item.validity?.toString()).format('DD/MM/YYYY')}</div>
-                                        <div className="qtdProduct">{item.qtd +'-'+ item.unit}</div>
+                                        <div className="qtdProduct">{item.qtd} {item.unit}</div>
                                         <div className="btnStock">
                                             <PictureAsPdfIcon className="icon pdf" />
                                             <Link className="link" to={`/stock/${item.id}`}>

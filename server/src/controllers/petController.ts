@@ -54,24 +54,12 @@ export const petUpdate = async (req: Request, res: Response) => {
         const { name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, idApartment, idFood } = req.body
 
         const update = await AnimalModel.update({
-            name: name,
-            species: species,
-            status: adptionStatus,
-            sex: sex,
-            age_approx: age,
-            temperament: temperament,
-            size: size,
-            note: note,
-            qtd_food: food,
-            color: color,
-            coat_size: coat,
-            apartment_id: idApartment,
-            id_stock: idFood
+            name, species, status: adptionStatus, sex, age_approx: age, temperament, size, note, qtd_food: food, color, coat_size: coat, apartment_id: idApartment, id_stock: idFood
         }, {
             where: { id: req.body.idCad }
         })
             .then(() => {
-                return { success: true, message: 'Atualizado com Sucesso' }
+                return { success: true, message: 'CADASTRO ATUALIZADO COM SUCESSO ' }
             })
             .catch(error => {
                 return { success: false, message: error.message }
@@ -87,28 +75,21 @@ export const petUpdate = async (req: Request, res: Response) => {
 
 export const petCreate = async (req: Request, res: Response) => {
     try {
-        const { dtRescue, name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, idApartment, idFood } = req.body
+        const { dtRescue, name, species, adptionStatus, sex, age, temperament, size, note, food, color, coat, idApartment, idFood, user } = req.body
+
+        console.log('DATA RESGATE VINDO: ', dtRescue)
+
         const convertDate = (dateString: string) => {
             return new Date(moment(dateString).format('YYYY-MM-DD'))
         }
+
+        console.log('DATA RESGATE CONVERTIDO: ', moment(dtRescue).format('YYYY-MM-DD'))
         const createPet = await AnimalModel.create({
-            name: name,
-            date_rescue: convertDate(dtRescue),
-            species: species,
-            status: adptionStatus,
-            sex: sex,
-            age_approx: age,
-            temperament: temperament,
-            size: size,
-            note: note,
-            qtd_food: food,
-            color: color,
-            coat_size: coat,
-            apartment_id: idApartment,
-            id_stock: idFood
-        })
+            name, date_rescue: convertDate(dtRescue), species, status: adptionStatus, sex, age_approx: age, temperament, size, note,
+            qtd_food: food, color, coat_size: coat, apartment_id: idApartment, id_stock: idFood, user})
+
         .then(()=>{
-            return { success: true, message: 'Cadastro Concluido com Sucesso' }
+            return { success: true, message: 'CADASTRO CONCLUIDO COM SUCESSO' }
         })
         .catch(error =>{
             return { success: false, message: error.message }
@@ -125,7 +106,7 @@ export const petDelete = async (req: Request, res: Response) => {
             where: {id: req.params.idDel}
         })
         .then(()=>{
-            return { success: true, message: 'Cadastro Excluido com Sucesso' }
+            return { success: true, message: 'CADASTRO EXCLUIDO COM SUCESSO' }
         })
         .catch(error =>{
             return { success: false, message: error.message }

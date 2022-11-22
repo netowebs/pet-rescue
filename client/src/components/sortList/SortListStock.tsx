@@ -1,3 +1,5 @@
+import moment from "moment"
+
 export const sortAndToggle = (sort: string, a: any, b: any, toggle: boolean) => {
     switch (sort) {
         case 'description':
@@ -14,15 +16,15 @@ export const sortAndToggle = (sort: string, a: any, b: any, toggle: boolean) => 
                 }
         case 'qtd':
             if (toggle) {
-                return a.qtd.toString().localeCompare(b.qtd.toString())
+                return a.qtd.toString() - b.qtd.toString()
             } else {
-                return b.qtd.toString().localeCompare(a.qtd.toString())
+                return b.qtd.toString() - a.qtd.toString()
             }
         case 'validity':
             if (toggle) {
-                return a.validity.toString().localeCompare(b.validity.toString())
+                return moment(a.validity).format('YYYY-MM-DD').localeCompare(moment(b.validity).format('YYYY-MM-DD'))
             } else {
-                return b.validity.toString().localeCompare(a.validity.toString())
+                return moment(b.validity).format('YYYY-MM-DD').localeCompare(moment(a.validity).format('YYYY-MM-DD'))
             }
         case 'sku':
             if (toggle) {

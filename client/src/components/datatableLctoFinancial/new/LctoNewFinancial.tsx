@@ -1,12 +1,13 @@
 //import PrintIcon from '@mui/icons-material/Print';
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './lctonewfinancial.scss'
 import swal from 'sweetalert'
 import { bank } from '../../../api/apiBank';
 import { Bank } from '../../../types/typeBank';
 import { lctoFinancial } from '../../../api/apiLctoFinancial';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
 type ArrPivoFinancial = {
     idBank: number,
@@ -17,9 +18,11 @@ type ArrPivoFinancial = {
 
 export const LctoNewFinancial = () => {
 
+    const auth = useContext(AuthContext)
+
     //State Lançamento
     const [dtCad, setDtCad] = useState(String)
-    const [user, setUser] = useState(String)
+    const [user, setUser] = useState(auth.user?.username)
 
     //State Banco
     const [idCad, setIdCad] = useState(Number)
@@ -87,7 +90,7 @@ export const LctoNewFinancial = () => {
     const handleCreate = async () => {
         const data: any = { arrLctos, user, dtCad, idBank, nameBank, agency, account, idCad, totCredito, totDebito }
 
-        if (user.trim() !== '' && idBank !== 0 && arrLctos.length > 0) {
+        if (idBank !== 0 && arrLctos.length > 0) {
             const res = await lctoFinancial.createLcto(data)
             if (res.success) {
                 swal(res.message, " ", "success")

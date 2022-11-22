@@ -9,33 +9,32 @@
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 700;
         border-bottom: 2px solid #095543;
+        text-align: center;
 
-        .idProduct--list-title,
-        .skuProduct--list-title{
-            flex: 0.6;
-            text-align: center;
+        span{
+            cursor: pointer;
         }
 
         .idProduct--list-title{
-            margin-left: 30px;
+            flex: 1;
         }
 
         .skuProduct--list-title{
-            margin-left: 70px;
+            flex: 2.2;
         }
 
+
         .descriptionProduct--list-title{
-            flex: 1;
-            margin-left: 180px;
-            margin-right: 80px;
+            flex: 3;
         }
 
         .validityProduct--list-title{
-            flex: 0.9;
+            flex: 1.5;
         }
 
         .qtdProduct--list-title{
-            flex: 2;
+            flex: 1;
+            margin-right: 170px;
         }
 
         .downArrow{
@@ -66,7 +65,6 @@
             }
         
             .idProduct{
-                margin-left: 20px;
                 flex: 1;
             }
 
@@ -75,17 +73,16 @@
             }
 
             .descriptionProduct{
-                flex: 2.9;
+                flex: 3;
             }
         
             .validityProduct{
                 flex: 1.5;
-                margin-right: 53px;
             }
         
             .qtdProduct{
-                flex: 0.6;
-                margin-right: 120px;
+                flex: 1;
+                margin-right: 30px;
             }
         
             .icon{

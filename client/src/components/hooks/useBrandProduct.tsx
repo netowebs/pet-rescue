@@ -10,7 +10,7 @@ export const useBrandProduct = () => {
                 setBrands(res)
             }
             loadBrand()
-    },[])
+    },[brands])
 
     return{
         brands

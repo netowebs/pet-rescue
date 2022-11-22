@@ -10,8 +10,6 @@ export const Chart = () => {
   const [listLcto, setListLcto] = useState<LctoFinancial[]>([])
   const [dataInicio, setDataInicio] = useState(String)
   const [dataFim, setDataFim] = useState(String)
-  const [dataInicioConvert, setDataInicioConvert] = useState(String)
-  const [dataFimConvert, setDataFimConvert] = useState(String)
   const [personalGraph, setPersonalGraph] = useState<Graph[]>([])
  
   useEffect(() => {
@@ -29,18 +27,9 @@ export const Chart = () => {
     setPersonalGraph(newArr)
   }
 
-  const convertDate = (dateString: string) => {
-    let date =  new Date(moment(dateString).format('MMM/YYYY'))
-    let ano = date.getFullYear()
-    let mes = date.getMonth()+1
-    return `${mes}/${ano}`
-}
-
   useEffect(() => {
-    setDataInicioConvert(moment(dataInicio).format('MM'))
-    setDataFimConvert(moment(dataFim).format('MM'))
     handleGraph()
-  },[dataInicioConvert, dataFimConvert,dataInicio, dataFim])
+  },[dataInicio, dataFim])
 
   const { dataGraph } = useGraph(listLcto)
 
@@ -58,8 +47,7 @@ export const Chart = () => {
             id="" 
             max={dataFim}
             onChange={(e) => setDataInicio(e.target.value)}
-            //onMouseLeave={() => setDataFim(dataInicio)}
-            defaultValue={dataInicio}
+            defaultValue={dataGraph.length > 0 ? dataGraph[0].yearNum : ''}
           />
           <p style={{marginLeft: '10px', marginRight: '10px'}}> até </p>
           <input
@@ -67,16 +55,16 @@ export const Chart = () => {
             name="" 
             id=""
             min={dataInicio}
-            defaultValue={dataFim}
+            value={dataFim}
             onChange={(e) => setDataFim(e.target.value)}
-            disabled={dataInicio === '' ? true : false}
+            //disabled={dataInicio === '' ? true : false}
           />
         </div>
       </div>
       <LineChart
         width={622}
         height={250}
-        data={dataInicio === '' ? (dataGraph.sort(function (a, b) {
+        data={dataFim === ''? (dataGraph.sort(function (a, b) {
           return a.yearNum.localeCompare(b.yearNum)
         })): (personalGraph.sort(function (a, b) {
           return a.yearNum.localeCompare(b.yearNum)

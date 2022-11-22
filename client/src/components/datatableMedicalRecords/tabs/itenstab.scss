@@ -1,4 +1,4 @@
-.itensTab {
+.itensTabMedical{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -46,7 +46,7 @@
         }
     }
 
-    .itensList {
+    .itensListMedical {
         border-collapse: collapse;
         width: 100%;
         margin-top: 10px;
@@ -55,63 +55,57 @@
             background-color: #16a685;
 
             .trHeadItens {
-                display: flex;
+                width: 100%;
                 color: white;
                 height: 25px;
                 align-items: center;
                 justify-content: space-around;
                 border-bottom: 1px solid #ad2a2a;
                 font-family: Arial, Helvetica, sans-serif;
+                display: flex;
             }
 
         }
 
-        .tableRow {
-            justify-content: space-evenly;
-            width: 100%;
-            overflow-y: auto;
+        .divScroll{
+            display: flex;
+            flex-direction: column;
 
-            &:hover {
-                background-color: #f2f3f5;
-            }
-
-            input {
-                font-size: 15px;
-                text-align: center;
-            }
-
-            .tbSku-product {
-                width: 140px;
-            }
-
-            .tbSpeciality-vet {
-                width: 205px;
-            }
-
-            .tbDescription-product {
-                width: 390px;
-            }
-
-            .tbVet-product {
-                width: 350px;
-            }
-
-            .tbQtd-product {
-                width: 80px;
-            }
-
-            .tbUser-product {
-                width: 150px;
-            }
-
-            .tbDate-product {
-                width: 95px;
-            }
-
-            .btnDel-item {
-                width: 15px;
-                cursor: pointer;
+            .tableRow {
+                justify-content: space-evenly;
+                width: 100%;
+                overflow-y: auto;
+    
+                &:hover {
+                    background-color: #f2f3f5;
+                }
+    
+                .tbSku-product,
+                .tbDate-product{
+                    width: 157px;
+                }
+    
+                .tbDescription-product,
+                .tbVet-product{
+                    width: 300px;
+                }
+    
+                .tbQtd-product{
+                    width: 100px;
+                }
+    
+                input {
+                    font-size: 15px;
+                    text-align: center;
+                }
+    
+                .btnDel-item {
+                    width: 15px;
+                    cursor: pointer;
+                }
             }
         }
+
+        
     }
 }

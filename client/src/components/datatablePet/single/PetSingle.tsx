@@ -30,6 +30,10 @@ export const PetSingle = () => {
     const [color, setColor] = useState(String)
     const [coat, setCoat] = useState(String)
     const [note, setNote] = useState(String)
+    const [user, setUser] = useState(String)
+    const [adptionId, setAdoptionId] = useState(Number)
+    const [adoptionDate, setAdoptionDate] = useState(String)
+    const [obitoDate, setObitoDate] = useState(String)
 
     //UseState Food
     const [idFood, setIdFood] = useState(Number)
@@ -84,6 +88,7 @@ export const PetSingle = () => {
             const loadPetDetail = async (id: string) => {
                 let res = await pet.getPet(id)
                 if (res.success) {
+                    console.log(res.data)
                     setIdCad(("000000" + res.data.id).slice(-6))
                     setDtRescue(res.data.date_rescue)
                     setDtCad(moment(res.data.date_cad).format('DD/MM/YYYY'))
@@ -101,13 +106,16 @@ export const PetSingle = () => {
                     getFoodId(res.data.id_stock)
                     setIdSection(res.data.ApartmentModel.section_id)
                     setIdApartment(res.data.apartment_id)
+                    setUser(res.data.user)
+                    setAdoptionId(res.data.adoption_id)
+                    setAdoptionDate(res.data.adoption_date)
+                    setObitoDate(res.data.obito_date)
                 } else {
                     swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
                         .then(() => {
                             window.location.href = '/pets'
                         })
                 }
-
             }
             loadPetDetail(params.Id)
         }
@@ -117,7 +125,7 @@ export const PetSingle = () => {
     const handleUpdate = async () => {
         const data: any = { idCad, dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, idApartment, idFood }
 
-        if (name.trim() !== '' && species.trim() !== '' && size.trim() !== '' && age.trim() !== '' && temperament.trim() !== '' && adptionStatus.trim() !== '' && food !== '' && color.trim() !== '' && coat!== '' && sex !== '' && idApartment !== null && idFood !== null) {
+        if (name.trim() !== '' && species.trim() !== '' && size.trim() !== '' && age.trim() !== '' && temperament.trim() !== '' && adptionStatus.trim() !== '' && food !== '' && color.trim() !== '' && coat !== '' && sex !== '' && idApartment !== null && idFood !== null) {
             const res = await pet.updatePet(data)
             if (res.success) {
                 swal(res.message, " ", "success")
@@ -178,6 +186,15 @@ export const PetSingle = () => {
                                     type="date"
                                     defaultValue={dtRescue}
                                     max={moment().format('YYYY-MM-DD')}
+                                />
+                            </div>
+                            <div className="boxUser">
+                                <label htmlFor="ipt-user">Cadastro Efetuado Por:</label><br />
+                                <input
+                                    className='ipt-user'
+                                    type="text"
+                                    defaultValue={user}
+                                    disabled
                                 />
                             </div>
                         </div>
@@ -326,6 +343,36 @@ export const PetSingle = () => {
                                     <option value="FEMEA">FEMEA</option>
                                 </select>
                             </div>
+                            {
+                                adptionId !== null ? (
+                                    <div className="boxDtAdoption">
+                                        <label htmlFor="ipt-dtAdoption">Data Adoção</label><br />
+                                        <input
+                                            className='ipt-dtAdoption'
+                                            type="date"
+                                            defaultValue={adoptionDate}
+                                            disabled
+                                        />
+                                    </div>
+                                )
+                                    :
+                                    null
+                            }
+                            {
+                                obitoDate !== null ? (
+                                    <div className="boxDtAdoption">
+                                        <label htmlFor="ipt-dtAdoption">Data Óbito</label><br />
+                                        <input
+                                            className='ipt-dtAdoption'
+                                            type="date"
+                                            defaultValue={obitoDate}
+                                            disabled
+                                        />
+                                    </div>
+                                )
+                                    :
+                                    null
+                            }
                             <div className="boxInfo">
                                 <label htmlFor="ipt-info">Observações</label><br />
                                 <textarea className='ipt-info'

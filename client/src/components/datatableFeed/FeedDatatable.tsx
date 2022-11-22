@@ -61,7 +61,7 @@ export const Feed = () => {
     const handleListPets = (list: any) => {
         let newArr = [...listPets]
         if (list) {
-            list.filter((it: any) => it.obito === 'NAO').filter((it: any) => it.adoption_id === null).filter((it: any) => moment(it.lastFeed).format('DD/MM/YYYY') !== moment().format('DD/MM/YYYY')).forEach((item: any, index: number) => {
+            list.filter((it: any) => it.obito === 'NAO').filter((it: any) => it.adoption_id === null).filter((it: any) => moment(it.lastFeed).format('DD/MM/YYYY') !== moment().format('DD/MM/YYYY')).filter((it: any) => it.id_stock !== null).forEach((item: any, index: number) => {
                 newArr = ([...newArr, { petId: item.id, petName: item.name, petQtdFood: item.qtd_food, stockId: item.stockModel?.id, stockSku: item.stockModel?.sku, stockDescription: item.stockModel?.description, petStatus: item.status }])
                 setListPets(newArr)
             })
@@ -182,7 +182,7 @@ export const Feed = () => {
                                             </div>
                                             <div className="containerListPets">
                                                 {
-                                                    listPets.map((item, index) => (
+                                                    list.map((item, index) => (
                                                         <div key={index} className='listPets'>
                                                             <div className="petID">{("000000" + item.petId).slice(-6)}</div>
                                                             <div className="petName" >{item.petName.toUpperCase()}</div>
@@ -207,8 +207,8 @@ export const Feed = () => {
                                                                 </>
                                                             }</div>
                                                             <div className="stockId" >{("000000" + item.stockId).slice(-6)}</div>
-                                                            <div className="stockSku">{item.stockSku.toUpperCase()}</div>
-                                                            <div className="stockDescription">{item.stockDescription.toUpperCase()}</div>
+                                                            <div className="stockSku">{item.stockSku?.toUpperCase()}</div>
+                                                            <div className="stockDescription">{item.stockDescription?.toUpperCase()}</div>
                                                         </div>
                                                     ))
                                                 }

@@ -37,7 +37,6 @@
                         outline: none;
                         border: none;
                         padding: 10px;
-                        //text-transform: uppercase;
 
                         &:disabled {
                             color: #ad2a2a;
@@ -50,7 +49,7 @@
                         font-weight: bold;
                     }
 
-                    .boxId,
+                    .boxUser,
                     .boxDtCad {
                         margin-right: 20px;
                     }

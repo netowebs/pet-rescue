@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { Link } from 'react-router-dom';
 import './lctonew.scss'
 import swal from 'sweetalert'
@@ -7,6 +7,7 @@ import { stock } from '../../../api/apiStock';
 import { stockUpdate } from '../../../api/apiUpdateStock';
 import { bank } from '../../../api/apiBank';
 import { Bank } from '../../../types/typeBank';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
 export type ArrProduct = {
     idProduct: number,
@@ -27,13 +28,15 @@ type ArrPivo = {
 
 export const LctoNew = () => {
 
+    const auth = useContext(AuthContext)
+
     //Dados do lançamento
     const [dtCad, setDtCad] = useState(String)
     const [nf, setNf] = useState(0)
     const [qtdItens, setQtdItens] = useState(0)
     const [amount, setAmount] = useState(String)
     const [donation, setDonation] = useState(-1)
-    const [user, setUser] = useState(String)
+    const [user, setUser] = useState(auth.user?.username)
     const [provider, setProvider] = useState(String)
     const [bankList, setBankList] = useState<Bank[]>([])
     const [bankId, setBankId] = useState(Number)
@@ -72,7 +75,6 @@ export const LctoNew = () => {
             if (json.success) {
                 setIdProduct(json.data.id)
                 setDescription(json.data.description)
-                //setCost(json.data.cost)
                 setValidity(json.data.validity)
                 setQtdOld(json.data.qtd)
             } else {
@@ -152,10 +154,13 @@ export const LctoNew = () => {
     }
 
     const handleCreate = async () => {
+        if(donation === 1 ){
+            setBankId(0)
+        }
         const amountNum = parseFloat(amount.replace(/[R$]/g, '').replace(/[',']/, '.'))
         const data: any = { addArrPivo, arrProduct, dtCad, nf, qtdItens, amountNum, bankId, donation, user, provider, ...productsLcto }
 
-        if (nf !== null && nf !== 0 && qtdItens >= 0 && amountNum !== 0 && user.trim() !== '' && donation === 1 || donation === 0) {
+        if (nf !== null && nf !== 0 && qtdItens >= 0 && amountNum !== 0 && donation === 1 || donation === 0) {
             if (qtdItens === somaQtd && somaValue === amountNum) {
                 productsLcto.forEach((item, index) => {
                     item.qtd = qtdUpdate[index]
@@ -193,14 +198,6 @@ export const LctoNew = () => {
                 <div className="topBar">
                     <div className="topBar-interno">
                         <div className="topBar-inputs">
-                            <div className="boxId">
-                                <label htmlFor="ipt-id">Código</label><br />
-                                <input
-                                    className='ipt-id'
-                                    type="text"
-                                    disabled
-                                />
-                            </div>
                             <div className="boxDtCad">
                                 <label htmlFor="ipt-dtCad">Data Cadastro</label><br />
                                 <input
@@ -231,9 +228,8 @@ export const LctoNew = () => {
                                     className='ipt-user'
                                     type="text"
                                     name='user'
-                                    onChange={
-                                        (e) => setUser(e.target.value)
-                                    }
+                                    defaultValue={user}
+                                    disabled
                                 />
                             </div>
                             <div className="boxNf">
@@ -299,10 +295,6 @@ export const LctoNew = () => {
                                             <option key={index} value={item.id}>{item.name_bank}</option>
                                         ))
                                     }
-                                    {/* <option disabled>SELECIONE...</option>
-                                    <option value="DINHEIRO">Dinheiro</option>
-                                    <option value="BANCO DO BRASIL">Banco Brasil</option>
-                                    <option value="CAIXA FEDERAL">Caixa Federal</option> */}
                                 </select>
                             </div>
                             <div className="boxProvider">

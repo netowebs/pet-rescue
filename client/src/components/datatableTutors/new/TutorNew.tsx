@@ -1,13 +1,18 @@
 import moment from 'moment';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import { Link } from 'react-router-dom';
 import './tutornew.scss'
 import swal from 'sweetalert'
 import { viaCep } from '../../../api/apiViaCep';
 import { tutor } from '../../../api/apiTutors';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
 
 export const TutorNew = () => {
+
+    const auth = useContext(AuthContext)
+
+    const [user, setUser] = useState(auth.user?.username)
 
     //UseState Inputs
     const [dtCad, setDtCad] = useState(String)
@@ -65,10 +70,11 @@ export const TutorNew = () => {
                     <div className="topBar-interno">
                         <div className="topBar-inputs">
                             <div className="boxId">
-                                <label htmlFor="ipt-id">Código</label><br />
+                                <label htmlFor="ipt-user">Usuário</label><br />
                                 <input
-                                    className='ipt-id'
+                                    className='ipt-user'
                                     type="text"
+                                    defaultValue={user}
                                     disabled
                                 />
                             </div>
@@ -129,7 +135,7 @@ export const TutorNew = () => {
                                 <label htmlFor="ipt-nasc">Nascimento</label><br />
                                 <input
                                     className='ipt-nasc'
-                                    type="text"
+                                    type="date"
                                     onChange={
                                         (e) => setNasc(moment(e.target.value).format('YYYY-MM-DD'))
                                     }
@@ -137,13 +143,14 @@ export const TutorNew = () => {
                             </div>
                             <div className="boxSex">
                                 <label htmlFor="ipt-sex">Sexo</label><br />
-                                <input
-                                    className='ipt-sex'
-                                    type="text"
-                                    onChange={
-                                        (e) => setSex(e.target.value)
-                                    }
-                                />
+                                <select 
+                                    name="" 
+                                    id=""
+                                    onChange={(e) => setSex(e.target.value)}
+                                >
+                                    <option value="F">Feminino</option>
+                                    <option value="M">Masculino</option>
+                                </select>
                             </div>
                             <div className="boxPhone">
                                 <label htmlFor="ipt-phone">Telefone</label><br />

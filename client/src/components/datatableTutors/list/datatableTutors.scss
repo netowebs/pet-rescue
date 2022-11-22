@@ -1,4 +1,4 @@
-.titleBar--ListTutor{
+.titleBar--ListTutors{
         align-items: center;
         display: flex;
         justify-content: space-around;
@@ -9,27 +9,40 @@
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 700;
         border-bottom: 2px solid #095543;
+        text-align: center;
 
-        .idTutor--list-title, 
-        .nameTutor--list-title, 
-        .addressTutor--list-title,
-        .phoneTutor--list-title, 
-        .cpfTutor--list-title,
-        .rgTutor--list-title{
-            flex: 1;
-            text-align: center;
-        }
-
-        .cpfTutor--list-title{
-            flex: 0.5;
-        }
-
-        .rgTutor--list-title{
-            margin-right: 130px;
+        span{
+            cursor: pointer;
         }
 
         .idTutor--list-title{
-            margin-left: 10px;
+            flex: 0.5;
+        }
+
+        .nameTutor--list-title, 
+        .addressTutor--list-title{
+            flex: 1.5;
+
+        }
+
+        .phoneTutor--list-title{
+            flex: 0.8;
+
+        }
+
+        .cpfTutor--list-title,
+        .rgTutor--list-title{
+            flex: 1;
+
+        }
+
+        .cpfTutor--list-title{
+            flex: 1;
+
+        }
+
+        .rgTutor--list-title{
+            margin-right: 133px;
         }
 
         .downArrow{
@@ -43,29 +56,34 @@
         }
     }
 
-.listTutor{
+.listTutors{
     display: flex;
     justify-content: space-around;   
     align-items: center;
     border-bottom: 1px solid rgb(181, 179, 179);
     padding: 10px;
+    text-align: center;
 
     &:hover{
         background-color: #f0f2f1;
     }
 
-    .idTutor,
-    .nameTutor,
-    .addressTutor,
-    .cpfTutor,
-    .phoneTutor,
-    .rgTutor{
-        flex: 1;
-        text-align: center;
+    .idTutor{
+        flex: 0.5;
     }
 
-    .cpfTutor{
-        flex: 0.5;
+    .nameTutor,
+    .addressTutor{
+        flex: 1.5;
+    }
+    
+    .cpfTutor,
+    .rgTutor{
+        flex: 1;
+    }
+
+    .phoneTutor{
+        flex: 0.8;
     }
 
     .icon{

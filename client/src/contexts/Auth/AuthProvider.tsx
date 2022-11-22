@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { collab } from '../../api/apiCollab'
 import { instance } from '../../api/instance'
@@ -13,12 +14,8 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
             const storageData = localStorage.getItem('authToken')
             const storageUser = localStorage.getItem('user_db')
             if (storageData) {
-                try {
-                    instance.defaults.headers.common['Authorization'] = `Bearer ${storageData}`
-                    setUser(JSON.parse(String(storageUser)))
-                } catch (error) {
-                    
-                }
+                instance.defaults.headers.common['Authorization'] = `Bearer ${storageData}`
+                setUser(JSON.parse(String(storageUser)))
             }
         }
         validadeToken()
@@ -37,9 +34,10 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     }
 
     const signout = async () => {
-        setToken('')
+        localStorage.removeItem('authToken')
+        localStorage.removeItem('user_db')
         setUser(null)
-        
+
     }
 
     const setToken = (token: string) => {

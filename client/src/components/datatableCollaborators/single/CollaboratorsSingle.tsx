@@ -117,7 +117,7 @@ export const CollaboratorsSingle = () => {
 
         let data: any = {}
 
-        if(ativo === 0){
+        if (ativo === 0) {
             setUsername('')
         }
 
@@ -136,9 +136,10 @@ export const CollaboratorsSingle = () => {
         if (res.success) {
             swal(res.message, " ", "success",)
                 .then(async () => {
-                    await collab.photoUpload(formData)
+                    collab.photoUpload(formData)
                     window.location.href = '/collaborators'
                 })
+
         } else {
             swal("Error !", "" + JSON.stringify(res.message), "error")
         }
@@ -390,82 +391,82 @@ export const CollaboratorsSingle = () => {
                                 </div>
                                 <div className="boxAtivo">
                                     {
-                                        auth.user?.id === parseInt(idCad) &&
-                                        <>
-                                            <div className="sim">
-                                                <label htmlFor="ativo">Ativo:</label>
-                                                <input
-                                                    type="radio"
-                                                    name='ativo'
-                                                    className='ipt-ativo'
-                                                    defaultChecked
-                                                    onChange={() => setAtivo(1)}
-                                                />
-                                            </div>
-                                            <div className="nao">
-                                                <label htmlFor="ativo">Inativo:</label>
-                                                <input
-                                                    type="radio"
-                                                    name='ativo'
-                                                    className='ipt-inativo'
-                                                    onChange={() => setAtivo(0)}
-                                                />
-                                            </div>
-                                        </>
+                                        auth.user?.id !== parseInt(idCad) && auth.user?.nivel === 1 ?
+                                            (<>
+                                                <div className="sim">
+                                                    <label htmlFor="ativo">Ativo:</label>
+                                                    <input
+                                                        type="radio"
+                                                        name='ativo'
+                                                        className='ipt-ativo'
+                                                        defaultChecked
+                                                        onChange={() => setAtivo(1)}
+                                                    />
+                                                </div>
+                                                <div className="nao">
+                                                    <label htmlFor="ativo">Inativo:</label>
+                                                    <input
+                                                        type="radio"
+                                                        name='ativo'
+                                                        className='ipt-inativo'
+                                                        onChange={() => setAtivo(0)}
+                                                    />
+                                                </div>
+                                            </>) : null
                                     }
                                 </div>
                             </fieldset>
                             {
-                                ativo === 1 &&
-                                <fieldset className='fieldset--acesso'>
-                                <legend>Acesso</legend>
-                                <div className="boxUsername">
-                                    <label htmlFor="ipt-username">Usuário</label><br />
-                                    <input
-                                        type="text"
-                                        className='ipt-username'
-                                        defaultValue={username}
-                                    />
-                                </div>
-                                <div className="boxPassword">
-                                    <label htmlFor="ipt-password">Senha</label><br />
-                                    <input
-                                        type={showPassword ? 'text' : 'password'}
-                                        className='ipt-password'
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
-                                </div>
-                                <div className="btnPass">
-                                    {
-                                        showPassword ?
-                                            <VisibilityOffIcon onClick={togglePass} /> :
-                                            <VisibilityIcon onClick={togglePass} />
-                                    }
-                                </div>
-                                <div className="boxNivel">
-                                    <div className="adm">
-                                        <label htmlFor="nivel">Admin:</label>
-                                        <input
-                                            type="radio"
-                                            name='nivel'
-                                            className='ipt-adm'
-                                            onChange={() => setNivel(1)}
-                                            checked={nivel === 1 ? true : false}
-                                        />
-                                    </div>
-                                    <div className="user">
-                                        <label htmlFor="nivel">Usuário:</label>
-                                        <input
-                                            type="radio"
-                                            name='nivel'
-                                            className='ipt-user'
-                                            onChange={() => setNivel(0)}
-                                            checked={nivel === 0 ? true : false}
-                                        />
-                                    </div>
-                                </div>
-                            </fieldset>
+                                ativo === 1 && auth.user?.nivel === 1 ?
+                                    (<fieldset className='fieldset--acesso'>
+                                        <legend>Acesso</legend>
+                                        <div className="boxUsername">
+                                            <label htmlFor="ipt-username">Usuário</label><br />
+                                            <input
+                                                type="text"
+                                                className='ipt-username'
+                                                defaultValue={username}
+                                            />
+                                        </div>
+                                        <div className="boxPassword">
+                                            <label htmlFor="ipt-password">Senha</label><br />
+                                            <input
+                                                type={showPassword ? 'text' : 'password'}
+                                                className='ipt-password'
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="btnPass">
+                                            {
+                                                showPassword ?
+                                                    <VisibilityOffIcon onClick={togglePass} /> :
+                                                    <VisibilityIcon onClick={togglePass} />
+                                            }
+                                        </div>
+                                        <div className="boxNivel">
+                                            <div className="adm">
+                                                <label htmlFor="nivel">Admin:</label>
+                                                <input
+                                                    type="radio"
+                                                    name='nivel'
+                                                    className='ipt-adm'
+                                                    onChange={() => setNivel(1)}
+                                                    checked={nivel === 1 ? true : false}
+                                                />
+                                            </div>
+                                            <div className="user">
+                                                <label htmlFor="nivel">Usuário:</label>
+                                                <input
+                                                    type="radio"
+                                                    name='nivel'
+                                                    className='ipt-user'
+                                                    onChange={() => setNivel(0)}
+                                                    checked={nivel === 0 ? true : false}
+                                                />
+                                            </div>
+                                        </div>
+                                    </fieldset>) : null
                             }
                         </div>
                     </div>

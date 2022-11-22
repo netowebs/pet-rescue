@@ -1,5 +1,5 @@
 .login{
-    background-image: url('../../images/wpp_login.png');
+    background-image: url('../../assets/images/loginPage/bg.jpg');
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -14,4 +14,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .fundoLogin{
+        background-color: rgba(144, 144, 144, 0.68);
+        width: 30vw;
+        height: 70vh;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
 }

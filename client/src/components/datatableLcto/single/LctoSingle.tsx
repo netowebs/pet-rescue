@@ -56,7 +56,8 @@ export const LctoSingle = () => {
                 let res = await stockUpdate.getUpdate(id)
                 if (res.success) {
                     setId(("000000" + res.data.id).slice(-6))
-                    setDtCad(moment(res.data.dtCad).format('DD/MM/YYYY'))
+                    console.log(res.data.date)
+                    setDtCad(moment(res.data.date).format('DD/MM/YYYY'))
                     setNf(res.data.nf)
                     setQtdItens(res.data.qtd_itens)
                     setAmount(res.data.amount)

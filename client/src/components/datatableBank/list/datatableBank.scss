@@ -11,6 +11,10 @@
         border-bottom: 2px solid #095543;
         text-align: center;
 
+        span{
+            cursor: pointer;
+        }
+
         .idBank--list-title,
         .balanceBank--list-title{
             flex: 1;

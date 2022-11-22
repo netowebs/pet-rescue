@@ -1,5 +1,3 @@
-//import PrintIcon from '@mui/icons-material/Print';
-import { MenuItem } from '@mui/material';
 import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -11,7 +9,7 @@ import { vet } from '../../../api/apiVet';
 export const VetSingle = () => {
 
     const params = useParams()
-
+    const [user, setUser] = useState(String)
     const [idCad, setIdCad] = useState(String)
     const [dtCad, setDtCad] = useState(String)
     const [name, setName] = useState(String)
@@ -36,7 +34,7 @@ export const VetSingle = () => {
                 let res = await vet.getVet(id)
                 if (res.success) {
                     setIdCad(("000000" + res.data.id).slice(-6))
-                    setDtCad(moment(res.data.dtCad).format('DD/MM/YYYY'))
+                    setDtCad(moment(res.data.date_cad).format('DD/MM/YYYY'))
                     setName(res.data.name)
                     setCpf(res.data.cpf)
                     setRg(res.data.rg)
@@ -52,6 +50,7 @@ export const VetSingle = () => {
                     setCity(res.data.city)
                     setState(res.data.uf)
                     setNasc(moment(res.data.date_birth).format('DD/MM/YYYY'))
+                    setUser(res.data.user)
                 } else {
                     swal("Ops ", "" + 'Cadastro Não Encontrado', "error")
                         .then(() => {
@@ -120,6 +119,15 @@ export const VetSingle = () => {
                                     className='ipt-dtCad'
                                     type="text"
                                     defaultValue={dtCad}
+                                    disabled
+                                />
+                            </div>
+                            <div className="boxUser">
+                                <label htmlFor="ipt-user">Usuário</label><br />
+                                <input
+                                    className='ipt-user'
+                                    type="text"
+                                    defaultValue={user}
                                     disabled
                                 />
                             </div>

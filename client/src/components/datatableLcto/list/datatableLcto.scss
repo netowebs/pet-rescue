@@ -11,17 +11,27 @@
         border-bottom: 2px solid #095543;
         text-align: center;
 
+        span{
+            cursor: pointer;
+        }
+
         .dateLcto--list-title,
-        .amountLcto--list-title,
         .nfLcto--list-title,
         .idLcto--list-title,
         .userLcto--list-title{
             flex: 0.5;
         }
 
-        .sourceLcto--list-title,
-        .providerLcto--list-title{
+        .amountLcto--list-title{
             flex: 1;
+        }
+
+        .sourceLcto--list-title{
+            flex: 2;
+        }
+
+        .providerLcto--list-title{
+            flex: 2;
         }
 
         .userLcto--list-title{
@@ -51,7 +61,10 @@
         background-color: #f0f2f1;
     }
 
-    .amountLcto,
+    .amountLcto{
+        flex: 1;
+    }
+
     .sourceLcto,
     .userLcto,
     .dateLcto,
@@ -63,9 +76,12 @@
         flex: 0.1;
     }
 
-    .providerLcto,
+    .providerLcto{
+        flex: 2;
+    }
+
     .sourceLcto{
-        flex: 1;
+        flex: 2;
     }
 
     .userLcto{

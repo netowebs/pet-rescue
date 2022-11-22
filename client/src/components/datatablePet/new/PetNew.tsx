@@ -1,19 +1,15 @@
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { apartment, pet, sections as sectApi } from '../../../api/api';
-import { useApartments } from '../../hooks/useApartment';
-import { useSection } from '../../hooks/useSection';
-import { Modal } from '../../modal/Modal';
-import { Pet } from '../../../types/typePet';
 import './petnew.scss'
 import { DatatableApartment } from '../../datatableApartment/DatatableApartment';
 import swal from 'sweetalert'
 import { ModalSectionApartment } from '../../buttons/modalSectionApartment/ModalSectionApartment';
-import { Stock } from '../../../types/typeStock';
 import { stock } from '../../../api/apiStock';
 import { Section } from '../../../types/typeSection';
 import { Apartment } from '../../../types/typeApartment';
+import { AuthContext } from '../../../contexts/Auth/AuthContex';
 
 type AptModel = {
     id: number,
@@ -25,11 +21,12 @@ let inititi: AptModel
 export const PetNew = () => {
 
     const params = useParams()
+    const auth = useContext(AuthContext)
 
     //UseState Inputs
     const [idCad, setIdCad] = useState(String)
     const [name, setName] = useState(String)
-    const [dtRescue, setDtRescue] = useState(String)
+    const [dtRescue, setDtRescue] = useState(moment().format('YYYY-MM-DD'))
     const [dtCad, setDtCad] = useState(String)
     const [species, setSpecies] = useState(String)
     const [size, setSize] = useState(String)
@@ -41,10 +38,10 @@ export const PetNew = () => {
     const [coat, setCoat] = useState(String)
     const [sex, setSex] = useState(String)
     const [note, setNote] = useState(String)
-    const [apartmentId, setApartmentId] = useState(Number)
+    const [user, setUser] = useState(auth.user?.username)
 
     //UseState Food
-    const [idFood, setIdFood] = useState(Number)
+    const [idFood, setIdFood] = useState(null)
     const [skuFood, setSkuFood] = useState(String)
     const [descriptionFood, setDescriptionFood] = useState(String)
 
@@ -82,25 +79,19 @@ export const PetNew = () => {
         }
     }
 
-    const getFoodId = async (idFood: number) => {
-        const json = await stock.getProduct(idFood.toString())
-        if (json) {
-            setSkuFood(json.data.sku)
-            setIdFood(json.data.id)
-            setDescriptionFood(json.data.description)
-        }
-    }
-
-
     useEffect(() => {
         setDtCad(moment().format('DD/MM/YYYY'))
     }, [dtCad])
 
+    useEffect(() => {
+        console.log(dtRescue)
+    },[dtRescue])
+
     //Function Create
     const handleCreate = async () => {
-        const data: any = { dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, apartmentId, idFood}
+        const data: any = { dtRescue, name, species, age, sex, temperament, adptionStatus, food, color, coat, note, size, idApartment, idFood, user}
 
-        if (name.trim() !== '' && species.trim() !== '' && size.trim() !== '' && age.trim() !== '' && temperament.trim() !== '' && adptionStatus.trim() !== '' && food !== '' && color.trim() !== '' && coat!== '' && sex !== '' && idApartment !== null && idFood !== null) {
+        if (name.trim() !== '' && species.trim() !== '' && size.trim() !== '' && age.trim() !== '' && temperament.trim() !== '' && adptionStatus.trim() !== '' && food !== '' && color.trim() !== '' && coat!== '' && sex !== '' && idApartment !== null) {
             const res = await pet.createPet(data)
             if (res.success) {
                 swal(res.message, " ", "success")
@@ -121,12 +112,13 @@ export const PetNew = () => {
                 <div className="topBar">
                     <div className="topBar-interno">
                         <div className="topBar-inputs">
-                            <div className="boxId">
-                                <label htmlFor="ipt-id">Código</label><br />
+                            <div className="boxUser">
+                                <label htmlFor="ipt-user">Usuário</label><br />
                                 <input
-                                    className='ipt-id'
+                                    className='ipt-user'
                                     type="text"
                                     disabled
+                                    defaultValue={user}
                                 />
                             </div>
                             <div className="boxDtCad">
@@ -146,6 +138,7 @@ export const PetNew = () => {
                                     onChange={(e) =>
                                         setDtRescue(e.target.value)}
                                     max={moment().format('YYYY-MM-DD')}
+                                    defaultValue={moment().format('YYYY-MM-DD')}
                                 />
                             </div>
                         </div>
@@ -206,7 +199,7 @@ export const PetNew = () => {
                                 <label htmlFor="ipt-age">Idade Aprox.</label><br />
                                 <input
                                     className='ipt-age'
-                                    type="number"
+                                    type="text"
                                     onChange={
                                         (e) => setAge(e.target.value)
                                     }

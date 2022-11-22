@@ -57,7 +57,23 @@ export const DatatablePets = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (val.name.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.id.toString().includes(search)) ||
+                    (('000000'+val.id).slice(-6).toString().includes(search)) ||
+                    (val.species.toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (moment(val.date_rescue).format('DD/MM/YYYY').toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.temperament.toLowerCase().includes(search.toLowerCase())) ||
+                    (val.age_approx.toLowerCase().includes(search.toLowerCase())) ||
+                    (val.sex.toLowerCase().includes(search.toLowerCase())) ||
+                    (val.status.toLowerCase() === search.toLowerCase())
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
             renderList={(list) => (
                 <>
@@ -201,17 +217,7 @@ export const DatatablePets = ({ search, setSearch }: Prop) => {
                     </div>
                     <div className="container">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.name.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.id.toString().includes(search))
-                                    // (val.species.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
                                     <div key={index} className='listPet'>
                                         <div className="idPet">{("000000" + item.id).slice(-6)}</div>
@@ -224,7 +230,7 @@ export const DatatablePets = ({ search, setSearch }: Prop) => {
                                         <div className="speciesPet">{item.species?.toUpperCase()}</div>
                                         <div className="statusPet">{item.status}</div>
                                         <div className="temperamentPet">{item.temperament?.toUpperCase()}</div>
-                                        <div className="agePet">{item.age_approx}</div>
+                                        <div className="agePet">{item.age_approx?.toUpperCase()}</div>
                                         <div className="sexPet">{item.sex?.toUpperCase()}</div>
                                         <div className="btnPet">
                                             <PictureAsPdfIcon className="icon pdf" />

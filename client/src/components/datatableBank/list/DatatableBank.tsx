@@ -5,10 +5,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { PaginatedList } from "react-paginated-list";
 import { Link } from "react-router-dom";
-import moment from "moment";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { sortAndToggle } from '../../sortList/SortListLcto'
+import { sortAndToggle } from '../../sortList/SortListBank'
 import { bank } from "../../../api/apiBank";
 import { Bank } from "../../../types/typeBank";
 
@@ -55,7 +54,19 @@ export const DatatableBank = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (('000'+val.id_bank).slice(-3).toString().includes(search)) ||
+                    (val.name_bank.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.account.toString().includes(search)) ||
+                    (val.agency.toString().includes(search)) ||
+                    (val.balance.toFixed(2).replace(/['.']/, ',').toString().includes(search))
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
             renderList={(list) => (
                 <>
@@ -79,10 +90,10 @@ export const DatatableBank = ({ search, setSearch }: Prop) => {
                         </div>
                         <div
                             className="nameBank--list-title"
-                            onClick={() => handleSort("nf")}
+                            onClick={() => handleSort("name_bank")}
                         >
                             {
-                                sort === 'nf' ?
+                                sort === 'name_bank' ?
                                     toggle &&
                                     <ArrowDownwardIcon
                                         className="downArrow"
@@ -96,10 +107,10 @@ export const DatatableBank = ({ search, setSearch }: Prop) => {
                         </div>
                         <div
                             className="agencyBank--list-title"
-                            onClick={() => handleSort("provider")}
+                            onClick={() => handleSort("agency")}
                         >
                             {
-                                sort === 'provider' ?
+                                sort === 'agency' ?
                                     toggle &&
                                     <ArrowDownwardIcon
                                         className="downArrow"
@@ -113,10 +124,10 @@ export const DatatableBank = ({ search, setSearch }: Prop) => {
                         </div>
                         <div
                             className="accountBank--list-title"
-                            onClick={() => handleSort("date")}
+                            onClick={() => handleSort("account")}
                         >
                             {
-                                sort === 'date' ?
+                                sort === 'account' ?
                                     toggle &&
                                     <ArrowDownwardIcon
                                         className="downArrow"
@@ -130,10 +141,10 @@ export const DatatableBank = ({ search, setSearch }: Prop) => {
                         </div>
                         <div
                             className="balanceBank--list-title"
-                            onClick={() => handleSort("amount")}
+                            onClick={() => handleSort("balance")}
                         >
                             {
-                                sort === 'amount' ?
+                                sort === 'balance' ?
                                     toggle &&
                                     <ArrowDownwardIcon
                                         className="downArrow"
@@ -148,16 +159,7 @@ export const DatatableBank = ({ search, setSearch }: Prop) => {
                     </div>
                     <div className="container">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.account.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.name_bank.includes(search.toLocaleLowerCase()))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
                                     <div key={index} className='listBanks'>
                                         <div className="idBank">{("000" + item.id_bank).slice(-3)}</div>

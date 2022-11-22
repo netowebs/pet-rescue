@@ -10,7 +10,7 @@ export const useCategoryProduct = () => {
                 setCategories(res)
             }
             loadCategory()
-    },[])
+    },[categories])
 
     return{
         categories

@@ -9,10 +9,8 @@ import moment from "moment";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { sortAndToggle } from '../../sortList/SortListLctoFinancial'
-import { Lcto } from "../../../types/typeLcto";
 import { lctoFinancial } from "../../../api/apiLctoFinancial";
 import { Bank } from "../../../types/typeBank";
-import { bank } from "../../../api/apiBank";
 
 type Prop = {
     search: string;
@@ -69,7 +67,22 @@ export const DatatableLctoFinancial = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (val.name_bank.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (moment(val.date_lcto).format('DD/MM/YYYY').toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (('000'+val.code_bank).slice(-3).toString().includes(search)) ||
+                    (('000000'+val.id).slice(-6).toString().includes(search)) ||
+                    (val.id.toString().includes(search)) ||
+                    (val.totCredito.toFixed(2).replace(/['.']/, ',').toString().includes(search)) ||
+                    (val.totDebito.toFixed(2).replace(/['.']/, ',').toString().includes(search)) ||
+                    (val.user.toLocaleLowerCase().includes(search.toLowerCase()))
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
             renderList={(list) => (
                 <>
@@ -196,15 +209,7 @@ export const DatatableLctoFinancial = ({ search, setSearch }: Prop) => {
                     </div>
                     <div className="container">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.name_bank.toLocaleLowerCase().includes(search.toLowerCase()))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
                                     <div key={index} className='listLcto'>
                                         <div className="idLcto">{("000000" + item.id).slice(-6)}</div>

@@ -55,8 +55,23 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
 
     return (
         <PaginatedList
-            list={loadList}
+            list={loadList.filter((val) => {
+                if (search == '') {
+                    return val
+                } else if (
+                    (('000000'+val.id).slice(-6).toString().includes(search)) ||
+                    (val.nf.toString().includes(search)) ||
+                    (val.provider.normalize('NFKD').replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (val.provider.toLocaleLowerCase().includes(search.toLowerCase())) ||
+                    (moment(val.date).format('DD/MM/YYYY').toLocaleLowerCase().includes(search.toLocaleLowerCase())) ||
+                    (val.amount.toFixed(2).replace(/['.']/, ',').toString().includes(search)) ||
+                    (val.BankModel?.name_bank.normalize('NFKD').replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().includes(search.toLowerCase()))
+                ) {
+                    return val;
+                }
+            })}
             itemsPerPage={8}
+            useMinimalControls
             renderList={(list) => (
                 <>
                     <div className="titleBar--ListLctos">
@@ -182,22 +197,13 @@ export const DatatableLcto = ({ search, setSearch }: Prop) => {
                     </div>
                     <div className="container">
                         {
-                            list.filter((val) => {
-                                if (search == '') {
-                                    return val
-                                } else if (
-                                    (val.user.toLocaleLowerCase().includes(search.toLowerCase())) ||
-                                    (val.user.includes(search.toLocaleLowerCase()))
-                                ) {
-                                    return val;
-                                }
-                            }).sort((a, b) => sortAndToggle(sort, a, b, toggle))
+                            list.sort((a, b) => sortAndToggle(sort, a, b, toggle))
                                 .map((item, index) => (
                                     <div key={index} className='listLcto'>
                                         <div className="idLcto">{("000000" + item.id).slice(-6)}</div>
                                         <div className="nfLcto" >{item.nf}</div>
                                         <div className="providerLcto" >{item.provider?.toUpperCase()}</div>
-                                        <div className="dateLcto" >{moment(item.date.toString()).format('DD/MM/YYYY')}</div>
+                                        <div className="dateLcto" >{moment(item.date?.toString()).format('DD/MM/YYYY')}</div>
                                         <div className="amountLcto">{'R$ '+item.amount.toFixed(2).replace(/['.']/, ',')}</div>
                                         <div className="sourceLcto">{item.id_bank ? item.BankModel.name_bank.toUpperCase() : 'DOAÇÃO'}</div>
                                         <div className="userLcto">{item.user?.toUpperCase()}</div>

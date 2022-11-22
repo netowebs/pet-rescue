@@ -12,29 +12,30 @@ export const sortAndToggle = (sort: string, a: any, b: any, toggle: boolean) => 
             } else {
                 return b.id.toString() - a.id.toString()
             }
-        case 'address':
-            if(toggle) {
-                return a.address.localeCompare(b.address)
-            }else{
-                return b.address.localeCompare(a.address)
-            }
         case 'phone':
-            if(toggle) {
+            if (toggle) {
                 return a.phone.localeCompare(b.phone)
-            }else{
+            } else {
                 return b.phone.localeCompare(a.phone)
             }
         case 'cpf':
-            if(toggle) {
+            if (toggle) {
                 return a.cpf.localeCompare(b.cpf)
-            }else{
+            } else {
                 return b.cpf.localeCompare(a.cpf)
             }
         case 'rg':
-            if(toggle) {
+            if (toggle) {
                 return a.rg.localeCompare(b.rg)
-            }else{
+            } else {
                 return b.rg.localeCompare(a.rg)
+            }
+
+        case 'address':
+            if (toggle) {
+                return a.address.localeCompare(b.address)
+            } else {
+                return b.address.localeCompare(a.address)
             }
     }
 }
