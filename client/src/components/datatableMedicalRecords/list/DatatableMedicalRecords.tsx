@@ -23,6 +23,8 @@ export const DatatableMedicalRecords = ({ search, setSearch }: Prop) => {
     const [toggle, setToggle] = useState(true)
 
     useEffect(() => {
+        let today = new Date()
+        let antes = today.getMilliseconds()
         const loadingList = async () => {
             try {
                 let json = await medicalRecords.getAllRecords()
@@ -37,7 +39,7 @@ export const DatatableMedicalRecords = ({ search, setSearch }: Prop) => {
         }
 
         loadingList()
-
+        let depois = today.getMilliseconds() - antes
     }, [])
 
     const handleSort = (value: string) => {

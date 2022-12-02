@@ -106,8 +106,9 @@ export const BankSingle = () => {
                                 <input
                                     type="text"
                                     className='ipt-balance'
-                                    defaultValue={'R$' + `${(balance)}`}
+                                    value={'R$' + `${balance}`}
                                     style={balance > 0 ? { backgroundColor: '#16a685', color: 'white' } : balance < 0 ? { backgroundColor: '#ad2a2a', color: 'white' } : { backgroundColor: '#b89b2a' }}
+                                    disabled
                                 />
                             </div>
                         </div>

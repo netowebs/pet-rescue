@@ -14,6 +14,6 @@ export const auth = async(req: Request, res: Response, next: NextFunction) => {
         await jwt.verify(token,  process.env.APP_SECRET as string)
         next()
     } catch (error) {
-        return res.status(401).json({message: 'Token is required'})
+        return res.status(401).json({message: 'Token is wrong'})
     }
 }
