@@ -39,7 +39,6 @@
     "mysql2": "^2.3.3",
     "nodejs-base64": "^2.0.0",
     "sequelize": "^6.21.3",
-    "validator": "^13.7.0",
-    "typescript": "^5.0.4"
+    "validator": "^13.7.0"
   }
 }
