@@ -30,7 +30,7 @@ server.use(bodyParser.urlencoded({extended:false}))
 
 server.use(routerLogin)
 
-//server.use(auth)
+server.use(auth)
 server.use(routerCollab)
 server.use(routerPet)
 server.use(routerApartment)
