@@ -14,7 +14,7 @@ export const login = async (req: Request, res: Response) => {
             }
         })
             .then(async (data) => {
-                if (await bcrypt.compareSync(password, data?.password!)) {
+                if (bcrypt.compareSync(password, data?.password!)) {
                     const token = jwt.sign({ id: data?.id }, process.env.APP_SECRET as string, {
                         expiresIn: '1d'
                     })
@@ -54,6 +54,8 @@ export const validate = async (req: Request, res: Response) => {
             }
         })
             .then(async (data) => {
+                console.log(password)
+                console.log(data?.password)
                 if (await bcrypt.compare(password, String(data?.password))) {
                     const token = jwt.sign({ id: data?.id }, process.env.APP_SECRET as string, {
                         expiresIn: '1d'
