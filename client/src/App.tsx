@@ -1,7 +1,6 @@
-import { Home } from "./pages/home/home";
 import { MainRoutes } from "./routes/MainRoutes";
 
-export const App = () => {
+const App = () => {
   return(
     <div className="App">
       <MainRoutes />
