@@ -14,7 +14,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+
   },
   "include": ["src", "src/components/datatableAdoptions/single/AdoptionSingle/.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
